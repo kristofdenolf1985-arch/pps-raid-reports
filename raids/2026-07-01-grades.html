@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Pan Syndrome — tbc-audit Grades — 2026-07-01</title>
+<link rel="icon" href="data:,">
+<style>
+:root {
+  --bg: #0f1117; --surface: #1a1d27; --border: #2a2d3a;
+  --text: #e2e8f0; --muted: #8892a4;
+  --green: #22c55e; --yellow: #eab308; --orange: #f97316; --red: #ef4444;
+  --gold: #fbbf24; --accent: #6366f1; --blue: #3b82f6;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'Inter', system-ui, sans-serif; font-size: 14px; line-height: 1.45;
+}
+.wrap { max-width: 1200px; margin: 0 auto; padding: 20px 16px 48px; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 { font-size: 24px; margin: 0 0 4px; }
+h2 { font-size: 18px; margin: 0 0 12px; }
+.card, section.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px; margin-bottom: 20px;
+}
+.subline { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 2px 10px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--bg);
+  font-size: 12px; margin-right: 6px;
+}
+.topnav { margin-bottom: 16px; font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+.stat .value { font-size: 26px; font-weight: 700; }
+.stat .label { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+.stat .sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+.stat.accent { border-color: var(--orange); }
+.stat.accent .value { color: var(--orange); }
+.tablewrap { overflow-x: auto; position: relative; }
+.tablewrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--surface));
+  pointer-events: none;
+}
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { position: sticky; left: 0; background: var(--surface); }
+td.num, th.num { text-align: right; }
+.sort-arrow { margin-left: 4px; opacity: 0.6; }
+.external { font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: normal; margin-left: 8px; }
+.dim { color: var(--muted); opacity: 0.55; }
+.good { color: var(--green); }
+.warn { color: var(--yellow); }
+.caution { color: var(--orange); }
+.bad { color: var(--red); }
+.gold { color: var(--gold); }
+.pill {
+  display: inline-block; min-width: 44px; text-align: center;
+  padding: 1px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;
+}
+.pill.good { background: rgba(34,197,94,.15); }
+.pill.warn { background: rgba(234,179,8,.15); }
+.pill.caution { background: rgba(249,115,22,.15); }
+.pill.bad { background: rgba(239,68,68,.15); }
+.pill.na { background: transparent; color: var(--muted); opacity: .55; }
+.pill.gold { background: rgba(251,191,36,.15); color: var(--gold); }
+.pill.info { background: rgba(59,130,246,.15); color: var(--blue); }
+.audit-detail { font-size: 12px; color: var(--muted); margin-top: 4px; white-space: normal; }
+.role {
+  display: inline-block; padding: 1px 8px; border-radius: 999px;
+  font-size: 11px; border: 1px solid var(--border); color: var(--muted);
+}
+.callout {
+  border-left: 3px solid var(--orange); background: rgba(249,115,22,.08);
+  padding: 6px 12px; border-radius: 0 6px 6px 0; margin-top: 8px; font-size: 13px;
+}
+.flag {
+  border-left: 3px solid var(--yellow); background: rgba(234,179,8,.07);
+  padding: 6px 12px; border-radius: 0 6px 6px 0; margin-top: 8px; font-size: 13px;
+}
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cards2 .card { margin-bottom: 0; }
+.wraptext { white-space: normal; min-width: 180px; }
+.sortable th { cursor: pointer; user-select: none; }
+.sortable th:hover { color: var(--text); }
+details.bench { margin-top: 12px; }
+details.bench summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.bench ul { margin: 8px 0 0; }
+details.legend {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px; margin-bottom: 20px;
+}
+details.legend summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.legend .legend-body { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.legend .legend-body p { margin: 6px 0; }
+details.legend .legend-body strong { color: var(--text); }
+footer { color: var(--muted); font-size: 12px; margin-top: 24px; }
+@media (max-width: 1000px) {
+  .cards2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topnav"><a href="2026-07-01.html">&larr; Back to summary</a></div>
+<section class="panel">
+<h1>Raid Grades — YGAmnjdzV6ZWbqgK — 2026-07-01</h1>
+<p>Source: tbc-audit.com (API v104)</p>
+<h2>Grade Matrix</h2>
+<table><thead><tr><th>Player</th><th>Class</th><th>Hydross</th><th>Lurker</th><th>Leo</th><th>Kara</th><th>Moro</th><th>Vashj</th><th>Al'ar</th><th>VR</th><th>Sol</th><th>KT</th><th>HKM</th><th>Gruul</th><th>Avg Score</th></tr></thead><tbody><tr><td>Brightmir</td><td>Priest</td><td>S</td><td>B</td><td>A</td><td>B</td><td>C</td><td>B</td><td>B</td><td>S</td><td>A</td><td>C</td><td>S</td><td>S</td><td>83.7</td></tr><tr><td>Jourganoff</td><td>Mage</td><td>B</td><td>B</td><td>C</td><td>A</td><td>A</td><td>B</td><td>D</td><td>A</td><td>S</td><td>B</td><td>C</td><td>C</td><td>76.8</td></tr><tr><td>Kunyaza</td><td>Druid</td><td>C</td><td>B</td><td>B</td><td>C</td><td>A</td><td>B</td><td>C</td><td>A</td><td>B</td><td>B</td><td>B</td><td>A</td><td>75.1</td></tr><tr><td>Bruun</td><td>Paladin</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td><td>C</td><td>B</td><td>B</td><td>B</td><td>C</td><td>B</td><td>B</td><td>73.3</td></tr><tr><td>Raktapaksa</td><td>Warlock</td><td>B</td><td>B</td><td>C</td><td>D</td><td>B</td><td>C</td><td>A</td><td>B</td><td>C</td><td>C</td><td>A</td><td>B</td><td>71</td></tr><tr><td>Bloedmangel</td><td>Druid</td><td>F</td><td>B</td><td>C</td><td>B</td><td>B</td><td>C</td><td>B</td><td>A</td><td>C</td><td>C</td><td>B</td><td>B</td><td>70.1</td></tr><tr><td>Skindog</td><td>Shaman</td><td>C</td><td>B</td><td>B</td><td>B</td><td>A</td><td>D</td><td>B</td><td>B</td><td>B</td><td>C</td><td>D</td><td>B</td><td>69.6</td></tr><tr><td>Peanutpewpew</td><td>Hunter</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td><td>C</td><td>B</td><td>B</td><td>C</td><td>C</td><td>D</td><td>C</td><td>68.2</td></tr><tr><td>Nls</td><td>Rogue</td><td>C</td><td>C</td><td>C</td><td>B</td><td>A</td><td>D</td><td>D</td><td>B</td><td>B</td><td>F</td><td>B</td><td>A</td><td>67.7</td></tr><tr><td>Nuccu</td><td>Druid</td><td>F</td><td>C</td><td>B</td><td>C</td><td>B</td><td>D</td><td>C</td><td>B</td><td>B</td><td>C</td><td>B</td><td>B</td><td>67.5</td></tr><tr><td>Realblod</td><td>Warrior</td><td>C</td><td>C</td><td>B</td><td>C</td><td>B</td><td>D</td><td>C</td><td>B</td><td>B</td><td>F</td><td>B</td><td>C</td><td>65.2</td></tr><tr><td>Vleesklak</td><td>Warlock</td><td>D</td><td>D</td><td>B</td><td>C</td><td>B</td><td>D</td><td>C</td><td>B</td><td>C</td><td>C</td><td>B</td><td>C</td><td>64.6</td></tr><tr><td>Ginnemage</td><td>Mage</td><td>D</td><td>D</td><td>B</td><td>C</td><td>B</td><td>D</td><td>B</td><td>A</td><td>B</td><td>C</td><td>F</td><td>C</td><td>62.1</td></tr><tr><td>Neraith</td><td>Hunter</td><td>C</td><td>C</td><td>C</td><td>B</td><td>C</td><td>C</td><td>B</td><td>C</td><td>B</td><td>C</td><td>F</td><td>D</td><td>61.4</td></tr><tr><td>Hoofta</td><td>Shaman</td><td>D</td><td>D</td><td>C</td><td>D</td><td>B</td><td>F</td><td>C</td><td>B</td><td>C</td><td>D</td><td>F</td><td>C</td><td>56.7</td></tr><tr><td>Rydashot</td><td>Hunter</td><td>F</td><td>D</td><td>C</td><td>D</td><td>D</td><td>C</td><td>C</td><td>B</td><td>C</td><td>C</td><td>C</td><td>D</td><td>54.6</td></tr><tr><td>Redlac</td><td>Rogue</td><td>C</td><td>D</td><td>D</td><td>C</td><td>C</td><td>D</td><td>D</td><td>C</td><td>C</td><td>D</td><td>D</td><td>C</td><td>53.6</td></tr><tr><td>Gbnomosexual</td><td>Mage</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>C</td><td>B</td><td>B</td><td>C</td><td>B</td><td>C</td><td>39.6</td></tr><tr><td>Happyzappy</td><td>Shaman</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>32.4</td></tr><tr><td>Chopmedckoff</td><td>Paladin</td><td>F</td><td>F</td><td>F</td><td>B</td><td>F</td><td>F</td><td>F</td><td>D</td><td>F</td><td>F</td><td>F</td><td>F</td><td>21.6</td></tr><tr><td>Chadlac</td><td>Hunter</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>21.2</td></tr><tr><td>Bnice</td><td>Rogue</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>18.2</td></tr><tr><td>Larsx</td><td>Rogue</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>18.2</td></tr><tr><td>Klasbakdots</td><td>Warlock</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>7.8</td></tr><tr><td>Brightbolt</td><td>Mage</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>6</td></tr><tr><td>Naury</td><td>Mage</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>6</td></tr><tr><td>Walhallah</td><td>Mage</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>6</td></tr><tr><td>Daili</td><td>Shaman</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Furfect</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Ididot</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Impératrice</td><td>Paladin</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Kaylin</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Klasbaktotem</td><td>Shaman</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Lilshift</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Miletus</td><td>Paladin</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Mævrick</td><td>Paladin</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Rannick</td><td>Paladin</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Saintaviolla</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Saucebärnäse</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Savenochek</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Shaqiloheal</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Steinpadda</td><td>Shaman</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Tätá</td><td>Warrior</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Zenodisco</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Zympers</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr></tbody></table>
+<p>Grades: S=95+, A=80-94, B=65-79, C=50-64, D=35-49, F&lt;35. — = unsupported spec.</p>
+<h2>Flagged Players (avg score &lt; 65)</h2>
+<ul><li><strong>Vleesklak</strong> (Warlock) — avg 64.6 — cooldowns score dragging</li><li><strong>Ginnemage</strong> (Mage) — avg 62.1 — rotation score dragging</li><li><strong>Neraith</strong> (Hunter) — avg 61.4 — rotation score dragging</li><li><strong>Hoofta</strong> (Shaman) — avg 56.7 — rotation score dragging</li><li><strong>Rydashot</strong> (Hunter) — avg 54.6 — rotation score dragging</li><li><strong>Redlac</strong> (Rogue) — avg 53.6 — consumables score dragging</li><li><strong>Gbnomosexual</strong> (Mage) — avg 39.6 — rotation score dragging</li><li><strong>Happyzappy</strong> (Shaman) — avg 32.4 — consumables score dragging</li><li><strong>Chopmedckoff</strong> (Paladin) — avg 21.6 — cooldowns score dragging</li><li><strong>Chadlac</strong> (Hunter) — avg 21.2 — consumables score dragging</li><li><strong>Bnice</strong> (Rogue) — avg 18.2 — consumables score dragging</li><li><strong>Larsx</strong> (Rogue) — avg 18.2 — consumables score dragging</li><li><strong>Klasbakdots</strong> (Warlock) — avg 7.8 — consumables score dragging</li><li><strong>Brightbolt</strong> (Mage) — avg 6 — consumables score dragging</li><li><strong>Naury</strong> (Mage) — avg 6 — consumables score dragging</li><li><strong>Walhallah</strong> (Mage) — avg 6 — consumables score dragging</li></ul>
+<h2>Consumable Failures (0 potions, all fights)</h2>
+<p>Players who never used a combat potion across any fight:</p>
+<ul><li>Chadlac, Bnice, Larsx, Klasbakdots, Brightbolt, Naury, Walhallah</li></ul>
+<h2>Notes</h2>
+<ul><li>Unsupported: Daili (UNSUPPORTED_SPEC:Shaman:Unknown), Furfect (UNSUPPORTED_SPEC:Druid:Unknown), Ididot (UNSUPPORTED_SPEC:Priest:Unknown), Impératrice (UNSUPPORTED_SPEC:Paladin:Unknown), Kaylin (UNSUPPORTED_SPEC:Druid:Restoration), Klasbaktotem (UNSUPPORTED_SPEC:Shaman:Restoration), Lilshift (UNSUPPORTED_SPEC:Druid:Unknown), Miletus (UNSUPPORTED_SPEC:Paladin:Unknown), Mævrick (UNSUPPORTED_SPEC:Paladin:Holy), Rannick (UNSUPPORTED_SPEC:Paladin:Unknown), Saintaviolla (UNSUPPORTED_SPEC:Priest:Unknown), Saucebärnäse (UNSUPPORTED_SPEC:Druid:Unknown), Savenochek (UNSUPPORTED_SPEC:Druid:Unknown), Shaqiloheal (UNSUPPORTED_SPEC:Priest:Holy), Steinpadda (UNSUPPORTED_SPEC:Shaman:Unknown), Tätá (UNSUPPORTED_SPEC:Warrior:Unknown), Zenodisco (UNSUPPORTED_SPEC:Priest:Unknown), Zympers (UNSUPPORTED_SPEC:Priest:Holy) — tbc-audit could not grade these players</li></ul>
+</section>
+<footer>Generated by tools/raid-html.</footer>
+</div>
+<script>
+document.querySelectorAll('table.sortable').forEach(function (table) {
+  var dir = {};
+  var heads = table.querySelectorAll('th');
+  heads.forEach(function (th, col) {
+    th.addEventListener('click', function () {
+      var rows = Array.from(table.tBodies[0].rows);
+      dir[col] = -(dir[col] || -1);
+      rows.sort(function (a, b) {
+        var av = a.cells[col].getAttribute('data-sort');
+        var bv = b.cells[col].getAttribute('data-sort');
+        var an = parseFloat(av), bn = parseFloat(bv);
+        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir[col];
+        return String(av).localeCompare(String(bv)) * dir[col];
+      });
+      rows.forEach(function (r) { table.tBodies[0].appendChild(r); });
+      heads.forEach(function (h) {
+        var arrow = h.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      var activeArrow = th.querySelector('.sort-arrow');
+      if (activeArrow) activeArrow.textContent = dir[col] > 0 ? ' ▲' : ' ▼';
+    });
+  });
+});
+</script>
+</body>
+</html>
