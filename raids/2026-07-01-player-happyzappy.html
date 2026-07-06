@@ -164,16 +164,16 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
           <div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex:none"></div>
           <div><div style="font-weight:600;font-size:13px">Bloodlust unused</div>
           <div style="font-size:11.5px;color:var(--muted)">0 casts &amp;mdash; a cooldown missed every fight</div></div>
-        </div><div style="display:flex;align-items:center;gap:10px;background:rgba(255,92,92,.09);
-             border:1px solid rgba(255,92,92,.28);border-radius:11px;padding:9px 13px">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex:none"></div>
-          <div><div style="font-weight:600;font-size:13px">Mana Tide Totem unused</div>
-          <div style="font-size:11.5px;color:var(--muted)">0 casts &amp;mdash; a cooldown missed every fight</div></div>
-        </div><div style="display:flex;align-items:center;gap:10px;background:rgba(255,92,92,.09);
-             border:1px solid rgba(255,92,92,.28);border-radius:11px;padding:9px 13px">
-          <div style="width:8px;height:8px;border-radius:50%;background:var(--red);flex:none"></div>
-          <div><div style="font-weight:600;font-size:13px">Nature&#x27;s Swiftness unused</div>
-          <div style="font-size:11.5px;color:var(--muted)">0 casts &amp;mdash; a cooldown missed every fight</div></div>
+        </div><div style="display:flex;align-items:center;gap:10px;background:rgba(255,176,32,.09);
+             border:1px solid rgba(255,176,32,.28);border-radius:11px;padding:9px 13px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--yellow);flex:none"></div>
+          <div><div style="font-weight:600;font-size:13px">Heroism dropping off</div>
+          <div style="font-size:11.5px;color:var(--muted)">17% uptime</div></div>
+        </div><div style="display:flex;align-items:center;gap:10px;background:rgba(255,176,32,.09);
+             border:1px solid rgba(255,176,32,.28);border-radius:11px;padding:9px 13px">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--yellow);flex:none"></div>
+          <div><div style="font-weight:600;font-size:13px">Lust for Battle dropping off</div>
+          <div style="font-size:11.5px;color:var(--muted)">15% uptime</div></div>
         </div></div>
     </div>
     <div style="width:300px;flex:none;background:linear-gradient(180deg,#15121d,#0d0e12);
@@ -193,12 +193,23 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
 </section>
 
 <div class="stats">
-  <div class="stat"><div class="label">Active</div><div class="value">54%</div></div>
+  <div class="stat"><div class="label">Active</div><div class="value">55%</div></div>
   <div class="stat"><div class="label">Deaths</div><div class="value">6</div></div>
   <div class="stat"><div class="label">Avoidable Dmg</div><div class="value">182k</div></div>
   <div class="stat"><div class="label">Consumes</div><div class="value">79%</div></div>
 </div>
 
+
+<section class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:baseline">
+    <h2 style="margin:0">Worst fight this raid</h2>
+    <span style="display:flex;align-items:center;gap:8px">
+      <span class="subline" style="text-transform:uppercase;letter-spacing:.06em;font-size:11px">Vashj</span>
+      <span style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:16px;color:#b0b0b0">24</span>
+    </span>
+  </div>
+  <p style="margin:6px 0 0">Significant room for improvement.</p><p style="margin:6px 0 0">You&#x27;re not totem twisting — WF+GoA twist is the single biggest DPS gain for Enhancement Shamans, Fire Nova Totem usage is low — drop it on cooldown for high burst damage per GCD, some cooldowns were missed or poorly timed, and you&#x27;re missing consumables that would give you free stats.</p><p style="margin:6px 0 0">Pick one of these to focus on next raid — you don&#x27;t have to fix everything at once.</p>
+</section>
 
 
 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:18px;align-items:stretch">
@@ -324,26 +335,12 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
       <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:18px;
           color:var(--red);margin-top:3px">0<span
           style="font-size:12px;color:var(--muted)"> used</span></div>
-    </div><div style="flex:1;background:rgba(255,92,92,.08);
-        border:1px solid rgba(255,92,92,.25);
-        border-radius:10px;padding:11px 13px" title="0 boss / 0 trash">
-      <div style="font-size:12px;color:var(--text)">Mana Tide Totem</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:18px;
-          color:var(--red);margin-top:3px">0<span
-          style="font-size:12px;color:var(--muted)"> used</span></div>
     </div><div style="flex:1;background:var(--surface2);
         border:1px solid var(--border);
         border-radius:10px;padding:11px 13px" title="12 boss / 16 trash">
       <div style="font-size:12px;color:var(--text)">Shamanistic Rage</div>
       <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:18px;
           color:var(--green);margin-top:3px">12<span
-          style="font-size:12px;color:var(--muted)"> used</span></div>
-    </div><div style="flex:1;background:rgba(255,92,92,.08);
-        border:1px solid rgba(255,92,92,.25);
-        border-radius:10px;padding:11px 13px" title="0 boss / 0 trash">
-      <div style="font-size:12px;color:var(--text)">Nature&#x27;s Swiftness</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:18px;
-          color:var(--red);margin-top:3px">0<span
           style="font-size:12px;color:var(--muted)"> used</span></div>
     </div></div><div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);
         padding-top:10px;margin-top:14px;border-top:1px solid var(--border2)">
@@ -553,8 +550,8 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
 <section class="panel" id="cast-mix-section" style="display:none">
   <h2>Cast Mix</h2>
   
-<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:53.6%;background:#a855f7" title="Earth Shock 520"></div><div style="width:41.5%;background:#3b82f6" title="Stormstrike 403"></div><div style="width:4.1%;background:#f97316" title="Flame Shock 40"></div><div style="width:0.8%;background:#eab308" title="Lesser Healing Wave 8"></div></div>
-<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Earth Shock 520 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Stormstrike 403 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Flame Shock 40 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Lesser Healing Wave 8</div>
+<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:52.6%;background:#a855f7" title="Earth Shock 520"></div><div style="width:42.5%;background:#3b82f6" title="Stormstrike 420"></div><div style="width:4.0%;background:#f97316" title="Flame Shock 40"></div><div style="width:0.8%;background:#eab308" title="Lesser Healing Wave 8"></div></div>
+<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Earth Shock 520 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Stormstrike 420 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Flame Shock 40 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Lesser Healing Wave 8</div>
 </section>
 
 <section class="panel"><h2>Discipline</h2>
