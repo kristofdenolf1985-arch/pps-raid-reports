@@ -103,7 +103,7 @@ td.num, th.num { text-align: right; }
   padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
 }
 .cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.cards2 .card { margin-bottom: 0; }
+.cards2 .card { margin-bottom: 0; min-width: 0; }
 .wraptext { white-space: normal; min-width: 180px; }
 .role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
 .role-ic svg { width: 15px; height: 15px; }
@@ -193,7 +193,7 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
 </section>
 
 <div class="stats">
-  <div class="stat"><div class="label">Active</div><div class="value">54%</div></div>
+  <div class="stat"><div class="label">Active</div><div class="value">62%</div></div>
   <div class="stat"><div class="label">Deaths</div><div class="value">1</div></div>
   <div class="stat"><div class="label">Avoidable Dmg</div><div class="value">210k</div></div>
   <div class="stat"><div class="label">Consumes</div><div class="value">95%</div></div>
@@ -214,7 +214,8 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
 
 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:18px;align-items:stretch">
   <section class="panel" style="flex:1.5 1 480px;min-width:400px;margin-bottom:0">
-    <h2>Parse Breakdown</h2>
+    <h2>tbc-audit Score Breakdown</h2>
+    <p class="subline" style="margin:2px 0 0">Not a WarcraftLogs parse &mdash; scored by tbc-audit's own 0-100 model.</p>
     
 <div style="margin-top:10px">
   <span class="pill bad" style="margin-right:8px">Avg 22.5 (F)</span>
@@ -522,14 +523,15 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
       Amber Cape [no enchant]
     </div>
     </div>
+    <div style="flex:1;min-width:240px"><h3 style="font-size:13px;margin:0 0 8px">Potions &amp; Runes</h3><div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><span>Super Mana Potion</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">14</span></div><div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><span>Master Healthstone</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">1</span></div></div>
   </div>
 </section>
 
 <section class="panel" id="cast-mix-section" style="display:none">
   <h2>Cast Mix</h2>
   
-<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:71.4%;background:#a855f7" title="Seal of Righteousness 689"></div><div style="width:24.9%;background:#3b82f6" title="Consecration 240"></div><div style="width:3.4%;background:#f97316" title="Hammer of Wrath 33"></div><div style="width:0.2%;background:#eab308" title="Holy Light 2"></div><div style="width:0.1%;background:#ef4444" title="Cleanse 1"></div></div>
-<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Seal of Righteousness 689 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Consecration 240 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Hammer of Wrath 33 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Holy Light 2 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ef4444;margin-right:3px"></span>Cleanse 1</div>
+<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:61.7%;background:#a855f7" title="Seal of Righteousness 689"></div><div style="width:35.1%;background:#3b82f6" title="Consecration 392"></div><div style="width:3.0%;background:#f97316" title="Hammer of Wrath 33"></div><div style="width:0.2%;background:#eab308" title="Holy Light 2"></div><div style="width:0.1%;background:#ef4444" title="Cleanse 1"></div></div>
+<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Seal of Righteousness 689 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Consecration 392 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Hammer of Wrath 33 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Holy Light 2 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ef4444;margin-right:3px"></span>Cleanse 1</div>
 </section>
 
 

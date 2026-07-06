@@ -103,7 +103,7 @@ td.num, th.num { text-align: right; }
   padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
 }
 .cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.cards2 .card { margin-bottom: 0; }
+.cards2 .card { margin-bottom: 0; min-width: 0; }
 .wraptext { white-space: normal; min-width: 180px; }
 .role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
 .role-ic svg { width: 15px; height: 15px; }
@@ -192,7 +192,8 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
 
 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:18px;align-items:stretch">
   <section class="panel" style="flex:1.5 1 480px;min-width:400px;margin-bottom:0">
-    <h2>Parse Breakdown</h2>
+    <h2>tbc-audit Score Breakdown</h2>
+    <p class="subline" style="margin:2px 0 0">Not a WarcraftLogs parse &mdash; scored by tbc-audit's own 0-100 model.</p>
     
 <div style="margin-top:10px">
   <span class="pill na" style="margin-right:8px">Avg - (-)</span>
@@ -351,14 +352,15 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
       Boots of the Pious [no enchant]
     </div>
     </div>
+    <div style="flex:1;min-width:240px"><h3 style="font-size:13px;margin:0 0 8px">Potions &amp; Runes</h3><div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><span>Super Mana Potion</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">20</span></div></div>
   </div>
 </section>
 
 <section class="panel" id="cast-mix-section" style="display:none">
   <h2>Cast Mix</h2>
   
-<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:45.4%;background:#a855f7" title="Circle of Healing 977"></div><div style="width:20.8%;background:#3b82f6" title="Renew 447"></div><div style="width:16.4%;background:#f97316" title="Flash Heal 353"></div><div style="width:11.3%;background:#eab308" title="Prayer of Mending 242"></div><div style="width:3.1%;background:#ef4444" title="Greater Heal 66"></div><div style="width:3.0%;background:#8892a4" title="Other 65"></div></div>
-<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Circle of Healing 977 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Renew 447 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Flash Heal 353 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Prayer of Mending 242 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ef4444;margin-right:3px"></span>Greater Heal 66 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#8892a4;margin-right:3px"></span>Other 65</div>
+<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:53.1%;background:#a855f7" title="Circle of Healing 977"></div><div style="width:24.3%;background:#3b82f6" title="Renew 447"></div><div style="width:13.2%;background:#f97316" title="Prayer of Mending 242"></div><div style="width:3.6%;background:#eab308" title="Greater Heal 66"></div><div style="width:2.3%;background:#ef4444" title="Flash Heal 43"></div><div style="width:3.5%;background:#8892a4" title="Other 65"></div></div>
+<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Circle of Healing 977 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Renew 447 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Prayer of Mending 242 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Greater Heal 66 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ef4444;margin-right:3px"></span>Flash Heal 43 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#8892a4;margin-right:3px"></span>Other 65</div>
 </section>
 
 

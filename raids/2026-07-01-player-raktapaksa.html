@@ -103,7 +103,7 @@ td.num, th.num { text-align: right; }
   padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
 }
 .cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.cards2 .card { margin-bottom: 0; }
+.cards2 .card { margin-bottom: 0; min-width: 0; }
 .wraptext { white-space: normal; min-width: 180px; }
 .role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
 .role-ic svg { width: 15px; height: 15px; }
@@ -214,7 +214,8 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
 
 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:18px;align-items:stretch">
   <section class="panel" style="flex:1.5 1 480px;min-width:400px;margin-bottom:0">
-    <h2>Parse Breakdown</h2>
+    <h2>tbc-audit Score Breakdown</h2>
+    <p class="subline" style="margin:2px 0 0">Not a WarcraftLogs parse &mdash; scored by tbc-audit's own 0-100 model.</p>
     
 <div style="margin-top:10px">
   <span class="pill info" style="margin-right:8px">Avg 71.4 (B)</span>
@@ -454,14 +455,15 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
       Gladiator&#x27;s Spellblade [Weapon - 40SP]
     </div>
     </div>
+    <div style="flex:1;min-width:240px"><h3 style="font-size:13px;margin:0 0 8px">Potions &amp; Runes</h3><div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><span>Dark Rune</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">13</span></div><div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><span>Super Mana Potion</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">13</span></div><div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><span>Destruction Potion</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">12</span></div></div>
   </div>
 </section>
 
 <section class="panel" id="cast-mix-section" style="display:none">
   <h2>Cast Mix</h2>
   
-<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:42.5%;background:#a855f7" title="Shadow Bolt 934"></div><div style="width:14.4%;background:#3b82f6" title="Seed of Corruption 316"></div><div style="width:13.1%;background:#f97316" title="Life Tap 289"></div><div style="width:10.5%;background:#eab308" title="Immolate 230"></div><div style="width:5.2%;background:#ef4444" title="Curse of Agony 115"></div><div style="width:14.3%;background:#8892a4" title="Other 315"></div></div>
-<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Shadow Bolt 934 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Seed of Corruption 316 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Life Tap 289 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Immolate 230 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ef4444;margin-right:3px"></span>Curse of Agony 115 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#8892a4;margin-right:3px"></span>Other 315</div>
+<div style="display:flex;height:22px;border-radius:4px;overflow:hidden;margin-bottom:4px;gap:2px"><div style="width:42.5%;background:#a855f7" title="Shadow Bolt 934"></div><div style="width:14.4%;background:#3b82f6" title="Seed of Corruption 316"></div><div style="width:13.1%;background:#f97316" title="Life Tap 289"></div><div style="width:10.5%;background:#eab308" title="Immolate 230"></div><div style="width:5.2%;background:#ef4444" title="Curse of Agony 115"></div><div style="width:14.3%;background:#8892a4" title="Other 314"></div></div>
+<div class="subline"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#a855f7;margin-right:3px"></span>Shadow Bolt 934 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#3b82f6;margin-right:3px"></span>Seed of Corruption 316 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#f97316;margin-right:3px"></span>Life Tap 289 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#eab308;margin-right:3px"></span>Immolate 230 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#ef4444;margin-right:3px"></span>Curse of Agony 115 &middot; <span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:#8892a4;margin-right:3px"></span>Other 314</div>
 </section>
 
 <section class="panel"><h2>Discipline</h2>
