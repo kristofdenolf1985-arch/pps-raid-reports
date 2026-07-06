@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Pan Syndrome — Per-Player Breakdown — 2026-06-03</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090c; --surface: #0d0e12; --surface2: #16181f;
+  --border: #242836; --border2: #1e2230;
+  --text: #e8eaf0; --muted: #8b90a0; --faint: #5f6474;
+  --green: #39d98a; --yellow: #ffb020; --orange: #ff8f4d; --red: #ff5c5c;
+  --gold: #e5cc80; --accent: #b968f0; --blue: #4a94ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+}
+::selection { background: var(--yellow); color: #000; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+a { color: #7aa2ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 {
+  font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 42px;
+  line-height: 1; letter-spacing: 0.01em; margin: 0 0 6px; color: #fff;
+}
+h2 {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 14px; color: #c8ccd8;
+}
+.num, td.num, th.num, .stat .value, .pill, .value {
+  font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+}
+.card, section.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 24px; margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.subline { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 4px 11px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.topnav { margin-bottom: 16px; font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .value { font-size: 26px; font-weight: 600; }
+.stat .label { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.stat .sub { font-size: 12px; color: var(--faint); margin-top: 2px; }
+.stat.accent { border-color: rgba(255,92,92,.4); }
+.stat.accent .value { color: var(--red); }
+.tablewrap { overflow-x: auto; position: relative; }
+.tablewrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--surface));
+  pointer-events: none;
+}
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { position: sticky; left: 0; background: var(--surface); }
+td.num, th.num { text-align: right; }
+.sort-arrow { margin-left: 4px; opacity: 0.6; }
+.external { font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: normal; margin-left: 8px; }
+.dim { color: var(--muted); opacity: 0.55; }
+.good { color: var(--green); }
+.warn { color: var(--yellow); }
+.caution { color: var(--orange); }
+.bad { color: var(--red); }
+.gold { color: var(--gold); }
+.pill {
+  display: inline-block; min-width: 44px; text-align: center;
+  padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;
+}
+.pill.good { background: rgba(57,217,138,.15); color: var(--green); }
+.pill.warn { background: rgba(255,176,32,.15); color: var(--yellow); }
+.pill.caution { background: rgba(255,143,77,.15); color: var(--orange); }
+.pill.bad { background: rgba(255,92,92,.15); color: var(--red); }
+.pill.na { background: transparent; color: var(--muted); opacity: .55; }
+.pill.gold { background: rgba(229,204,128,.15); color: var(--gold); }
+.pill.info { background: rgba(74,148,255,.15); color: var(--blue); }
+.audit-detail { font-size: 12px; color: var(--muted); margin-top: 6px; white-space: normal; font-family: 'IBM Plex Sans', sans-serif; }
+[title].pill, span.bad[title] { cursor: help; }
+.role {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--border2); color: var(--muted);
+}
+.callout {
+  border-left: 3px solid var(--red); background: rgba(255,92,92,.08);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.flag {
+  border-left: 3px solid var(--yellow); background: rgba(255,176,32,.07);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cards2 .card { margin-bottom: 0; }
+.wraptext { white-space: normal; min-width: 180px; }
+.role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
+.role-ic svg { width: 15px; height: 15px; }
+.off-head {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #c8ccd8;
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.off-head span { font-family: 'IBM Plex Sans', sans-serif; text-transform: none; letter-spacing: 0; font-size: 11px; color: var(--faint); }
+.off-head a { margin-left: auto; }
+.off-row { padding: 9px 0; border-bottom: 1px solid var(--border2); }
+.off-row:last-child { border-bottom: none; }
+.off-name a:first-child { font-weight: 600; }
+.off-metric { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px; }
+.off-detail { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sortable th { cursor: pointer; user-select: none; }
+.sortable th:hover { color: var(--text); }
+details.bench { margin-top: 12px; }
+details.bench summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.bench ul { margin: 8px 0 0; }
+details.legend {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+}
+details.legend summary { cursor: pointer; color: var(--muted); font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+details.legend .legend-body { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.legend .legend-body p { margin: 6px 0; }
+details.legend .legend-body strong { color: var(--text); }
+footer { color: var(--faint); font-size: 12px; margin-top: 24px; }
+body.compact .card, body.compact section.panel { padding: 10px 14px; margin-bottom: 10px; }
+body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35; }
+@media (max-width: 1000px) {
+  .cards2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topnav"><a href="2026-06-03.html">&larr; Back to summary</a></div>
+<section class="panel">
+<h1>RPB Report: SSC / TK</h1>
+<p><strong>Report:</strong> <a href="https://fresh.warcraftlogs.com/reports/kLbJdN14ZTAgXDMC">kLbJdN14ZTAgXDMC</a></p>
+<h2>Healers</h2>
+<h3>Kaylin (Druid)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 7 (4 on trash)</li><li><strong>HPS:</strong> 828</li><li><strong>Healing Done:</strong> 2,089,705</li><li><strong>Overheal:</strong> 64.0%</li><li><strong>Friendly Fire Taken:</strong> 21,729</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Super Mana Potion: 5</li></ul>
+<p><strong>Avoidable Damage:</strong> 52,137</p>
+<ul><li>Rain of Fire: 23,640</li><li>Toxic Spores: 21,491</li><li>Scalding Water: 6,000</li><li>Falling: 1,006</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Lifebloom</td><td>1307</td></tr><tr><td>Rejuvenation</td><td>320</td></tr><tr><td>Regrowth</td><td>82</td></tr><tr><td>Healing Touch</td><td>5</td></tr><tr><td>Moonfire</td><td>4</td></tr><tr><td>Tranquility</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Innervate: 6 boss / 1 trash</li><li>Rebirth: 2</li><li>Nature's Swiftness: 4 boss / 2 trash</li><li>Challenging Roar: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Essence of the Martyr: 9</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.7%</li><li>Essence of the Martyr: 6.7%</li><li>Innervate: 0.8%</li></ul>
+<h3>Nucu (Priest)</h3>
+<ul><li><strong>Active:</strong> 69.0%</li><li><strong>Deaths:</strong> 8 (1 on trash)</li><li><strong>HPS:</strong> 1164</li><li><strong>Healing Done:</strong> 2,937,956</li><li><strong>Overheal:</strong> 46.1%</li><li><strong>Friendly Fire Taken:</strong> 25,892</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 2</li><li>Super Mana Potion: 5</li></ul>
+<p><strong>Avoidable Damage:</strong> 96,057</p>
+<ul><li>Rain of Fire: 36,794</li><li>Whirlwind: 34,103</li><li>Toxic Spores: 14,681</li><li>Scalding Water: 8,500</li><li>Falling: 1,979</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Renew</td><td>655</td></tr><tr><td>Prayer of Mending</td><td>188</td></tr><tr><td>Power Word: Shield</td><td>103</td></tr><tr><td>Flash Heal</td><td>42</td></tr><tr><td>Dispel Magic</td><td>38</td></tr><tr><td>Heal</td><td>30</td></tr><tr><td>Prayer of Healing</td><td>15</td></tr><tr><td>Greater Heal</td><td>14</td></tr><tr><td>Mass Dispel</td><td>13</td></tr><tr><td>Shadow Word: Pain</td><td>11</td></tr><tr><td>Shadow Word: Death</td><td>2</td></tr><tr><td>Holy Fire</td><td>2</td></tr><tr><td>Mind Blast</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Power Infusion: 0</li><li>Shadowfiend: 8</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Deep Meditation: 17</li><li>Essence of the Martyr: 20</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Inner Fire: 60.4%</li><li>Essence of the Martyr: 15.4%</li><li>Heroism: 12.7%</li><li>Deep Meditation: 11.6%</li><li>Innervate: 3.2%</li></ul>
+<h3>Zympers (Priest)</h3>
+<ul><li><strong>Active:</strong> 81.7%</li><li><strong>Deaths:</strong> 9 (4 on trash)</li><li><strong>HPS:</strong> 1157</li><li><strong>Healing Done:</strong> 2,920,162</li><li><strong>Overheal:</strong> 44.6%</li><li><strong>Friendly Fire Taken:</strong> 17,704</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 1</li><li>Super Mana Potion: 23</li></ul>
+<p><strong>Avoidable Damage:</strong> 50,541</p>
+<ul><li>Toxic Spores: 24,459</li><li>Rain of Fire: 18,082</li><li>Scalding Water: 8,000</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Circle of Healing</td><td>488</td></tr><tr><td>Flash Heal</td><td>412</td></tr><tr><td>Renew</td><td>264</td></tr><tr><td>Prayer of Mending</td><td>132</td></tr><tr><td>Greater Heal</td><td>30</td></tr><tr><td>Power Word: Shield</td><td>13</td></tr><tr><td>Dispel Magic</td><td>7</td></tr><tr><td>Smite</td><td>5</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Power Infusion: 0</li><li>Shadowfiend: 7</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Essence of the Martyr: 8</li><li>Blessing of Life: 11</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Inner Fire: 73.1%</li><li>Heroism: 12.7%</li><li>Blessing of Life: 8.7%</li><li>Essence of the Martyr: 6.0%</li><li>Innervate: 2.4%</li></ul>
+<h3>Klasbaktotem (Shaman)</h3>
+<ul><li><strong>Active:</strong> 28.1%</li><li><strong>Deaths:</strong> 10 (3 on trash)</li><li><strong>HPS:</strong> 1003</li><li><strong>Healing Done:</strong> 2,533,345</li><li><strong>Overheal:</strong> 32.7%</li><li><strong>Friendly Fire Taken:</strong> 19,169</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 2</li><li>Super Mana Potion: 13</li></ul>
+<p><strong>Avoidable Damage:</strong> 89,928</p>
+<ul><li>Whirlwind: 50,006</li><li>Rain of Fire: 23,009</li><li>Toxic Spores: 11,928</li><li>Scalding Water: 4,985</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Chain Heal</td><td>146</td></tr><tr><td>Lesser Healing Wave</td><td>121</td></tr><tr><td>Earth Shield</td><td>58</td></tr><tr><td>Healing Wave</td><td>20</td></tr><tr><td>Frost Shock</td><td>5</td></tr><tr><td>Flame Shock</td><td>3</td></tr><tr><td>Purge</td><td>1</td></tr><tr><td>Earth Shock</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Heroism: 5</li><li>Bloodlust: 0</li><li>Mana Tide Totem: 7</li><li>Shamanistic Rage: 0</li><li>Nature's Swiftness: 8 boss / 6 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Essence of the Martyr: 7</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.7%</li><li>Essence of the Martyr: 5.4%</li></ul>
+<h3>Rowdog (Paladin)</h3>
+<ul><li><strong>Active:</strong> 73.5%</li><li><strong>Deaths:</strong> 6 (3 on trash)</li><li><strong>HPS:</strong> 779</li><li><strong>Healing Done:</strong> 1,966,673</li><li><strong>Overheal:</strong> 43.1%</li><li><strong>Friendly Fire Taken:</strong> 28,705</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Heavy Netherweave Bandage: 5</li><li>Super Mana Potion: 10</li></ul>
+<p><strong>Avoidable Damage:</strong> 54,543</p>
+<ul><li>Rain of Fire: 21,577</li><li>Toxic Spores: 13,814</li><li>Whirlwind: 12,194</li><li>Scalding Water: 6,958</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Flash of Light</td><td>627</td></tr><tr><td>Holy Light</td><td>580</td></tr><tr><td>Holy Shock</td><td>18</td></tr><tr><td>Consecration</td><td>3</td></tr><tr><td>Hammer of Wrath</td><td>3</td></tr><tr><td>Seal of Righteousness</td><td>3</td></tr><tr><td>Cleanse</td><td>3</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Blessing of Protection: 0</li><li>Divine Shield: 5 boss / 4 trash</li><li>Divine Intervention: 0 boss / 1 trash</li><li>Lay on Hands: 1</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Essence of the Martyr: 10</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.7%</li><li>Essence of the Martyr: 6.9%</li><li>Innervate: 0.8%</li></ul>
+<h2>Tanks</h2>
+<h3>Chopmedckoff (Paladin)</h3>
+<ul><li><strong>Active:</strong> 29.9%</li><li><strong>Deaths:</strong> 7 (2 on trash)</li><li><strong>HPS:</strong> 8</li><li><strong>Healing Done:</strong> 19,104</li><li><strong>Overheal:</strong> 27.6%</li><li><strong>Friendly Fire Taken:</strong> 1,303,216</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 1</li><li>Super Healing Potion: 1</li><li>Super Mana Potion: 11</li></ul>
+<p><strong>Avoidable Damage:</strong> 122,556</p>
+<ul><li>Toxic Spores: 63,119</li><li>Whirlwind: 26,620</li><li>Spout: 12,846</li><li>Rain of Fire: 12,349</li><li>Mortal Cleave: 4,122</li><li>Scalding Water: 3,500</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Seal of Righteousness</td><td>338</td></tr><tr><td>Consecration</td><td>131</td></tr><tr><td>Hammer of Wrath</td><td>35</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Blessing of Protection: 0</li><li>Divine Shield: 1</li><li>Divine Intervention: 0</li><li>Lay on Hands: 0 boss / 1 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Blessing of the Silver Crescent: 7</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.7%</li><li>Blessing of the Silver Crescent: 5.4%</li></ul>
+<h3>Bloedmangel (Druid)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 6 (2 on trash)</li><li><strong>HPS:</strong> 42</li><li><strong>Healing Done:</strong> 105,466</li><li><strong>Overheal:</strong> 64.2%</li><li><strong>Friendly Fire Taken:</strong> 2,311,867</li><li><strong>Battle Shout Uptime:</strong> 57.7%</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Haste Potion: 2</li><li>Nightmare Seed: 11</li></ul>
+<p><strong>Avoidable Damage:</strong> 136,166</p>
+<ul><li>Whirlwind: 57,254</li><li>Scalding Water: 32,970</li><li>Rain of Fire: 16,198</li><li>Toxic Spores: 11,946</li><li>Mortal Cleave: 10,750</li><li>Cleave: 7,048</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Swipe (Bear)</td><td>958</td></tr><tr><td>Maul</td><td>818</td></tr><tr><td>Mangle (Bear)</td><td>436</td></tr><tr><td>Lacerate</td><td>257</td></tr><tr><td>Faerie Fire (Feral)</td><td>48</td></tr><tr><td>Shred</td><td>17</td></tr><tr><td>Mangle (Cat)</td><td>6</td></tr><tr><td>Rip</td><td>5</td></tr><tr><td>Starfire</td><td>2</td></tr><tr><td>Moonfire</td><td>2</td></tr><tr><td>Rejuvenation</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Innervate: 2</li><li>Rebirth: 2</li><li>Nature's Swiftness: 0</li><li>Challenging Roar: 1</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Heightened Reflexes: 15</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Omen of Clarity: 32.2%</li><li>Heroism: 12.3%</li><li>Heightened Reflexes: 11.9%</li></ul>
+<h2>Casters</h2>
+<h3>Brightmir (Priest)</h3>
+<ul><li><strong>Active:</strong> 88.0%</li><li><strong>Deaths:</strong> 6 (2 on trash)</li><li><strong>HPS:</strong> 270</li><li><strong>Healing Done:</strong> 682,826</li><li><strong>Overheal:</strong> 45.6%</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Destruction Potion: 3</li><li>Super Mana Potion: 13</li></ul>
+<p><strong>Avoidable Damage:</strong> 45,343</p>
+<ul><li>Rain of Fire: 37,547</li><li>Scalding Water: 5,000</li><li>Toxic Spores: 2,796</li><li>Whirlwind: 0</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Mind Flay</td><td>398</td></tr><tr><td>Mind Blast</td><td>252</td></tr><tr><td>Shadow Word: Pain</td><td>225</td></tr><tr><td>Vampiric Touch</td><td>183</td></tr><tr><td>Shadow Word: Death</td><td>132</td></tr><tr><td>Renew</td><td>76</td></tr><tr><td>Greater Heal</td><td>44</td></tr><tr><td>Prayer of Mending</td><td>38</td></tr><tr><td>Power Word: Shield</td><td>31</td></tr><tr><td>Binding Heal</td><td>30</td></tr><tr><td>Circle of Healing</td><td>25</td></tr><tr><td>Flash Heal</td><td>17</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Power Infusion: 0</li><li>Shadowfiend: 8 boss / 1 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Essence of the Martyr: 9</li><li>Blessing of the Silver Crescent: 11</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Inner Fire: 92.3%</li><li>Heroism: 12.7%</li><li>Blessing of the Silver Crescent: 8.7%</li><li>Essence of the Martyr: 6.4%</li></ul>
+<h3>Báxx (Shaman)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 4 (1 on trash)</li><li><strong>HPS:</strong> 21</li><li><strong>Healing Done:</strong> 52,710</li><li><strong>Overheal:</strong> 47.1%</li><li><strong>Friendly Fire Taken:</strong> 28,860</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 8</li><li>Super Mana Potion: 10</li></ul>
+<p><strong>Avoidable Damage:</strong> 56,356</p>
+<ul><li>Whirlwind: 28,941</li><li>Rain of Fire: 19,415</li><li>Scalding Water: 8,000</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Lightning Bolt</td><td>880</td></tr><tr><td>Chain Lightning</td><td>342</td></tr><tr><td>Earth Shock</td><td>36</td></tr><tr><td>Purge</td><td>15</td></tr><tr><td>Frost Shock</td><td>13</td></tr><tr><td>Chain Heal</td><td>11</td></tr><tr><td>Lesser Healing Wave</td><td>9</td></tr><tr><td>Healing Wave</td><td>7</td></tr><tr><td>Grounding Totem</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Heroism: 2</li><li>Bloodlust: 0</li><li>Mana Tide Totem: 0</li><li>Shamanistic Rage: 0</li><li>Nature's Swiftness: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Blessing of the Silver Crescent: 20</li><li>Electrical Charge: 205</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Electrical Charge: 55.4%</li><li>Blessing of the Silver Crescent: 15.9%</li><li>Heroism: 12.7%</li></ul>
+<h3>Jourganoff (Mage)</h3>
+<ul><li><strong>Active:</strong> 86.9%</li><li><strong>Deaths:</strong> 9 (3 on trash)</li><li><strong>HPS:</strong> 1</li><li><strong>Healing Done:</strong> 3,120</li><li><strong>Scorch Violations:</strong> 100 (apps at 5 stacks)</li><li><strong>Friendly Fire Taken:</strong> 59,717</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 1</li><li>Super Mana Potion: 12</li></ul>
+<p><strong>Avoidable Damage:</strong> 12,714</p>
+<ul><li>Rain of Fire: 5,170</li><li>Scalding Water: 4,500</li><li>Toxic Spores: 3,044</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Fireball</td><td>435</td></tr><tr><td>Scorch</td><td>379</td></tr><tr><td>Fire Blast</td><td>31</td></tr><tr><td>Flamestrike</td><td>26</td></tr><tr><td>Arcane Explosion</td><td>8</td></tr><tr><td>Frostbolt</td><td>1</td></tr><tr><td>Counterspell</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Evocation: 4</li><li>Icy Veins: 10</li><li>Cold Snap: 0</li><li>Arcane Power: 0</li><li>Invisibility: 0 boss / 1 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Blessing of the Silver Crescent: 8</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 10.8%</li><li>Blessing of the Silver Crescent: 6.3%</li></ul>
+<h3>Ginnemage (Mage)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 5 (1 on trash)</li><li><strong>HPS:</strong> 7</li><li><strong>Healing Done:</strong> 17,151</li><li><strong>Overheal:</strong> 14.0%</li><li><strong>Friendly Fire Taken:</strong> 48,948</li><li><strong>Interrupts:</strong> 2</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Destruction Potion: 2</li><li>Heavy Netherweave Bandage: 7</li><li>Super Mana Potion: 7</li></ul>
+<p><strong>Avoidable Damage:</strong> 20,007</p>
+<ul><li>Rain of Fire: 11,427</li><li>Toxic Spores: 6,080</li><li>Scalding Water: 2,500</li><li>Whirlwind: 0</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Arcane Blast</td><td>1142</td></tr><tr><td>Frostbolt</td><td>190</td></tr><tr><td>Arcane Explosion</td><td>86</td></tr><tr><td>Fire Blast</td><td>15</td></tr><tr><td>Blizzard</td><td>12</td></tr><tr><td>Fireball</td><td>6</td></tr><tr><td>Cone of Cold</td><td>4</td></tr><tr><td>Counterspell</td><td>2</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Evocation: 7</li><li>Icy Veins: 15 boss / 8 trash</li><li>Cold Snap: 7</li><li>Arcane Power: 10 boss / 8 trash</li><li>Invisibility: 0 boss / 1 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Blessing of the Silver Crescent: 11</li><li>Electrical Charge: 181</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Electrical Charge: 52.5%</li><li>Heroism: 12.7%</li><li>Blessing of the Silver Crescent: 8.7%</li></ul>
+<h3>Vleesklak (Warlock)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 5 (2 on trash)</li><li><strong>HPS:</strong> 29</li><li><strong>Healing Done:</strong> 73,837</li><li><strong>Overheal:</strong> 42.7%</li><li><strong>Friendly Fire Taken:</strong> 60,861</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Heavy Netherweave Bandage: 1</li><li>Master Healthstone: 7</li><li>Super Healing Potion: 3</li><li>Super Mana Potion: 1</li></ul>
+<p><strong>Avoidable Damage:</strong> 42,387</p>
+<ul><li>Rain of Fire: 19,493</li><li>Toxic Spores: 17,968</li><li>Scalding Water: 3,000</li><li>Falling: 1,926</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Shadow Bolt</td><td>555</td></tr><tr><td>Seed of Corruption</td><td>280</td></tr><tr><td>Life Tap</td><td>146</td></tr><tr><td>Corruption</td><td>145</td></tr><tr><td>Immolate</td><td>113</td></tr><tr><td>Curse of Agony</td><td>84</td></tr><tr><td>Searing Pain</td><td>70</td></tr><tr><td>Curse of the Elements</td><td>35</td></tr><tr><td>Shadowburn</td><td>29</td></tr><tr><td>Incinerate</td><td>14</td></tr><tr><td>Banish</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Amplify Curse: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Blessing of the Silver Crescent: 9</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.7%</li><li>Blessing of the Silver Crescent: 6.5%</li></ul>
+<h3>Skindog (Shaman)</h3>
+<ul><li><strong>Active:</strong> 44.7%</li><li><strong>Deaths:</strong> 10 (2 on trash)</li><li><strong>HPS:</strong> 18</li><li><strong>Healing Done:</strong> 46,402</li><li><strong>Overheal:</strong> 71.1%</li><li><strong>Friendly Fire Taken:</strong> 32,000</li><li><strong>Interrupts:</strong> 1</li><li><strong>Battle Shout Uptime:</strong> 56.1%</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Haste Potion: 12</li><li>Master Healthstone: 1</li><li>Super Mana Potion: 7</li></ul>
+<p><strong>Avoidable Damage:</strong> 147,078</p>
+<ul><li>Whirlwind: 69,612</li><li>Toxic Spores: 45,448</li><li>Rain of Fire: 15,383</li><li>Scalding Water: 13,988</li><li>Falling: 2,647</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Stormstrike</td><td>287</td></tr><tr><td>Flame Shock</td><td>227</td></tr><tr><td>Earth Shock</td><td>196</td></tr><tr><td>Grounding Totem</td><td>25</td></tr><tr><td>Purge</td><td>10</td></tr><tr><td>Frost Shock</td><td>4</td></tr><tr><td>Healing Wave</td><td>2</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Heroism: 5</li><li>Bloodlust: 0</li><li>Mana Tide Totem: 0</li><li>Shamanistic Rage: 13 boss / 7 trash</li><li>Nature's Swiftness: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Ancient Power: 11</li><li>Lust for Battle: 21</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Lust for Battle: 15.9%</li><li>Heroism: 12.7%</li><li>Shamanistic Rage: 7.7%</li><li>Ancient Power: 7.6%</li></ul>
+<h3>Enhanz (Shaman)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 7 (2 on trash)</li><li><strong>HPS:</strong> 15</li><li><strong>Healing Done:</strong> 38,280</li><li><strong>Overheal:</strong> 1.7%</li><li><strong>Friendly Fire Taken:</strong> 51,585</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 1</li><li>Super Mana Potion: 16</li></ul>
+<p><strong>Avoidable Damage:</strong> 54,256</p>
+<ul><li>Whirlwind: 28,238</li><li>Rain of Fire: 18,431</li><li>Scalding Water: 4,500</li><li>Falling: 3,087</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Lightning Bolt</td><td>916</td></tr><tr><td>Chain Lightning</td><td>276</td></tr><tr><td>Frost Shock</td><td>45</td></tr><tr><td>Flame Shock</td><td>35</td></tr><tr><td>Lesser Healing Wave</td><td>15</td></tr><tr><td>Earth Shock</td><td>6</td></tr><tr><td>Purge</td><td>4</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Heroism: 0</li><li>Bloodlust: 0</li><li>Mana Tide Totem: 0</li><li>Shamanistic Rage: 0</li><li>Nature's Swiftness: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Blessing of the Silver Crescent: 15</li><li>Electrical Charge: 189</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Electrical Charge: 53.3%</li><li>Blessing of the Silver Crescent: 11.9%</li><li>Heroism: 11.1%</li></ul>
+<h3>Kunyaza (Druid)</h3>
+<ul><li><strong>Active:</strong> 88.8%</li><li><strong>Deaths:</strong> 6 (2 on trash)</li><li><strong>HPS:</strong> 58</li><li><strong>Healing Done:</strong> 145,199</li><li><strong>Overheal:</strong> 54.6%</li><li><strong>Friendly Fire Taken:</strong> 615,484</li><li><strong>Battle Shout Uptime:</strong> 44.5%</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Nightmare Seed: 10</li></ul>
+<p><strong>Avoidable Damage:</strong> 92,097</p>
+<ul><li>Whirlwind: 40,208</li><li>Rain of Fire: 21,624</li><li>Toxic Spores: 14,906</li><li>Scalding Water: 9,500</li><li>Mortal Cleave: 5,859</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Shred</td><td>555</td></tr><tr><td>Maul</td><td>310</td></tr><tr><td>Swipe (Bear)</td><td>271</td></tr><tr><td>Mangle (Bear)</td><td>186</td></tr><tr><td>Faerie Fire (Feral)</td><td>142</td></tr><tr><td>Lacerate</td><td>139</td></tr><tr><td>Mangle (Cat)</td><td>125</td></tr><tr><td>Rip</td><td>72</td></tr><tr><td>Tranquility</td><td>3</td></tr><tr><td>Moonfire</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Innervate: 1</li><li>Rebirth: 4</li><li>Nature's Swiftness: 0</li><li>Challenging Roar: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Rage of the Unraveller: 28</li><li>Heightened Reflexes: 2</li><li>Lust for Battle: 9</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Omen of Clarity: 13.6%</li><li>Heroism: 11.1%</li><li>Rage of the Unraveller: 10.8%</li><li>Lust for Battle: 6.9%</li><li>Heightened Reflexes: 1.6%</li></ul>
+<h3>Goatedtotems (Shaman)</h3>
+<ul><li><strong>Active:</strong> 43.6%</li><li><strong>Deaths:</strong> 9 (4 on trash)</li><li><strong>HPS:</strong> 21</li><li><strong>Healing Done:</strong> 52,625</li><li><strong>Overheal:</strong> 66.9%</li><li><strong>Friendly Fire Taken:</strong> 73,416</li><li><strong>Interrupts:</strong> 1</li><li><strong>Battle Shout Uptime:</strong> 53.8%</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 6</li></ul>
+<p><strong>Avoidable Damage:</strong> 127,415</p>
+<ul><li>Whirlwind: 56,271</li><li>Toxic Spores: 33,084</li><li>Rain of Fire: 20,890</li><li>Scalding Water: 9,489</li><li>Mortal Cleave: 4,518</li><li>Falling: 3,163</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Flame Shock</td><td>319</td></tr><tr><td>Stormstrike</td><td>295</td></tr><tr><td>Earth Shock</td><td>107</td></tr><tr><td>Grounding Totem</td><td>12</td></tr><tr><td>Chain Lightning</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Heroism: 1</li><li>Bloodlust: 0</li><li>Mana Tide Totem: 0</li><li>Shamanistic Rage: 12 boss / 8 trash</li><li>Nature's Swiftness: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Abacus of Violent Odds: 14</li><li>Lust for Battle: 16</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.7%</li><li>Lust for Battle: 12.0%</li><li>Shamanistic Rage: 7.1%</li><li>Abacus of Violent Odds: 5.6%</li></ul>
+<h3>Realblud (Warlock)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 7 (3 on trash)</li><li><strong>HPS:</strong> 0</li><li><strong>Healing Done:</strong> 1,067</li><li><strong>Overheal:</strong> 82.3%</li><li><strong>Friendly Fire Taken:</strong> 129,099</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Destruction Potion: 8</li><li>Super Mana Potion: 5</li></ul>
+<p><strong>Avoidable Damage:</strong> 72,137</p>
+<ul><li>Whirlwind: 35,145</li><li>Rain of Fire: 23,014</li><li>Toxic Spores: 8,485</li><li>Scalding Water: 5,493</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Shadow Bolt</td><td>713</td></tr><tr><td>Seed of Corruption</td><td>244</td></tr><tr><td>Life Tap</td><td>176</td></tr><tr><td>Immolate</td><td>111</td></tr><tr><td>Curse of Recklessness</td><td>24</td></tr><tr><td>Curse of Agony</td><td>17</td></tr><tr><td>Incinerate</td><td>6</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Amplify Curse: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Blessing of the Silver Crescent: 16</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.7%</li><li>Blessing of the Silver Crescent: 12.5%</li></ul>
+<h2>Physicals</h2>
+<h3>Skarptand (Warrior)</h3>
+<ul><li><strong>Active:</strong> 47.2%</li><li><strong>Deaths:</strong> 11 (4 on trash)</li><li><strong>HPS:</strong> 34</li><li><strong>Healing Done:</strong> 85,819</li><li><strong>Overheal:</strong> 60.7%</li><li><strong>Friendly Fire Taken:</strong> 71,048</li><li><strong>Interrupts:</strong> 2</li><li><strong>Battle Shout Uptime:</strong> 57.7%</li><li><strong>Windfury Extra Attacks:</strong> 189</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 6</li></ul>
+<p><strong>Avoidable Damage:</strong> 127,396</p>
+<ul><li>Toxic Spores: 54,376</li><li>Whirlwind: 47,558</li><li>Rain of Fire: 13,351</li><li>Scalding Water: 11,000</li><li>Falling: 1,111</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Heroic Strike</td><td>444</td></tr><tr><td>Bloodthirst</td><td>332</td></tr><tr><td>Cleave</td><td>266</td></tr><tr><td>Whirlwind</td><td>263</td></tr><tr><td>Hamstring</td><td>190</td></tr><tr><td>Sunder Armor</td><td>6</td></tr><tr><td>Shield Block</td><td>2</td></tr><tr><td>Revenge</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Shield Wall: 0</li><li>Last Stand: 0</li><li>Recklessness: 3</li><li>Retaliation: 0</li><li>Challenging Shout: 0</li><li>Berserker Rage: 17 boss / 17 trash</li><li>Bloodrage: 24 boss / 20 trash</li><li>Death Wish: 10 boss / 1 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Dragonspine Flurry: 32</li><li>Lust for Battle: 14</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Dragonspine Flurry: 12.0%</li><li>Heroism: 10.9%</li><li>Lust for Battle: 10.4%</li></ul>
+<h3>Nls (Rogue)</h3>
+<ul><li><strong>Active:</strong> 67.9%</li><li><strong>Deaths:</strong> 7 (2 on trash)</li><li><strong>HPS:</strong> 23</li><li><strong>Healing Done:</strong> 57,505</li><li><strong>Overheal:</strong> 72.8%</li><li><strong>Friendly Fire Taken:</strong> 75,436</li><li><strong>Interrupts:</strong> 9</li><li><strong>Battle Shout Uptime:</strong> 63.7%</li><li><strong>Windfury Extra Attacks:</strong> 241</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Haste Potion: 12</li><li>Heavy Netherweave Bandage: 5</li><li>Master Healthstone: 3</li></ul>
+<p><strong>Avoidable Damage:</strong> 76,405</p>
+<ul><li>Toxic Spores: 33,889</li><li>Whirlwind: 29,037</li><li>Rain of Fire: 8,979</li><li>Scalding Water: 4,500</li><li>Cleave: 0</li><li>Mortal Cleave: 0</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Sinister Strike</td><td>756</td></tr><tr><td>Slice and Dice</td><td>203</td></tr><tr><td>Expose Armor</td><td>67</td></tr><tr><td>Eviscerate</td><td>62</td></tr><tr><td>Rupture</td><td>24</td></tr><tr><td>Blade Flurry</td><td>23</td></tr><tr><td>Kick</td><td>8</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Evasion: 0</li><li>Evasion R2: 6 boss / 5 trash</li><li>Adrenaline Rush: 9 boss / 1 trash</li><li>Cloak of Shadows: 13 boss / 11 trash</li><li>Vanish: 7 boss / 5 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Lust for Battle: 15</li><li>Dragonspine Flurry: 51</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Dragonspine Flurry: 20.0%</li><li>Heroism: 12.7%</li><li>Lust for Battle: 11.8%</li></ul>
+<h3>Sopizza (Warrior)</h3>
+<ul><li><strong>Active:</strong> 36.8%</li><li><strong>Deaths:</strong> 9 (4 on trash)</li><li><strong>HPS:</strong> 35</li><li><strong>Healing Done:</strong> 89,072</li><li><strong>Overheal:</strong> 59.3%</li><li><strong>Sunder Violations:</strong> 1 (apps at 5 stacks)</li><li><strong>Friendly Fire Taken:</strong> 56,270</li><li><strong>Interrupts:</strong> 1</li><li><strong>Battle Shout Uptime:</strong> 67.4%</li><li><strong>Commanding Shout Uptime:</strong> 0.5%</li><li><strong>Windfury Extra Attacks:</strong> 180</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Master Healthstone: 7</li></ul>
+<p><strong>Avoidable Damage:</strong> 72,208</p>
+<ul><li>Toxic Spores: 20,611</li><li>Scalding Water: 13,981</li><li>Rain of Fire: 13,025</li><li>Mortal Cleave: 12,666</li><li>Cleave: 11,925</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Heroic Strike</td><td>409</td></tr><tr><td>Bloodthirst</td><td>355</td></tr><tr><td>Whirlwind</td><td>252</td></tr><tr><td>Cleave</td><td>212</td></tr><tr><td>Sunder Armor</td><td>11</td></tr><tr><td>Thunder Clap</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Shield Wall: 0</li><li>Last Stand: 0</li><li>Recklessness: 3</li><li>Retaliation: 0</li><li>Challenging Shout: 0</li><li>Berserker Rage: 0</li><li>Bloodrage: 25 boss / 17 trash</li><li>Death Wish: 11 boss / 3 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Rage of the Unraveller: 30</li><li>Lust for Battle: 19</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Lust for Battle: 15.1%</li><li>Rage of the Unraveller: 11.9%</li><li>Heroism: 11.1%</li></ul>
+<h3>Neraith (Hunter)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 4 (2 on trash)</li><li><strong>HPS:</strong> 34</li><li><strong>Healing Done:</strong> 84,699</li><li><strong>Overheal:</strong> 66.1%</li><li><strong>Friendly Fire Taken:</strong> 45,867</li><li><strong>Battle Shout Uptime:</strong> 42.8%</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Haste Potion: 6</li><li>Heavy Netherweave Bandage: 2</li><li>Master Healthstone: 2</li><li>Super Mana Potion: 6</li></ul>
+<p><strong>Avoidable Damage:</strong> 31,011</p>
+<ul><li>Rain of Fire: 19,286</li><li>Toxic Spores: 6,725</li><li>Scalding Water: 5,000</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Auto Shot</td><td>1472</td></tr><tr><td>Steady Shot</td><td>1126</td></tr><tr><td>Kill Command</td><td>427</td></tr><tr><td>Multi-Shot</td><td>197</td></tr><tr><td>Arcane Shot</td><td>29</td></tr><tr><td>Misdirection</td><td>6</td></tr><tr><td>Tranquilizing Shot</td><td>2</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Rapid Fire: 9</li><li>Readiness: 0</li><li>Deterrence: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Rage of the Unraveller: 27</li><li>Lust for Battle: 16</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Heroism: 12.6%</li><li>Lust for Battle: 12.4%</li><li>Rage of the Unraveller: 10.7%</li></ul>
+<h3>Rydashot (Hunter)</h3>
+<ul><li><strong>Active:</strong> 100.0%</li><li><strong>Deaths:</strong> 6 (2 on trash)</li><li><strong>HPS:</strong> 69</li><li><strong>Healing Done:</strong> 173,373</li><li><strong>Overheal:</strong> 75.9%</li><li><strong>Friendly Fire Taken:</strong> 18,764</li><li><strong>Battle Shout Uptime:</strong> 48.8%</li><li><strong>Windfury Extra Attacks:</strong> 8</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Super Mana Potion: 12</li></ul>
+<p><strong>Avoidable Damage:</strong> 49,281</p>
+<ul><li>Rain of Fire: 30,399</li><li>Scalding Water: 9,000</li><li>Toxic Spores: 6,138</li><li>Falling: 3,744</li><li>Whirlwind: 0</li><li>Mortal Cleave: 0</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Auto Shot</td><td>1329</td></tr><tr><td>Steady Shot</td><td>1271</td></tr><tr><td>Kill Command</td><td>430</td></tr><tr><td>Multi-Shot</td><td>172</td></tr><tr><td>Arcane Shot</td><td>83</td></tr><tr><td>Misdirection</td><td>8</td></tr><tr><td>Tranquilizing Shot</td><td>4</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Rapid Fire: 16 boss / 4 trash</li><li>Readiness: 0</li><li>Deterrence: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Lust for Battle: 17</li><li>Abacus of Violent Odds: 10</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Lust for Battle: 13.5%</li><li>Heroism: 11.1%</li><li>Abacus of Violent Odds: 3.9%</li></ul>
+<h3>Peanutpewpew (Hunter)</h3>
+<ul><li><strong>Active:</strong> 83.3%</li><li><strong>Deaths:</strong> 5 (1 on trash)</li><li><strong>HPS:</strong> 24</li><li><strong>Healing Done:</strong> 60,350</li><li><strong>Overheal:</strong> 35.2%</li><li><strong>Friendly Fire Taken:</strong> 60,734</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Haste Potion: 13</li><li>Master Healthstone: 2</li><li>Super Mana Potion: 3</li></ul>
+<p><strong>Avoidable Damage:</strong> 32,579</p>
+<ul><li>Rain of Fire: 14,696</li><li>Scalding Water: 10,500</li><li>Toxic Spores: 6,191</li><li>Falling: 1,192</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Auto Shot</td><td>1138</td></tr><tr><td>Steady Shot</td><td>799</td></tr><tr><td>Kill Command</td><td>321</td></tr><tr><td>Multi-Shot</td><td>215</td></tr><tr><td>Arcane Shot</td><td>39</td></tr><tr><td>Serpent Sting</td><td>17</td></tr><tr><td>Misdirection</td><td>7</td></tr><tr><td>Tranquilizing Shot</td><td>2</td></tr><tr><td>Aimed Shot</td><td>1</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Rapid Fire: 13</li><li>Readiness: 0</li><li>Deterrence: 0</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Lust for Battle: 16</li><li>Abacus of Violent Odds: 11</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Lust for Battle: 12.6%</li><li>Heroism: 11.1%</li><li>Abacus of Violent Odds: 4.3%</li></ul>
+<h3>Redlac (Rogue)</h3>
+<ul><li><strong>Active:</strong> 73.6%</li><li><strong>Deaths:</strong> 5 (2 on trash)</li><li><strong>HPS:</strong> 29</li><li><strong>Healing Done:</strong> 72,167</li><li><strong>Overheal:</strong> 64.9%</li><li><strong>Friendly Fire Taken:</strong> 22,270</li><li><strong>Interrupts:</strong> 12</li><li><strong>Battle Shout Uptime:</strong> 53.8%</li><li><strong>Windfury Extra Attacks:</strong> 172</li></ul>
+<p><strong>Consumable Usage:</strong></p>
+<ul><li>Haste Potion: 8</li><li>Heavy Netherweave Bandage: 5</li><li>Master Healthstone: 5</li><li>Super Healing Potion: 4</li></ul>
+<p><strong>Avoidable Damage:</strong> 37,541</p>
+<ul><li>Toxic Spores: 24,618</li><li>Scalding Water: 8,000</li><li>Rain of Fire: 4,923</li></ul>
+<p><strong>Casts:</strong></p>
+<table><thead><tr><th>Spell</th><th>Count</th></tr></thead><tbody><tr><td>Sinister Strike</td><td>887</td></tr><tr><td>Slice and Dice</td><td>209</td></tr><tr><td>Rupture</td><td>71</td></tr><tr><td>Blade Flurry</td><td>28</td></tr><tr><td>Eviscerate</td><td>23</td></tr><tr><td>Kick</td><td>15</td></tr><tr><td>Expose Armor</td><td>6</td></tr></tbody></table>
+<p><strong>Cooldowns:</strong></p>
+<ul><li>Evasion: 0</li><li>Evasion R2: 3 boss / 4 trash</li><li>Adrenaline Rush: 10 boss / 1 trash</li><li>Cloak of Shadows: 24 boss / 16 trash</li><li>Vanish: 8 boss / 1 trash</li></ul>
+<p><strong>Trinkets:</strong></p>
+<ul><li>Lust for Battle: 17</li><li>Abacus of Violent Odds: 12</li></ul>
+<p><strong>Racials:</strong></p>
+<ul><li>Stoneform: 2</li></ul>
+<p><strong>Buff Uptimes:</strong></p>
+<ul><li>Lust for Battle: 13.3%</li><li>Heroism: 12.7%</li><li>Abacus of Violent Odds: 4.8%</li></ul>
+</section>
+<footer>Generated by tools/raid-html.</footer>
+</div>
+<script>
+document.querySelectorAll('table.sortable').forEach(function (table) {
+  var dir = {};
+  var heads = table.querySelectorAll('th');
+  heads.forEach(function (th, col) {
+    th.addEventListener('click', function () {
+      var rows = Array.from(table.tBodies[0].rows);
+      dir[col] = -(dir[col] || -1);
+      rows.sort(function (a, b) {
+        var av = a.cells[col].getAttribute('data-sort');
+        var bv = b.cells[col].getAttribute('data-sort');
+        var an = parseFloat(av), bn = parseFloat(bv);
+        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir[col];
+        return String(av).localeCompare(String(bv)) * dir[col];
+      });
+      rows.forEach(function (r) { table.tBodies[0].appendChild(r); });
+      heads.forEach(function (h) {
+        var arrow = h.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      var activeArrow = th.querySelector('.sort-arrow');
+      if (activeArrow) activeArrow.textContent = dir[col] > 0 ? ' ▲' : ' ▼';
+    });
+  });
+});
+</script>
+</body>
+</html>

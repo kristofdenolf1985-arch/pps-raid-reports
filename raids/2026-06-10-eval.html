@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Pan Syndrome — Officer Evaluation — 2026-06-10</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090c; --surface: #0d0e12; --surface2: #16181f;
+  --border: #242836; --border2: #1e2230;
+  --text: #e8eaf0; --muted: #8b90a0; --faint: #5f6474;
+  --green: #39d98a; --yellow: #ffb020; --orange: #ff8f4d; --red: #ff5c5c;
+  --gold: #e5cc80; --accent: #b968f0; --blue: #4a94ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+}
+::selection { background: var(--yellow); color: #000; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+a { color: #7aa2ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 {
+  font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 42px;
+  line-height: 1; letter-spacing: 0.01em; margin: 0 0 6px; color: #fff;
+}
+h2 {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 14px; color: #c8ccd8;
+}
+.num, td.num, th.num, .stat .value, .pill, .value {
+  font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+}
+.card, section.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 24px; margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.subline { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 4px 11px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.topnav { margin-bottom: 16px; font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .value { font-size: 26px; font-weight: 600; }
+.stat .label { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.stat .sub { font-size: 12px; color: var(--faint); margin-top: 2px; }
+.stat.accent { border-color: rgba(255,92,92,.4); }
+.stat.accent .value { color: var(--red); }
+.tablewrap { overflow-x: auto; position: relative; }
+.tablewrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--surface));
+  pointer-events: none;
+}
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { position: sticky; left: 0; background: var(--surface); }
+td.num, th.num { text-align: right; }
+.sort-arrow { margin-left: 4px; opacity: 0.6; }
+.external { font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: normal; margin-left: 8px; }
+.dim { color: var(--muted); opacity: 0.55; }
+.good { color: var(--green); }
+.warn { color: var(--yellow); }
+.caution { color: var(--orange); }
+.bad { color: var(--red); }
+.gold { color: var(--gold); }
+.pill {
+  display: inline-block; min-width: 44px; text-align: center;
+  padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;
+}
+.pill.good { background: rgba(57,217,138,.15); color: var(--green); }
+.pill.warn { background: rgba(255,176,32,.15); color: var(--yellow); }
+.pill.caution { background: rgba(255,143,77,.15); color: var(--orange); }
+.pill.bad { background: rgba(255,92,92,.15); color: var(--red); }
+.pill.na { background: transparent; color: var(--muted); opacity: .55; }
+.pill.gold { background: rgba(229,204,128,.15); color: var(--gold); }
+.pill.info { background: rgba(74,148,255,.15); color: var(--blue); }
+.audit-detail { font-size: 12px; color: var(--muted); margin-top: 6px; white-space: normal; font-family: 'IBM Plex Sans', sans-serif; }
+[title].pill, span.bad[title] { cursor: help; }
+.role {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--border2); color: var(--muted);
+}
+.callout {
+  border-left: 3px solid var(--red); background: rgba(255,92,92,.08);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.flag {
+  border-left: 3px solid var(--yellow); background: rgba(255,176,32,.07);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cards2 .card { margin-bottom: 0; }
+.wraptext { white-space: normal; min-width: 180px; }
+.role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
+.role-ic svg { width: 15px; height: 15px; }
+.off-head {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #c8ccd8;
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.off-head span { font-family: 'IBM Plex Sans', sans-serif; text-transform: none; letter-spacing: 0; font-size: 11px; color: var(--faint); }
+.off-head a { margin-left: auto; }
+.off-row { padding: 9px 0; border-bottom: 1px solid var(--border2); }
+.off-row:last-child { border-bottom: none; }
+.off-name a:first-child { font-weight: 600; }
+.off-metric { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px; }
+.off-detail { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sortable th { cursor: pointer; user-select: none; }
+.sortable th:hover { color: var(--text); }
+details.bench { margin-top: 12px; }
+details.bench summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.bench ul { margin: 8px 0 0; }
+details.legend {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+}
+details.legend summary { cursor: pointer; color: var(--muted); font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+details.legend .legend-body { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.legend .legend-body p { margin: 6px 0; }
+details.legend .legend-body strong { color: var(--text); }
+footer { color: var(--faint); font-size: 12px; margin-top: 24px; }
+body.compact .card, body.compact section.panel { padding: 10px 14px; margin-bottom: 10px; }
+body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35; }
+@media (max-width: 1000px) {
+  .cards2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topnav"><a href="2026-06-10.html">&larr; Back to summary</a></div>
+<section class="panel">
+<h1>Post-Raid Evaluation: SSC + TK — 2026-06-10</h1>
+<p><strong>Report:</strong> <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP">Kxhq3fYr92WzwGQP</a> <strong>Raids:</strong> Serpentshrine Cavern 6/6 + Tempest Keep: The Eye 4/4 <strong>Players active:</strong> 26</p>
+<hr>
+<h2>Summary Table</h2>
+<p>Legend: OK = no marker, ⚠ = warning, ⛔ = fail</p>
+<table><thead><tr><th>Player</th><th>Class</th><th>Role</th><th>Consumes</th><th>Gear</th><th>Deaths</th><th>Avoidable</th><th>Active%</th></tr></thead><tbody><tr><td>Bloedmangel</td><td>Druid</td><td>Tank</td><td>⚠ 75%</td><td>⛔ 3</td><td>⛔ 4 (1t)</td><td>⛔ 199k</td><td>OK 100%</td></tr><tr><td>Bruun</td><td>Paladin</td><td>Tank</td><td>OK 83%</td><td>⛔ 3</td><td>⛔ 5 (2t)</td><td>⛔ 179k</td><td>⛔ 44%</td></tr><tr><td>Falkønn</td><td>Paladin</td><td>Healer</td><td>⚠ 67%</td><td>OK 0</td><td>OK 0</td><td>⚠ 23k</td><td>OK 71%</td></tr><tr><td>Kaylin</td><td>Druid</td><td>Healer</td><td>⚠ 78%</td><td>⚠ 2</td><td>⚠ 2 (1t)</td><td>⛔ 74k</td><td>OK 100%</td></tr><tr><td>Klasbaktotem</td><td>Shaman</td><td>Healer</td><td>OK 81%</td><td>⚠ 1</td><td>⛔ 3 (3t)</td><td>⛔ 46k</td><td>⚠ 62%</td></tr><tr><td>Nucu</td><td>Priest</td><td>Healer</td><td>OK 83%</td><td>⛔ 3</td><td>⚠ 1</td><td>⛔ 59k</td><td>OK 99%</td></tr><tr><td>Zympers</td><td>Priest</td><td>Healer</td><td>OK 92%</td><td>⛔ 4</td><td>⛔ 4 (2t)</td><td>⛔ 45k</td><td>OK 100%</td></tr><tr><td>Brightmir</td><td>Priest</td><td>Caster</td><td>OK 89%</td><td>⚠ 1</td><td>⛔ 80k</td><td>⛔ 80k</td><td>OK 100%</td></tr><tr><td>Eatmys</td><td>Warlock</td><td>Caster</td><td>⚠ 78%</td><td>⛔ 4</td><td>⛔ 6 (2t)</td><td>⛔ 54k</td><td>OK 100%</td></tr><tr><td>Elyorah</td><td>Shaman</td><td>Caster</td><td>OK 92%</td><td>OK 0</td><td>⛔ 9 (4t)</td><td>⛔ 156k</td><td>⚠ 63%</td></tr><tr><td>Enhanz</td><td>Shaman</td><td>Caster</td><td>OK 97%</td><td>OK 0</td><td>⛔ 4 (1t)</td><td>⛔ 40k</td><td>OK 100%</td></tr><tr><td>Ginnemage</td><td>Mage</td><td>Caster</td><td>OK 89%</td><td>⚠ 1</td><td>⚠ 1 (1t)</td><td>⚠ 27k</td><td>OK 100%</td></tr><tr><td>Goatedtotems</td><td>Shaman</td><td>Caster</td><td>OK 88%</td><td>⚠ 2</td><td>⛔ 10 (5t)</td><td>⛔ 151k</td><td>⚠ 53%</td></tr><tr><td>Happyzappy</td><td>Shaman</td><td>Caster</td><td>⛔ 52%</td><td>⚠ 2</td><td>⛔ 8 (4t)</td><td>⛔ 123k</td><td>⛔ 45%</td></tr><tr><td>Jourganoff</td><td>Mage</td><td>Caster</td><td>OK 89%</td><td>⚠ 1</td><td>⛔ 8 (5t)</td><td>⛔ 35k</td><td>OK 100%</td></tr><tr><td>Kunyaza</td><td>Druid</td><td>Caster</td><td>OK 92%</td><td>⚠ 1</td><td>⛔ 3 (2t)</td><td>⛔ 108k</td><td>OK 100%</td></tr><tr><td>Manapulation</td><td>Mage</td><td>Caster</td><td>OK 97%</td><td>⛔ 15</td><td>⛔ 6 (1t)</td><td>⛔ 42k</td><td>OK 100%</td></tr><tr><td>Mansgotdots</td><td>Warlock</td><td>Caster</td><td>OK 94%</td><td>⛔ 4</td><td>⛔ 12 (2t)</td><td>⛔ 45k</td><td>OK 100%</td></tr><tr><td>Skindog</td><td>Shaman</td><td>Caster</td><td>⚠ 61%</td><td>⚠ 2</td><td>⛔ 6 (2t)</td><td>⛔ 165k</td><td>⛔ 43%</td></tr><tr><td>Vleesklak</td><td>Warlock</td><td>Caster</td><td>OK 92%</td><td>⛔ 4</td><td>⛔ 7 (5t)</td><td>⛔ 36k</td><td>OK 100%</td></tr><tr><td>Monoferio</td><td>Paladin</td><td>Physical</td><td>⛔ 19%</td><td>⛔ 5</td><td>OK 0</td><td>⚠ 11k</td><td>⛔ 17%</td></tr><tr><td>Neraith</td><td>Hunter</td><td>Physical</td><td>OK 94%</td><td>⚠ 2</td><td>⛔ 3 (2t)</td><td>⛔ 45k</td><td>OK 100%</td></tr><tr><td>Nls</td><td>Rogue</td><td>Physical</td><td>OK 94%</td><td>OK 0</td><td>⛔ 3 (2t)</td><td>⛔ 55k</td><td>OK 90%</td></tr><tr><td>Peanutpewpew</td><td>Hunter</td><td>Physical</td><td>⚠ 67%</td><td>⚠ 2</td><td>⛔ 5 (2t)</td><td>⛔ 30k</td><td>OK 100%</td></tr><tr><td>Realblod</td><td>Warrior</td><td>Physical</td><td>OK 92%</td><td>⚠ 1</td><td>⛔ 6 (2t)</td><td>⛔ 168k</td><td>⛔ 50%</td></tr><tr><td>Sossesoza</td><td>Warrior</td><td>Physical</td><td>OK 81%</td><td>⚠ 2</td><td>⛔ 12 (5t)</td><td>⛔ 121k</td><td>⚠ 52%</td></tr></tbody></table>
+<p>Deaths column: (t) = on trash.</p>
+<hr>
+<h2>Boss Debuff Uptimes</h2>
+<table><thead><tr><th>Debuff</th><th>Hydross(2:43)</th><th>Lurker(3:10)</th><th>Leo(4:26)</th><th>Kara(3:18)</th><th>Morogrim(3:48)</th><th>Vashj(8:58)</th><th>Al'ar(6:58)</th><th>VR(2:56)</th><th>Solarian(2:19)</th><th>KT(7:51)</th></tr></thead><tbody><tr><td>Shadow Weaving</td><td>99%</td><td>90%</td><td>81%</td><td>99%</td><td>99%</td><td>100%</td><td>97%</td><td>99%</td><td>98%</td><td>100%</td></tr><tr><td>Misery</td><td>99%</td><td>89%</td><td>80%</td><td>89%</td><td>99%</td><td>100%</td><td>91%</td><td>99%</td><td>98%</td><td>100%</td></tr><tr><td>Curse of Elements</td><td>99%</td><td>76%</td><td>91%</td><td>90%</td><td>99%</td><td>100%</td><td>93%</td><td>99%</td><td>99%</td><td>78%</td></tr><tr><td>Improved Scorch</td><td>97%</td><td>88%</td><td>82%</td><td>93%</td><td>96%</td><td>73%</td><td>-</td><td>97%</td><td>98%</td><td>76%</td></tr><tr><td>Expose/Sunder Armor</td><td>88%</td><td>75%</td><td>70% ⚠</td><td>77%</td><td>97%</td><td>42% ⚠</td><td>66% ⚠</td><td>83%</td><td>100%</td><td>47% ⚠</td></tr><tr><td>Faerie Fire</td><td>61% ⚠</td><td>78%</td><td>87%</td><td>100%</td><td>99%</td><td>100%</td><td>87%</td><td>98%</td><td>85%</td><td>100%</td></tr><tr><td>Stormstrike</td><td>61%</td><td>48%</td><td>54%</td><td>66%</td><td>50%</td><td>100%</td><td>32%</td><td>54%</td><td>44%</td><td>44%</td></tr><tr><td>Demo Shout</td><td>84%</td><td>79%</td><td>71%</td><td>87%</td><td>87%</td><td>34% ⚠</td><td>73%</td><td>83%</td><td>92%</td><td>45% ⚠</td></tr><tr><td>Hunter's Mark</td><td>100%</td><td>56% ⚠</td><td>90%</td><td>71%</td><td>100%</td><td>100%</td><td>95%</td><td>100%</td><td>45% ⚠</td><td>89%</td></tr><tr><td>Judgement of Wisdom</td><td>94%</td><td>73%</td><td>69% ⚠</td><td>31% ⚠</td><td>98%</td><td>33% ⚠</td><td>15% ⚠</td><td>99%</td><td>98%</td><td>50% ⚠</td></tr></tbody></table>
+<p><strong>Flags:</strong></p>
+<ul><li>Expose/Sunder Armor: 42% on Vashj, 66% on Al'ar, 47% on KT, 70% on Leo -- persistent problem across long fights.</li><li>Judgement of Wisdom: 15% on Al'ar, 31% on Karathress, 33% on Vashj, 50% on KT -- Falkønn not maintaining JoW on targets without a tank in melee range.</li><li>Demoralizing Shout: 34% on Vashj, 45% on KT.</li><li>Hunter's Mark: dropped to 56% on Lurker, 45% on Solarian.</li><li>Faerie Fire: 61% on Hydross (druid needs to open immediately).</li><li>Stormstrike: below 66% on most bosses -- Enhancement shamans in wrong position.</li></ul>
+<p>Karathress wipes (59s, 34s) excluded from main table; boss kill was the 198s pull.</p>
+<hr>
+<h2>Kill Time Comparison</h2>
+<p>SSC prior data: May 20, May 27, Jun 3. TK prior data: May 27 only (no prior TK cla.md).</p>
+<table><thead><tr><th>Boss</th><th>This Week</th><th>3-Week Avg</th><th>Delta</th><th>Note</th></tr></thead><tbody><tr><td>Hydross</td><td>2:43</td><td>3:29</td><td>-46s (-22%)</td><td>Fastest kill yet</td></tr><tr><td>Lurker</td><td>3:10</td><td>3:23</td><td>-13s (-6%)</td><td>Improving</td></tr><tr><td>Leotheras</td><td>4:26</td><td>4:16</td><td>+10s (+4%)</td><td>Marginal</td></tr><tr><td>Karathress</td><td>3:18</td><td>3:58</td><td>-40s (-17%)</td><td>Significant improvement</td></tr><tr><td>Morogrim</td><td>3:48</td><td>3:49</td><td>-1s (0%)</td><td>Stable</td></tr><tr><td>Vashj</td><td>8:58</td><td>8:32</td><td>+26s (+5%)</td><td>Slight regression</td></tr><tr><td>Al'ar</td><td>6:58</td><td>-- (1 sample: 6:09)</td><td>+49s</td><td>Slower vs May 27</td></tr><tr><td>Void Reaver</td><td>2:56</td><td>-- (1 sample: 2:50)</td><td>+6s</td><td>Marginal</td></tr><tr><td>Solarian</td><td>2:19</td><td>-- (1 sample: 2:08)</td><td>+11s</td><td>Marginal</td></tr><tr><td>KT</td><td>7:51</td><td>-- (1 sample: 7:48)</td><td>+3s</td><td>Stable</td></tr></tbody></table>
+<p><strong>Summary:</strong> SSC improving strongly on Hydross and Karathress. Vashj remains the weak point. TK slightly slower than May 27 first-clear but only one prior week of data.</p>
+<hr>
+<h2>Top Offenders</h2>
+<h3>Avoidable Damage — Top 5 (non-tanks)</h3>
+<table><thead><tr><th>Player</th><th>Total</th><th>Top Sources</th></tr></thead><tbody><tr><td>Realblod (Warrior)</td><td>167,867</td><td>Whirlwind 78k, Rain of Fire 33k, Toxic Spores 18k, Mortal Cleave 11k</td></tr><tr><td>Skindog (Shaman)</td><td>165,110</td><td>Whirlwind 115k, Rain of Fire 19k, Scalding Water 13k, Flame Patch 10k</td></tr><tr><td>Elyorah (Shaman)</td><td>156,239</td><td>Whirlwind 81k, Rain of Fire 29k, Toxic Spores 21k, Flame Patch 10k</td></tr><tr><td>Goatedtotems (Shaman)</td><td>150,542</td><td>Whirlwind 73k, Rain of Fire 26k, Toxic Spores 12k, Mortal Cleave 12k</td></tr><tr><td>Sossesoza (Warrior)</td><td>120,748</td><td>Whirlwind 50k, Rain of Fire 20k, Toxic Spores 16k, Mortal Cleave 12k</td></tr></tbody></table>
+<p>Enhancement shamans account for 3 of the top 5 avoidable damage takers. Whirlwind/Rain of Fire are melee positioning problems.</p>
+<h3>Consumable Failures (&lt;60%)</h3>
+<table><thead><tr><th>Player</th><th>Overall%</th><th>Missing</th></tr></thead><tbody><tr><td>Monoferio</td><td>19%</td><td>Flask/battle/guardian/food all near-absent — likely only attended a few fights</td></tr><tr><td>Happyzappy</td><td>52%</td><td>No flask, no guardian elixir (battle+food only for some fights)</td></tr></tbody></table>
+<h3>Gear Issues (3+ problems)</h3>
+<table><thead><tr><th>Player</th><th>Issues</th><th>Highlights</th></tr></thead><tbody><tr><td>Manapulation</td><td>15</td><td>Crown, mantle, robes, kilt, bands, handwraps, weapon all missing enchants; multiple common/missing gems</td></tr><tr><td>Monoferio</td><td>5</td><td>Meta gem inactive on 3 bosses (Al'ar, VR, KT); boots minor speed; cloak no enchant</td></tr><tr><td>Zympers</td><td>4</td><td>Wrong legs enchant (Silver Thread); boots + bracers no enchant; common gem on bracers</td></tr><tr><td>Mansgotdots</td><td>4</td><td>Voidheart Crown meta inactive on Al'ar; robe no enchant + 3 missing gems; gloves no enchant</td></tr><tr><td>Eatmys</td><td>4</td><td>Mantle no enchant; legs wrong enchant (Mystic Thread); boots no enchant; weapon 40SP instead of spell power</td></tr><tr><td>Vleesklak</td><td>4</td><td>Both boot slots minor speed; cloak spell pen; weapon 40SP</td></tr><tr><td>Bruun</td><td>3</td><td>Chest Heavy Knothide Kit; Wildguard Breastplate Knothide Kit; legs Mystic Thread</td></tr><tr><td>Bloedmangel</td><td>3</td><td>Both shoulder slots Aldor Honor; chest no enchant</td></tr><tr><td>Nucu</td><td>3</td><td>Uncommon gems x2 in robes; cloak no enchant</td></tr></tbody></table>
+<h3>Deaths (3+ total)</h3>
+<table><thead><tr><th>Player</th><th>Total</th><th>Boss</th><th>Trash</th><th>Notable</th></tr></thead><tbody><tr><td>Mansgotdots</td><td>12</td><td>10</td><td>2</td><td>Highest boss deaths in raid</td></tr><tr><td>Sossesoza</td><td>12</td><td>7</td><td>5</td><td>DPS warrior — positioning problems</td></tr><tr><td>Goatedtotems</td><td>10</td><td>5</td><td>5</td><td>Enh shaman; recurring avoidable deaths</td></tr><tr><td>Elyorah</td><td>9</td><td>5</td><td>4</td><td>Enh shaman</td></tr><tr><td>Jourganoff</td><td>8</td><td>3</td><td>5</td><td>Most trash deaths</td></tr><tr><td>Happyzappy</td><td>8</td><td>4</td><td>4</td><td>Enh shaman; also lowest active%</td></tr><tr><td>Vleesklak</td><td>7</td><td>2</td><td>5</td><td>Trash deaths dominate</td></tr><tr><td>Manapulation</td><td>6</td><td>5</td><td>1</td><td>5 boss deaths + 145 Scorch violations</td></tr><tr><td>Eatmys</td><td>6</td><td>4</td><td>2</td><td></td></tr><tr><td>Skindog</td><td>6</td><td>4</td><td>2</td><td>Also 43% active%</td></tr><tr><td>Realblod</td><td>6</td><td>4</td><td>2</td><td>Also 168k avoidable</td></tr><tr><td>Bruun</td><td>5</td><td>3</td><td>2</td><td>Tank — some boss deaths expected</td></tr><tr><td>Peanutpewpew</td><td>5</td><td>3</td><td>2</td><td></td></tr><tr><td>Brightmir</td><td>4</td><td>3</td><td>1</td><td></td></tr><tr><td>Bloedmangel</td><td>4</td><td>3</td><td>1</td><td>Tank</td></tr><tr><td>Enhanz</td><td>4</td><td>3</td><td>1</td><td></td></tr><tr><td>Zympers</td><td>4</td><td>2</td><td>2</td><td>Healer</td></tr><tr><td>Kunyaza</td><td>3</td><td>1</td><td>2</td><td></td></tr><tr><td>Nls</td><td>3</td><td>1</td><td>2</td><td></td></tr><tr><td>Neraith</td><td>3</td><td>1</td><td>2</td><td></td></tr><tr><td>Klasbaktotem</td><td>3</td><td>0</td><td>3</td><td>All trash</td></tr></tbody></table>
+<hr>
+<h2>Per-Role Notes</h2>
+<h3>Tanks</h3>
+<p><strong>Bruun (Paladin):</strong> 3 boss deaths + 5 total. Active% 43.8% is low even for an off-tank. Zero Shield Wall, zero Last Stand, zero Divine Intervention used all night. Three gear issues (wrong chest/breastplate kits, wrong legs enchant). Should have Divine Intervention on standby for wipe recovery on Vashj/KT progression attempts.</p>
+<p><strong>Bloedmangel (Druid):</strong> 100% active, handled main tank duties cleanly. Three gear issues (both shoulder slots Aldor Honor, chest unenchanted). Own Innervate cast 0 times on boss (cast 0 total) — Kaylin innervated 7 boss/1 trash and Kunyaza innervated 4 boss/1 trash so mana wasn't a raid problem, but Bloedmangel's innervate going unused is a free mana potion left on the table.</p>
+<h3>Healers</h3>
+<p><strong>Nucu (Priest):</strong> Strong night — 99% active, 1 death, 1,639 HPS. Inner Fire at 50.2% uptime — this self-buff costs nothing and should be near-100%. Shadowfiend used 10 times (good). No Power Infusion (Holy spec — no PI talent, correct).</p>
+<p><strong>Klasbaktotem (Shaman):</strong> 61.8% active — warning. 3 deaths but all on trash, not a boss problem. Mana Tide used 3 times (solid). Zero Heroism (Enhancement shamans covered all Heroisms — fine). No bracers/OH enchant flagged.</p>
+<p><strong>Kaylin (Druid):</strong> 100% active, good Innervate distribution (7 boss). 69.7% overheal is above normal even for a druid — may be overlapping with other healers on Lifebloom stacks. 2 deaths (1 on trash, manageable).</p>
+<p><strong>Zympers (Priest):</strong> 100% active, 1,724 HPS — highest healer throughput. 4 gear issues need addressing (legs/boots/bracers enchants, gem). Inner Fire only 48.8% — same issue as Nucu. 4 deaths (2 boss, 2 trash). Power Infusion: 0 (Holy spec — correct). Shadowfiend used 10 times.</p>
+<p><strong>Falkønn (Paladin):</strong> 0 deaths, clean performance. Judgement of Wisdom uptime is the problem — 15% on Al'ar, 31% on Karathress, 33% on Vashj. JoW should be near-100% on any melee-heavy fight. When there's no tank in melee range (Al'ar P2, Vashj P1), Falkønn needs to step in and maintain it manually rather than waiting for a target.</p>
+<h3>DPS</h3>
+<p><strong>Active% outliers (non-tank):</strong></p>
+<ul><li>Monoferio: 17.1% — attended only a fraction of the night.</li><li>Skindog: 42.9% — enhancement shaman, 165k avoidable, 6 deaths. Significant positioning issues.</li><li>Happyzappy: 45.3% — enhancement shaman, 123k avoidable, 8 deaths. Same pattern.</li><li>Realblod: 49.5% — DPS warrior, 168k avoidable, 6 deaths.</li></ul>
+<p><strong>Scorch violations (casting at 5 stacks):</strong></p>
+<ul><li>Jourganoff: 204 violations — recurring problem (143 in May 18, 170 in May 27, 100+ in Jun 3).</li><li>Manapulation: 145 violations — new entry. Should only refresh Scorch when stack is about to fall.</li></ul>
+<p><strong>Sunder violations:</strong></p>
+<ul><li>Realblod: 3 Sunder violations (Sundering at 5 stacks). Low count, but worth noting alongside the warrior's 168k avoidable and 6 deaths.</li></ul>
+<p><strong>Amplify Curse — all 3 warlocks at 0 uses all night</strong> (Mansgotdots, Eatmys, Vleesklak). Amplify Curse reduces the cooldown of the target's next curse by 50%, enabling faster Curse of Elements or Curse of Doom application. This is a free 1-minute cooldown and none of them are pressing it.</p>
+<p><strong>Enhancement shamans — systemic positioning problem:</strong> Goatedtotems (10 deaths, 151k avoidable), Elyorah (9 deaths, 156k avoidable), Happyzappy (8 deaths, 123k avoidable), Skindog (6 deaths, 165k avoidable). Combined the four Enhancement shamans took 595k avoidable damage and died 33 times. Whirlwind is the dominant source (73k, 81k, 64k, 115k respectively). They need to break melee contact on Whirlwind/Cleave mechanics.</p>
+<p><strong>Cooldown highlights (positives):</strong></p>
+<ul><li>Ginnemage: Icy Veins 19 boss + 10 trash, Arcane Power 14 boss + 13 trash, Cold Snap 7, Evocation 7 — excellent cooldown discipline.</li><li>Nls (Rogue): Adrenaline Rush 11 boss + 5 trash, Cloak of Shadows 15 boss + 18 trash — well-used.</li><li>Neraith (Hunter): Rapid Fire 14 uses total.</li></ul>
+<hr>
+<h2>Log Validation</h2>
+<ul><li><strong>Unknown zone:</strong> 0/0 -- logged as FAIL by analyzer (non-boss entries at session start; not a real raid validation issue)</li><li><strong>Serpentshrine Cavern:</strong> 6/6 PASS -- all bosses killed</li><li><strong>Tempest Keep: The Eye:</strong> 4/4 PASS -- all bosses killed</li></ul>
+<p>Karathress had 2 wipes before the kill (59s and 34s pulls). Lady Vashj 8:58 kill — no wipes on other SSC bosses.</p>
+</section>
+<footer>Generated by tools/raid-html.</footer>
+</div>
+<script>
+document.querySelectorAll('table.sortable').forEach(function (table) {
+  var dir = {};
+  var heads = table.querySelectorAll('th');
+  heads.forEach(function (th, col) {
+    th.addEventListener('click', function () {
+      var rows = Array.from(table.tBodies[0].rows);
+      dir[col] = -(dir[col] || -1);
+      rows.sort(function (a, b) {
+        var av = a.cells[col].getAttribute('data-sort');
+        var bv = b.cells[col].getAttribute('data-sort');
+        var an = parseFloat(av), bn = parseFloat(bv);
+        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir[col];
+        return String(av).localeCompare(String(bv)) * dir[col];
+      });
+      rows.forEach(function (r) { table.tBodies[0].appendChild(r); });
+      heads.forEach(function (h) {
+        var arrow = h.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      var activeArrow = th.querySelector('.sort-arrow');
+      if (activeArrow) activeArrow.textContent = dir[col] > 0 ? ' ▲' : ' ▼';
+    });
+  });
+});
+</script>
+</body>
+</html>
