@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Pan Syndrome — Raid 2026-06-10</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090c; --surface: #0d0e12; --surface2: #16181f;
+  --border: #242836; --border2: #1e2230;
+  --text: #e8eaf0; --muted: #8b90a0; --faint: #5f6474;
+  --green: #39d98a; --yellow: #ffb020; --orange: #ff8f4d; --red: #ff5c5c;
+  --gold: #e5cc80; --accent: #b968f0; --blue: #4a94ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+}
+::selection { background: var(--yellow); color: #000; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+a { color: #7aa2ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 {
+  font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 42px;
+  line-height: 1; letter-spacing: 0.01em; margin: 0 0 6px; color: #fff;
+}
+h2 {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 14px; color: #c8ccd8;
+}
+.num, td.num, th.num, .stat .value, .pill, .value {
+  font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+}
+.card, section.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 24px; margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.subline { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 4px 11px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.topnav { margin-bottom: 16px; font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .value { font-size: 26px; font-weight: 600; }
+.stat .label { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.stat .sub { font-size: 12px; color: var(--faint); margin-top: 2px; }
+.stat.accent { border-color: rgba(255,92,92,.4); }
+.stat.accent .value { color: var(--red); }
+.tablewrap { overflow-x: auto; position: relative; }
+.tablewrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--surface));
+  pointer-events: none;
+}
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { position: sticky; left: 0; background: var(--surface); }
+td.num, th.num { text-align: right; }
+.sort-arrow { margin-left: 4px; opacity: 0.6; }
+.external { font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: normal; margin-left: 8px; }
+.dim { color: var(--muted); opacity: 0.55; }
+.good { color: var(--green); }
+.warn { color: var(--yellow); }
+.caution { color: var(--orange); }
+.bad { color: var(--red); }
+.gold { color: var(--gold); }
+.pill {
+  display: inline-block; min-width: 44px; text-align: center;
+  padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;
+}
+.pill.good { background: rgba(57,217,138,.15); color: var(--green); }
+.pill.warn { background: rgba(255,176,32,.15); color: var(--yellow); }
+.pill.caution { background: rgba(255,143,77,.15); color: var(--orange); }
+.pill.bad { background: rgba(255,92,92,.15); color: var(--red); }
+.pill.na { background: transparent; color: var(--muted); opacity: .55; }
+.pill.gold { background: rgba(229,204,128,.15); color: var(--gold); }
+.pill.info { background: rgba(74,148,255,.15); color: var(--blue); }
+.audit-detail { font-size: 12px; color: var(--muted); margin-top: 6px; white-space: normal; font-family: 'IBM Plex Sans', sans-serif; }
+[title].pill, span.bad[title] { cursor: help; }
+.role {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--border2); color: var(--muted);
+}
+.callout {
+  border-left: 3px solid var(--red); background: rgba(255,92,92,.08);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.flag {
+  border-left: 3px solid var(--yellow); background: rgba(255,176,32,.07);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cards2 .card { margin-bottom: 0; min-width: 0; }
+.wraptext { white-space: normal; min-width: 180px; }
+.role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
+.role-ic svg { width: 15px; height: 15px; }
+.off-head {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #c8ccd8;
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.off-head span { font-family: 'IBM Plex Sans', sans-serif; text-transform: none; letter-spacing: 0; font-size: 11px; color: var(--faint); }
+.off-head a { margin-left: auto; }
+.off-row { padding: 9px 0; border-bottom: 1px solid var(--border2); }
+.off-row:last-child { border-bottom: none; }
+.off-name a:first-child { font-weight: 600; }
+.off-metric { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px; }
+.off-detail { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sortable th { cursor: pointer; user-select: none; }
+.sortable th:hover { color: var(--text); }
+details.bench { margin-top: 12px; }
+details.bench summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.bench ul { margin: 8px 0 0; }
+details.legend {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+}
+details.legend summary { cursor: pointer; color: var(--muted); font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+details.legend .legend-body { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.legend .legend-body p { margin: 6px 0; }
+details.legend .legend-body strong { color: var(--text); }
+footer { color: var(--faint); font-size: 12px; margin-top: 24px; }
+body.compact .card, body.compact section.panel { padding: 10px 14px; margin-bottom: 10px; }
+body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35; }
+@media (max-width: 1000px) {
+  .cards2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topnav"><a href="../../raids/index.html">All raid nights</a></div>
+<section class="panel" style="padding:0;overflow:hidden">
+  <div style="display:flex;flex-wrap:wrap">
+    <div style="flex:1;min-width:340px;padding:28px 30px">
+      <h1>Peter Pan Syndrome</h1>
+      <div style="display:flex;gap:6px;margin-top:10px;flex-wrap:wrap"></div>
+      <div class="subline" style="margin-top:12px">
+        Wednesday 2026-06-10 &middot; 2h 59m total &middot;
+        <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP" target="_blank" rel="noopener">WCL &#8599;</a> &middot; <a href="../../raids/2026-06-10/eval.html">Full eval &#8599;</a>
+      </div>
+    </div>
+    <div style="width:300px;flex:none;background:linear-gradient(180deg,#15121d,#0d0e12);
+                border-left:1px solid var(--border2);padding:28px 30px;
+                display:flex;flex-direction:column;justify-content:center">
+      <div style="font-family:'Oswald',sans-serif;font-weight:600;font-size:11px;
+                  letter-spacing:.16em;text-transform:uppercase;color:var(--muted)">Full clear</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:60px;
+                  line-height:.9;color:var(--accent);margin-top:2px">10<span
+                  style="font-size:26px;color:#8f6fd6"> kills</span></div>
+      <div style="display:flex;align-items:center;gap:8px;margin-top:10px">
+        <span style="font-family:'Oswald',sans-serif;font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--red);background:rgba(255,92,92,.12);border:1px solid rgba(255,92,92,.35);border-radius:6px;padding:4px 9px">5 wipes</span> <span class="subline" style="font-size:12px">2 zones cleared</span>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="stats">
+  <div class="stat"><div class="label">Kills</div><div class="value">10</div>
+    <div class="sub">across 2 zones</div></div>
+  <div class="stat accent"><div class="label">Wipes</div><div class="value">5</div>
+    <div class="sub">Hydross ×3, Karathress ×2</div></div>
+  <div class="stat"><div class="label">Deaths</div><div class="value">132</div>
+    <div class="sub">across all players</div></div>
+  <div class="stat"><div class="label">Night Total</div><div class="value">2h 59m</div>
+    <div class="sub">full session</div></div>
+</div>
+<details class="legend">
+  <summary>What do these mean? (icons, colors, terms)</summary>
+  <div class="legend-body">
+    <p><strong>Icons &amp; colors:</strong> ✓ good &middot; ⚠ warning &middot; ✗ fail &middot;
+    &mdash; not applicable or no data &middot; ★ clean kill (no wipes this week).
+    Green/yellow/orange/red bands follow the same good&rarr;fail scale throughout.</p>
+    <p><strong>Avoidable Damage:</strong> damage taken from a mechanic the player could have
+    avoided by moving or positioning differently (e.g. standing in Rain of Fire).</p>
+    <p><strong>Active%:</strong> share of the night's fight segments the player was present
+    for. A low number means <em>verify why</em> (late join, disconnect, early leave) &mdash;
+    it is not automatically misconduct.</p>
+    <p><strong>Consumes:</strong> weighted score across Flask, Battle elixir, Guardian elixir,
+    and Food buff uptime for the night.</p>
+    <p><strong>Boss short names:</strong> HKM = High King Maulgar &middot; KT = Kael'thas
+    Sunstrider &middot; Leo = Leotheras the Blind &middot; Solarian = High Astromancer
+    Solarian &middot; Karathress = Fathom-Lord Karathress.</p>
+    <p><strong>Gear shorthand:</strong> "Aldor Hon" / "Scryer Hon" = Aldor/Scryer
+    <em>honored</em>-tier reputation enchant (a cheaper tier than exalted) &middot;
+    "40SP" = a weapon enchant granting +40 spell power &middot; "Mystic Thread" = a
+    budget leg armor kit &middot; "uncommon gem" = a green-quality (budget) gem instead
+    of a rare/epic one.</p>
+  </div>
+</details>
+<section class="panel" id="kill-matrix">
+  <h2>Time per instance <a class="external" href="../../raids/2026-06-10/speed.html">Pull-by-pull timeline &#8599;</a> <a class="external" href="../../raids/2026-06-10/vs-last-week.html">Speed vs last week &#8599;</a></h2>
+  <p class="subline" style="margin:0 0 4px">Full-clear time per zone vs the last two weeks &mdash; bold bar is this
+    night. <span style="color:var(--green)">Green</span> = fastest of three, <span style="color:var(--red)">red</span>
+    = slowest. <span style="color:var(--red)">&#9679;</span> marks a boss with wipes.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:16px;align-items:flex-start">
+    <div style="flex:1 1 340px;min-width:320px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <div>
+      <div style="font-family:'Oswald';font-weight:600;font-size:16px;color:#fff">Serpentshrine Cavern</div>
+      <div class="subline" style="font-size:11px;margin-top:2px">Full clear &middot; 6 bosses</div>
+    </div>
+    <div style="text-align:right;flex:none"><span style="font-family:'Oswald';font-weight:600;font-size:14px;color:var(--green)">Fastest &#10003;</span></div>
+  </div>
+  <div style="margin:14px 0 4px"><div style="display:flex;align-items:center;gap:8px;margin:3px 0">
+  <span style="width:40px;flex:none;font-size:10px;color:var(--faint);font-family:'IBM Plex Mono'">05-27</span>
+  <div style="flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden">
+    <div style="width:68.2%;height:100%;background:var(--faint);border-radius:4px"></div>
+  </div>
+  <span style="width:46px;flex:none;text-align:right;font-family:'IBM Plex Mono';font-size:11px;font-weight:400;color:var(--muted)">87:44</span>
+</div><div style="display:flex;align-items:center;gap:8px;margin:3px 0">
+  <span style="width:40px;flex:none;font-size:10px;color:var(--faint);font-family:'IBM Plex Mono'">06-03</span>
+  <div style="flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden">
+    <div style="width:100.0%;height:100%;background:var(--faint);border-radius:4px"></div>
+  </div>
+  <span style="width:46px;flex:none;text-align:right;font-family:'IBM Plex Mono';font-size:11px;font-weight:400;color:var(--muted)">128:44</span>
+</div><div style="display:flex;align-items:center;gap:8px;margin:3px 0">
+  <span style="width:40px;flex:none;font-size:10px;color:var(--text);font-family:'IBM Plex Mono'">06-10</span>
+  <div style="flex:1;height:10px;background:var(--bg);border-radius:4px;overflow:hidden">
+    <div style="width:67.1%;height:100%;background:var(--green);border-radius:4px"></div>
+  </div>
+  <span style="width:46px;flex:none;text-align:right;font-family:'IBM Plex Mono';font-size:13px;font-weight:600;color:var(--text)">86:26</span>
+</div></div>
+  <div style="margin-top:10px"><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Hydross<span title="1:15 · 0:03 · 0:23" style="width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block" aria-label="3 wipes"></span></span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=9" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">8:09</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--green);font-family:'IBM Plex Mono'">&#9660;best</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Lurker</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=16" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">10:21</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--green);font-family:'IBM Plex Mono'">-4:49</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Leotheras</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=27" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">20:07</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--green);font-family:'IBM Plex Mono'">-5:34</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Karathress<span title="1:00 · 0:34" style="width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block" aria-label="2 wipes"></span></span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=37" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">19:48</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--red);font-family:'IBM Plex Mono'">+4:44</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Morogrim</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=41" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">10:05</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--green);font-family:'IBM Plex Mono'">&#9660;best</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Vashj</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=43" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">17:56</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--green);font-family:'IBM Plex Mono'">-8:37</span></span>
+</div></div>
+</div><div style="flex:1 1 340px;min-width:320px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:16px 18px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <div>
+      <div style="font-family:'Oswald';font-weight:600;font-size:16px;color:#fff">Tempest Keep</div>
+      <div class="subline" style="font-size:11px;margin-top:2px">Full clear &middot; 4 bosses</div>
+    </div>
+    <div style="text-align:right;flex:none"><span style="font-family:'Oswald';font-weight:600;font-size:14px;color:var(--green)">Fastest &#10003;</span></div>
+  </div>
+  <div style="margin:14px 0 4px"><div style="display:flex;align-items:center;gap:8px;margin:3px 0">
+  <span style="width:40px;flex:none;font-size:10px;color:var(--faint);font-family:'IBM Plex Mono'">05-27</span>
+  <div style="flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden">
+    <div style="width:100.0%;height:100%;background:var(--faint);border-radius:4px"></div>
+  </div>
+  <span style="width:46px;flex:none;text-align:right;font-family:'IBM Plex Mono';font-size:11px;font-weight:400;color:var(--muted)">83:55</span>
+</div><div style="display:flex;align-items:center;gap:8px;margin:3px 0">
+  <span style="width:40px;flex:none;font-size:10px;color:var(--faint);font-family:'IBM Plex Mono'">06-03</span>
+  <div style="flex:1;height:7px;background:var(--bg);border-radius:4px;overflow:hidden">
+    <div style="width:0.0%;height:100%;background:var(--faint);border-radius:4px"></div>
+  </div>
+  <span style="width:46px;flex:none;text-align:right;font-family:'IBM Plex Mono';font-size:11px;font-weight:400;color:var(--muted)">&mdash;</span>
+</div><div style="display:flex;align-items:center;gap:8px;margin:3px 0">
+  <span style="width:40px;flex:none;font-size:10px;color:var(--text);font-family:'IBM Plex Mono'">06-10</span>
+  <div style="flex:1;height:10px;background:var(--bg);border-radius:4px;overflow:hidden">
+    <div style="width:97.4%;height:100%;background:var(--green);border-radius:4px"></div>
+  </div>
+  <span style="width:46px;flex:none;text-align:right;font-family:'IBM Plex Mono';font-size:13px;font-weight:600;color:var(--text)">81:43</span>
+</div></div>
+  <div style="margin-top:10px"><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Al&#x27;ar</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=53" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">31:33</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--red);font-family:'IBM Plex Mono'">+4:56</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Void Reaver</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=62" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">16:37</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--green);font-family:'IBM Plex Mono'">&#9660;best</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Solarian</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=69" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">10:43</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--green);font-family:'IBM Plex Mono'">&#9660;best</span></span>
+</div><div style="display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--border2)">
+  <span style="flex:1;font-size:13px;color:var(--text);display:flex;align-items:center;gap:6px">Kael&#x27;thas</span>
+  <a href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#fight=78" target="_blank" rel="noopener" style="font-family:'IBM Plex Mono';font-weight:600;font-size:14px">22:50</a>
+  <span style="width:52px;text-align:right"><span style="font-size:11px;color:var(--red);font-family:'IBM Plex Mono'">+2:31</span></span>
+</div></div>
+</div>
+  </div>
+</section>
+<section class="panel">
+  <h2>Trash &amp; Downtime</h2>
+  <div class="stats" style="grid-template-columns:repeat(2,1fr);margin-bottom:16px">
+    <div class="stat"><div class="label">Downtime</div><div class="value">63:51</div>
+      <div class="sub">out of combat, whole night</div></div>
+    <div class="stat"><div class="label">Trash Time</div><div class="value">50:54</div>
+      <div class="sub">in-combat, non-boss</div></div>
+  </div>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Metric</th><th class="num">05-27</th><th class="num">06-03</th><th class="num">06-10</th><th class="num">2-Wk Avg</th><th class="num">Delta</th></tr></thead>
+    <tbody><tr><td>Downtime</td><td class="num">60:51</td><td class="num">40:31</td><td class="num">63:51</td><td class="num">50:41</td><td class="num bad">+13:10</td></tr><tr><td>Trash time</td><td class="num">49:31</td><td class="num">27:38</td><td class="num">50:54</td><td class="num">38:34</td><td class="num bad">+12:20</td></tr></tbody>
+  </table></div>
+  <p class="subline" style="margin-bottom:0">Raid DPS on trash vs boss isn't shown yet -- needs a raid-analyzer extension not built yet (see design spec's Known Pipeline Gaps).</p>
+</section>
+<section class="panel" id="debuffs">
+  <h2>Debuff Uptimes
+    <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=auras&amp;hostility=1" target="_blank" rel="noopener">WCL auras &#8599;</a>
+  </h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Debuff</th><th class="num">Hydross</th><th class="num">Lurker</th><th class="num">Leotheras</th><th class="num">Karathress</th><th class="num">Morogrim</th><th class="num">Vashj</th><th class="num">Al&#x27;ar</th><th class="num">Void Reaver</th><th class="num">Solarian</th><th class="num">Kael&#x27;thas</th></tr></thead>
+    <tbody><tr><td>Shadow Weaving</td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">90%</span></td><td class="num"><span class="pill warn">81%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill good">97%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">98%</span></td><td class="num"><span class="pill good">100%</span></td></tr><tr><td>Misery</td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill warn">89%</span></td><td class="num"><span class="pill warn">80%</span></td><td class="num"><span class="pill warn">89%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill good">91%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">98%</span></td><td class="num"><span class="pill good">100%</span></td></tr><tr><td>Curse of Elements</td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill warn">76%</span></td><td class="num"><span class="pill good">91%</span></td><td class="num"><span class="pill good">90%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill good">93%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill warn">78%</span></td></tr><tr><td>Improved Scorch</td><td class="num"><span class="pill good">97%</span></td><td class="num"><span class="pill warn">88%</span></td><td class="num"><span class="pill warn">82%</span></td><td class="num"><span class="pill good">93%</span></td><td class="num"><span class="pill good">96%</span></td><td class="num"><span class="pill warn">73%</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill good">97%</span></td><td class="num"><span class="pill good">98%</span></td><td class="num"><span class="pill warn">76%</span></td></tr><tr><td>Expose Armor / Sunder Armor</td><td class="num"><span class="pill warn">88%</span></td><td class="num"><span class="pill warn">75%</span></td><td class="num"><span class="pill warn">70%</span></td><td class="num"><span class="pill warn">77%</span></td><td class="num"><span class="pill good">97%</span></td><td class="num"><span class="pill bad">42%</span></td><td class="num"><span class="pill caution">66%</span></td><td class="num"><span class="pill warn">83%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill bad">47%</span></td></tr><tr><td>Faerie Fire / Faerie Fire (Feral)</td><td class="num"><span class="pill caution">61%</span></td><td class="num"><span class="pill warn">78%</span></td><td class="num"><span class="pill warn">87%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill warn">87%</span></td><td class="num"><span class="pill good">98%</span></td><td class="num"><span class="pill warn">85%</span></td><td class="num"><span class="pill good">100%</span></td></tr><tr><td>Stormstrike</td><td class="num"><span class="pill caution">61%</span></td><td class="num"><span class="pill bad">48%</span></td><td class="num"><span class="pill caution">54%</span></td><td class="num"><span class="pill caution">66%</span></td><td class="num"><span class="pill caution">50%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill bad">32%</span></td><td class="num"><span class="pill caution">54%</span></td><td class="num"><span class="pill bad">44%</span></td><td class="num"><span class="pill bad">44%</span></td></tr><tr><td>Demoralizing Shout</td><td class="num"><span class="pill warn">84%</span></td><td class="num"><span class="pill warn">79%</span></td><td class="num"><span class="pill warn">71%</span></td><td class="num"><span class="pill warn">87%</span></td><td class="num"><span class="pill warn">87%</span></td><td class="num"><span class="pill bad">34%</span></td><td class="num"><span class="pill warn">73%</span></td><td class="num"><span class="pill warn">83%</span></td><td class="num"><span class="pill good">92%</span></td><td class="num"><span class="pill bad">45%</span></td></tr><tr><td>Hunter&#x27;s Mark</td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill caution">56%</span></td><td class="num"><span class="pill good">90%</span></td><td class="num"><span class="pill warn">71%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill good">95%</span></td><td class="num"><span class="pill good">100%</span></td><td class="num"><span class="pill bad">45%</span></td><td class="num"><span class="pill warn">89%</span></td></tr><tr><td>Judgement of Wisdom</td><td class="num"><span class="pill good">94%</span></td><td class="num"><span class="pill warn">73%</span></td><td class="num"><span class="pill caution">69%</span></td><td class="num"><span class="pill bad">31%</span></td><td class="num"><span class="pill good">98%</span></td><td class="num"><span class="pill bad">33%</span></td><td class="num"><span class="pill bad">15%</span></td><td class="num"><span class="pill good">99%</span></td><td class="num"><span class="pill good">98%</span></td><td class="num"><span class="pill caution">50%</span></td></tr><tr><td>Judgement of Light</td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill caution">52%</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill na">&mdash;</span></td><td class="num"><span class="pill na">&mdash;</span></td></tr></tbody>
+  </table></div>
+  
+</section>
+<section class="panel">
+  <h2>Top Offenders <a class="external" href="../../raids/2026-06-10/rpb.html">Per-player detail &#8599;</a> <a class="external" href="../../raids/2026-06-10/cla.html">Gear detail &#8599;</a></h2>
+  <div class="cards2">
+    <div class="card">
+      <div class="off-head">Deaths<span>3+ this night</span>
+        <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=deaths" target="_blank" rel="noopener">WCL &#8599;</a></div>
+      <div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-mansgotdots.html" style="color:#8788EE;">Mansgotdots</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=73" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">12</span>
+  </div>
+  <div class="off-detail" title="0 boss · 0 trash">0 boss · 0 trash</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-sossesoza.html" style="color:#C69B3A;">Sossesoza</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=78" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">12</span>
+  </div>
+  <div class="off-detail" title="0 boss · 0 trash">0 boss · 0 trash</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-goatedtotems.html" style="color:#0070DD;">Goatedtotems</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=4" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">10</span>
+  </div>
+  <div class="off-detail" title="0 boss · 0 trash">0 boss · 0 trash</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-elyorah.html" style="color:#0070DD;">Elyorah</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=76" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">9</span>
+  </div>
+  <div class="off-detail" title="0 boss · 0 trash">0 boss · 0 trash</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-jourganoff.html" style="color:#3FC7EB;">Jourganoff</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=87" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">8</span>
+  </div>
+  <div class="off-detail" title="0 boss · 0 trash">0 boss · 0 trash</div>
+</div><p class="subline" style="margin:10px 0 0">+16 more with 3&ndash;4 deaths</p>
+    </div>
+    <div class="card">
+      <div class="off-head">Avoidable Damage<span>non-tank</span></div>
+      <div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-realblod-warrior.html" style="color:#e2e8f0;">Realblod (Warrior)</a></span>
+    <span class="off-metric caution">167k</span>
+  </div>
+  <div class="off-detail" title="Whirlwind 78k, Rain of Fire 33k, Toxic Spores 18k, Mortal Cleave 11k">Whirlwind 78k, Rain of Fire 33k, Toxic Spores 18k, Mortal Cleave 11k</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-skindog-shaman.html" style="color:#e2e8f0;">Skindog (Shaman)</a></span>
+    <span class="off-metric caution">165k</span>
+  </div>
+  <div class="off-detail" title="Whirlwind 115k, Rain of Fire 19k, Scalding Water 13k, Flame Patch 10k">Whirlwind 115k, Rain of Fire 19k, Scalding Water 13k, Flame Patch 10k</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-elyorah-shaman.html" style="color:#e2e8f0;">Elyorah (Shaman)</a></span>
+    <span class="off-metric caution">156k</span>
+  </div>
+  <div class="off-detail" title="Whirlwind 81k, Rain of Fire 29k, Toxic Spores 21k, Flame Patch 10k">Whirlwind 81k, Rain of Fire 29k, Toxic Spores 21k, Flame Patch 10k</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-goatedtotems-shaman.html" style="color:#e2e8f0;">Goatedtotems (Shaman)</a></span>
+    <span class="off-metric caution">150k</span>
+  </div>
+  <div class="off-detail" title="Whirlwind 73k, Rain of Fire 26k, Toxic Spores 12k, Mortal Cleave 12k">Whirlwind 73k, Rain of Fire 26k, Toxic Spores 12k, Mortal Cleave 12k</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-sossesoza-warrior.html" style="color:#e2e8f0;">Sossesoza (Warrior)</a></span>
+    <span class="off-metric caution">120k</span>
+  </div>
+  <div class="off-detail" title="Whirlwind 50k, Rain of Fire 20k, Toxic Spores 16k, Mortal Cleave 12k">Whirlwind 50k, Rain of Fire 20k, Toxic Spores 16k, Mortal Cleave 12k</div>
+</div>
+    </div>
+    <div class="card">
+      <div class="off-head">Gear Issues<span>3+ flags</span></div>
+      <div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-manapulation.html" style="color:#3FC7EB;">Manapulation</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=3" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">15</span>
+  </div>
+  <div class="off-detail" title="Crown, mantle, robes, kilt, bands, handwraps, weapon all missing enchants; multiple common/missing gems">Crown, mantle, robes, kilt, bands, handwraps, weapon all missing enchants; multiple common/missing gems</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-monoferio.html" style="color:#F48CBA;">Monoferio</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=482" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">5</span>
+  </div>
+  <div class="off-detail" title="Meta gem inactive on 3 bosses (Al&#x27;ar, VR, KT); boots minor speed; cloak no enchant">Meta gem inactive on 3 bosses (Al&#x27;ar, VR, KT); boots minor speed; cloak no enchant</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-zympers.html" style="color:#FFFFFF;">Zympers</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=84" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">4</span>
+  </div>
+  <div class="off-detail" title="Wrong legs enchant (Silver Thread); boots + bracers no enchant; common gem on bracers">Wrong legs enchant (Silver Thread); boots + bracers no enchant; common gem on bracers</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-mansgotdots.html" style="color:#8788EE;">Mansgotdots</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=73" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">4</span>
+  </div>
+  <div class="off-detail" title="Voidheart Crown meta inactive on Al&#x27;ar; robe no enchant + 3 missing gems; gloves no enchant">Voidheart Crown meta inactive on Al&#x27;ar; robe no enchant + 3 missing gems; gloves no enchant</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-eatmys.html" style="color:#8788EE;">Eatmys</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=74" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">4</span>
+  </div>
+  <div class="off-detail" title="Mantle no enchant; legs wrong enchant (Mystic Thread); boots no enchant; weapon 40SP instead of spell power">Mantle no enchant; legs wrong enchant (Mystic Thread); boots no enchant; weapon 40SP instead of spell power</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-vleesklak.html" style="color:#8788EE;">Vleesklak</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=93" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">4</span>
+  </div>
+  <div class="off-detail" title="Both boot slots minor speed; cloak spell pen; weapon 40SP">Both boot slots minor speed; cloak spell pen; weapon 40SP</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-bruun.html" style="color:#F48CBA;">Bruun</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=88" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">3</span>
+  </div>
+  <div class="off-detail" title="Chest Heavy Knothide Kit; Wildguard Breastplate Knothide Kit; legs Mystic Thread">Chest Heavy Knothide Kit; Wildguard Breastplate Knothide Kit; legs Mystic Thread</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-bloedmangel.html" style="color:#FF7C0A;">Bloedmangel</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=98" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">3</span>
+  </div>
+  <div class="off-detail" title="Both shoulder slots Aldor Honor; chest no enchant">Both shoulder slots Aldor Honor; chest no enchant</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-nucu.html" style="color:#FFFFFF;">Nucu</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=69" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">3</span>
+  </div>
+  <div class="off-detail" title="Uncommon gems x2 in robes; cloak no enchant">Uncommon gems x2 in robes; cloak no enchant</div>
+</div>
+    </div>
+    <div class="card">
+      <div class="off-head">Consumable Failures<span>below 75%</span></div>
+      <div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-monoferio.html" style="color:#F48CBA;">Monoferio</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=482" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">19%</span>
+  </div>
+  <div class="off-detail" title="no Dark Rune, no other consumables">no Dark Rune, no other consumables</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-happyzappy.html" style="color:#0070DD;">Happyzappy</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=72" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric bad">52%</span>
+  </div>
+  <div class="off-detail" title="no Dark Rune">no Dark Rune</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-skindog.html" style="color:#0070DD;">Skindog</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=79" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric warn">61%</span>
+  </div>
+  <div class="off-detail" title="no Dark Rune">no Dark Rune</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-falk-nn.html" style="color:#F48CBA;">Falkønn</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=101" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric warn">67%</span>
+  </div>
+  <div class="off-detail" title="no Dark Rune, no other consumables">no Dark Rune, no other consumables</div>
+</div><div class="off-row">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;gap:10px">
+    <span class="off-name"><a href="../../raids/2026-06-10/player-peanutpewpew.html" style="color:#AAD372;">Peanutpewpew</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=82" target="_blank" rel="noopener" title="WCL">&#8599;</a></span>
+    <span class="off-metric warn">67%</span>
+  </div>
+  <div class="off-detail" title="no Dark Rune">no Dark Rune</div>
+</div>
+    </div>
+  </div>
+</section>
+<section class="panel" id="discipline">
+  <h2>Cooldown, Trinket, Potion &amp; Drums Discipline <a class="external" href="../../raids/2026-06-10/discipline.html">Full detail &#8599;</a></h2>
+  <p class="subline" style="margin-bottom:8px">DPS players (Caster + Physical) plus any drummer. On-use trinket activations only, procs excluded. &mdash; = no on-use trinket detected, not a discipline failure.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Player</th><th class="num">Trinket Uses</th><th>CDs on Trash</th><th>Potions on Trash</th><th class="num">Drums Uptime</th><th>Status</th></tr></thead>
+    <tbody><tr><td><a href="../../raids/2026-06-10/player-monoferio.html" style="color:#F48CBA;">Monoferio</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=482" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">6</td><td><span class="bad">&#10007; boss-only</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill bad" title="Major cooldowns used on bosses only, not on trash.">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-jourganoff.html" style="color:#3FC7EB;">Jourganoff</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=87" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">15</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill bad" title="Low trinket activations (15).">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-klasbaktotem.html" style="color:#0070DD;">Klasbaktotem</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=71" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">18</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="bad">51%</span></td><td><span class="pill bad" title="drums uptime 51% (below the 80% target).">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-neraith.html" style="color:#AAD372;">Neraith</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=75" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">26</td><td><span class="bad">&#10007; boss-only</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill bad" title="Major cooldowns used on bosses only, not on trash.">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-kaylin.html" style="color:#FF7C0A;">Kaylin</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=77" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">27</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="bad">51%</span></td><td><span class="pill bad" title="drums uptime 51% (below the 80% target).">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-enhanz.html" style="color:#0070DD;">Enhanz</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=83" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">38</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="bad">51%</span></td><td><span class="pill bad" title="drums uptime 51% (below the 80% target).">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-peanutpewpew.html" style="color:#AAD372;">Peanutpewpew</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=82" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">42</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="bad">51%</span></td><td><span class="pill bad" title="drums uptime 51% (below the 80% target).">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-brightmir.html" style="color:#FFFFFF;">Brightmir</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=1" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">43</td><td><span class="bad">&#10007; boss-only</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill bad" title="Major cooldowns used on bosses only, not on trash.">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-goatedtotems.html" style="color:#0070DD;">Goatedtotems</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=4" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">46</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="bad">51%</span></td><td><span class="pill bad" title="drums uptime 51% (below the 80% target).">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-skindog.html" style="color:#0070DD;">Skindog</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=79" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">57</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="bad">51%</span></td><td><span class="pill bad" title="drums uptime 51% (below the 80% target).">✗</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-realblod.html" style="color:#C69B3A;">Realblod</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=80" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">17</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill warn" title="Low trinket activations (17).">⚠</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-manapulation.html" style="color:#3FC7EB;">Manapulation</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=3" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">19</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill warn" title="Low trinket activations (19).">⚠</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-vleesklak.html" style="color:#8788EE;">Vleesklak</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=93" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">23</td><td><span class="dim">&mdash;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill warn" title="Low trinket activations (23).">⚠</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-kunyaza.html" style="color:#FF7C0A;">Kunyaza</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=81" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">24</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill warn" title="Low trinket activations (24).">⚠</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-eatmys.html" style="color:#8788EE;">Eatmys</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=74" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">32</td><td><span class="dim">&mdash;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill warn">⚠</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-happyzappy.html" style="color:#0070DD;">Happyzappy</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=72" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">43</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill warn">⚠</span></td></tr></tbody>
+  </table></div>
+  
+  <details class="bench">
+    <summary>Show 5 more (good / no data)</summary>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Player</th><th class="num">Trinket Uses</th><th>CDs on Trash</th><th>Potions on Trash</th><th class="num">Drums Uptime</th><th>Status</th></tr></thead>
+      <tbody><tr><td><a href="../../raids/2026-06-10/player-nls.html" style="color:#FFF468;">Nls</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=70" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">33</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill good">✓</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-sossesoza.html" style="color:#C69B3A;">Sossesoza</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=78" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">33</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill good">✓</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-ginnemage.html" style="color:#3FC7EB;">Ginnemage</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=86" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">34</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill good">✓</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-mansgotdots.html" style="color:#8788EE;">Mansgotdots</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=73" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">39</td><td><span class="dim">&mdash;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill good">✓</span></td></tr><tr><td><a href="../../raids/2026-06-10/player-elyorah.html" style="color:#0070DD;">Elyorah</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=76" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num">46</td><td><span class="good">&#10003;</span></td><td><span class="dim">&mdash;</span></td><td class="num"><span class="dim">&mdash;</span></td><td><span class="pill good">✓</span></td></tr></tbody>
+    </table></div>
+  </details>
+  <div class="flag">Trinket gap: 1 player under 15 activations while top users are at 57+ -- trinkets should fire on trash too.</div><div class="flag">Lowest drummer uptime 51% -- chain drums between casters to keep this above 80%.</div><div class="flag">Monoferio, Neraith, Brightmir: major cooldowns held for bosses only across the night.</div>
+</section>
+<section class="panel" id="roster">
+  <h2>Player Roster</h2>
+  <div class="tablewrap"><table class="sortable">
+    <thead><tr>
+    <th>Player<span class="sort-arrow"></span></th>
+    <th class="num">Consumes<span class="sort-arrow"></span></th>
+    <th class="num">Gear<span class="sort-arrow"></span></th>
+    <th class="num">Deaths<span class="sort-arrow"></span></th>
+    <th class="num">Avoidable<span class="sort-arrow"></span></th>
+    <th class="num">Active%<span class="sort-arrow"></span></th>
+    <th class="num">Potions<span class="sort-arrow"></span></th>
+    <th class="num">Audit<span class="sort-arrow"></span></th>
+    </tr></thead>
+    <tbody><tr><td data-sort="Bloedmangel"><span class="role-ic" title="Tank" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/></svg></span> <a href="../../raids/2026-06-10/player-bloedmangel.html" style="color:#FF7C0A;">Bloedmangel</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=98" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="75"><span class="pill warn" title="Consumables 75% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">75% ⚠</span></td><td class="num" data-sort="3"><span class="pill bad" title="3 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">3 ✗</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">4 ✗</span></td><td class="num" data-sort="198">198k (tank)</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="5">5</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Bruun"><span class="role-ic" title="Tank" style="color:var(--blue)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 4-3 7-7 8-4-1-7-4-7-8V6z"/></svg></span> <a href="../../raids/2026-06-10/player-bruun.html" style="color:#F48CBA;">Bruun</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=88" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="83"><span class="pill good">83%</span></td><td class="num" data-sort="3"><span class="pill bad" title="3 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">3 ✗</span></td><td class="num" data-sort="5"><span class="pill bad" title="5 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">5 ✗</span></td><td class="num" data-sort="179">179k (tank)</td><td class="num" data-sort="55"><span class="pill warn" title="Active 55% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">55% ⚠</span></td><td class="num" data-sort="1">1</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Falkønn"><span class="role-ic" title="Healer" style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> <a href="../../raids/2026-06-10/player-falk-nn.html" style="color:#F48CBA;">Falkønn</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=101" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="67"><span class="pill warn" title="Consumables 67% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">67% ⚠</span></td><td class="num" data-sort="0"><span class="pill good">0</span></td><td class="num" data-sort="0"><span class="pill good">0</span></td><td class="num" data-sort="23">23k</td><td class="num" data-sort="71"><span class="pill warn" title="Active 71% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">71% ⚠</span></td><td class="num" data-sort="12">12</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Kaylin"><span class="role-ic" title="Healer" style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> <a href="../../raids/2026-06-10/player-kaylin.html" style="color:#FF7C0A;">Kaylin</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=77" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="78"><span class="pill warn" title="Consumables 78% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">78% ⚠</span></td><td class="num" data-sort="2"><span class="pill warn" title="2 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">2 ⚠</span></td><td class="num" data-sort="2"><span class="pill good">2</span></td><td class="num" data-sort="73">73k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="1">1</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Klasbaktotem"><span class="role-ic" title="Healer" style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> <a href="../../raids/2026-06-10/player-klasbaktotem.html" style="color:#0070DD;">Klasbaktotem</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=71" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="81"><span class="pill good">81%</span></td><td class="num" data-sort="1"><span class="pill warn" title="1 gear issue &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">1 ⚠</span></td><td class="num" data-sort="3"><span class="pill warn" title="3 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">3 ⚠</span></td><td class="num" data-sort="45">45k</td><td class="num" data-sort="99"><span class="pill good">99%</span></td><td class="num" data-sort="12">12</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Nucu"><span class="role-ic" title="Healer" style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> <a href="../../raids/2026-06-10/player-nucu.html" style="color:#FFFFFF;">Nucu</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=69" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="83"><span class="pill good">83%</span></td><td class="num" data-sort="3"><span class="pill bad" title="3 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">3 ✗</span></td><td class="num" data-sort="1"><span class="pill good">1</span></td><td class="num" data-sort="59">59k</td><td class="num" data-sort="99"><span class="pill good">99%</span></td><td class="num" data-sort="5">5</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Zympers"><span class="role-ic" title="Healer" style="color:var(--green)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span> <a href="../../raids/2026-06-10/player-zympers.html" style="color:#FFFFFF;">Zympers</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=84" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="92"><span class="pill good">92%</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">4 ✗</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">4 ✗</span></td><td class="num" data-sort="44">44k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="26">26</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Brightmir"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-brightmir.html" style="color:#FFFFFF;">Brightmir</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=1" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="89"><span class="pill good">89%</span></td><td class="num" data-sort="1"><span class="pill warn" title="1 gear issue &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">1 ⚠</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">4 ✗</span></td><td class="num" data-sort="80">80k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="23">23</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Eatmys"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-eatmys.html" style="color:#8788EE;">Eatmys</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=74" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="78"><span class="pill warn" title="Consumables 78% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">78% ⚠</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">4 ✗</span></td><td class="num" data-sort="6"><span class="pill bad" title="6 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">6 ✗</span></td><td class="num" data-sort="54">54k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="0">0</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Elyorah"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-elyorah.html" style="color:#0070DD;">Elyorah</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=76" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="92"><span class="pill good">92%</span></td><td class="num" data-sort="0"><span class="pill good">0</span></td><td class="num" data-sort="9"><span class="pill bad" title="9 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">9 ✗</span></td><td class="num" data-sort="156">156k</td><td class="num" data-sort="61"><span class="pill warn" title="Active 61% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">61% ⚠</span></td><td class="num" data-sort="4">4</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Enhanz"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-enhanz.html" style="color:#0070DD;">Enhanz</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=83" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="97"><span class="pill good">97%</span></td><td class="num" data-sort="0"><span class="pill good">0</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">4 ✗</span></td><td class="num" data-sort="40">40k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="24">24</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Ginnemage"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-ginnemage.html" style="color:#3FC7EB;">Ginnemage</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=86" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="89"><span class="pill good">89%</span></td><td class="num" data-sort="1"><span class="pill warn" title="1 gear issue &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">1 ⚠</span></td><td class="num" data-sort="1"><span class="pill good">1</span></td><td class="num" data-sort="27">27k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="9">9</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Goatedtotems"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-goatedtotems.html" style="color:#0070DD;">Goatedtotems</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=4" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="88"><span class="pill good">88%</span></td><td class="num" data-sort="2"><span class="pill warn" title="2 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">2 ⚠</span></td><td class="num" data-sort="10"><span class="pill bad" title="10 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">10 ✗</span></td><td class="num" data-sort="150">150k</td><td class="num" data-sort="52"><span class="pill warn" title="Active 52% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">52% ⚠</span></td><td class="num" data-sort="0">0</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Happyzappy"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-happyzappy.html" style="color:#0070DD;">Happyzappy</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=72" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="52"><span class="pill bad" title="Consumables 52% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">52% ✗</span></td><td class="num" data-sort="2"><span class="pill warn" title="2 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">2 ⚠</span></td><td class="num" data-sort="8"><span class="pill bad" title="8 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">8 ✗</span></td><td class="num" data-sort="123">123k</td><td class="num" data-sort="44"><span class="pill bad" title="Active 44% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">44% ✗</span></td><td class="num" data-sort="17">17</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Jourganoff"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-jourganoff.html" style="color:#3FC7EB;">Jourganoff</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=87" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="89"><span class="pill good">89%</span></td><td class="num" data-sort="1"><span class="pill warn" title="1 gear issue &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">1 ⚠</span></td><td class="num" data-sort="8"><span class="pill bad" title="8 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">8 ✗</span></td><td class="num" data-sort="34">34k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="7">7</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Kunyaza"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-kunyaza.html" style="color:#FF7C0A;">Kunyaza</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=81" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="92"><span class="pill good">92%</span></td><td class="num" data-sort="1"><span class="pill warn" title="1 gear issue &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">1 ⚠</span></td><td class="num" data-sort="3"><span class="pill warn" title="3 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">3 ⚠</span></td><td class="num" data-sort="107">107k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="0">0</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Manapulation"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-manapulation.html" style="color:#3FC7EB;">Manapulation</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=3" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="97"><span class="pill good">97%</span></td><td class="num" data-sort="15"><span class="pill bad" title="15 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">15 ✗</span></td><td class="num" data-sort="6"><span class="pill bad" title="6 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">6 ✗</span></td><td class="num" data-sort="41">41k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="0">0</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Mansgotdots"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-mansgotdots.html" style="color:#8788EE;">Mansgotdots</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=73" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="94"><span class="pill good">94%</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">4 ✗</span></td><td class="num" data-sort="12"><span class="pill bad" title="12 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">12 ✗</span></td><td class="num" data-sort="44">44k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="12">12</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Skindog"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-skindog.html" style="color:#0070DD;">Skindog</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=79" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="61"><span class="pill warn" title="Consumables 61% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">61% ⚠</span></td><td class="num" data-sort="2"><span class="pill warn" title="2 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">2 ⚠</span></td><td class="num" data-sort="6"><span class="pill bad" title="6 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">6 ✗</span></td><td class="num" data-sort="165">165k</td><td class="num" data-sort="61"><span class="pill warn" title="Active 61% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">61% ⚠</span></td><td class="num" data-sort="25">25</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Vleesklak"><span class="role-ic" title="Caster" style="color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/></svg></span> <a href="../../raids/2026-06-10/player-vleesklak.html" style="color:#8788EE;">Vleesklak</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=93" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="92"><span class="pill good">92%</span></td><td class="num" data-sort="4"><span class="pill bad" title="4 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">4 ✗</span></td><td class="num" data-sort="7"><span class="pill bad" title="7 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">7 ✗</span></td><td class="num" data-sort="35">35k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="15">15</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Monoferio"><span class="role-ic" title="Physical" style="color:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg></span> <a href="../../raids/2026-06-10/player-monoferio.html" style="color:#F48CBA;">Monoferio</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=482" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="19"><span class="pill bad" title="Consumables 19% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">19% ✗</span></td><td class="num" data-sort="5"><span class="pill bad" title="5 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">5 ✗</span></td><td class="num" data-sort="0"><span class="pill good">0</span></td><td class="num" data-sort="10">10k</td><td class="num" data-sort="17"><span class="pill bad" title="Active 17% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">17% ✗</span></td><td class="num" data-sort="3">3</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Neraith"><span class="role-ic" title="Physical" style="color:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg></span> <a href="../../raids/2026-06-10/player-neraith.html" style="color:#AAD372;">Neraith</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=75" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="94"><span class="pill good">94%</span></td><td class="num" data-sort="0"><span class="pill good">0</span></td><td class="num" data-sort="3"><span class="pill warn" title="3 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">3 ⚠</span></td><td class="num" data-sort="44">44k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="11">11</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Nls"><span class="role-ic" title="Physical" style="color:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg></span> <a href="../../raids/2026-06-10/player-nls.html" style="color:#FFF468;">Nls</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=70" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="94"><span class="pill good">94%</span></td><td class="num" data-sort="0"><span class="pill good">0</span></td><td class="num" data-sort="3"><span class="pill warn" title="3 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">3 ⚠</span></td><td class="num" data-sort="54">54k</td><td class="num" data-sort="90"><span class="pill good">90%</span></td><td class="num" data-sort="17">17</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Peanutpewpew"><span class="role-ic" title="Physical" style="color:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg></span> <a href="../../raids/2026-06-10/player-peanutpewpew.html" style="color:#AAD372;">Peanutpewpew</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=82" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="67"><span class="pill warn" title="Consumables 67% &amp;mdash; below the ~80% target; some flask / elixir / food / rune uptime missing.">67% ⚠</span></td><td class="num" data-sort="2"><span class="pill warn" title="2 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">2 ⚠</span></td><td class="num" data-sort="5"><span class="pill bad" title="5 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">5 ✗</span></td><td class="num" data-sort="30">30k</td><td class="num" data-sort="100"><span class="pill good">100%</span></td><td class="num" data-sort="11">11</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Realblod"><span class="role-ic" title="Physical" style="color:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg></span> <a href="../../raids/2026-06-10/player-realblod.html" style="color:#C69B3A;">Realblod</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=80" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="92"><span class="pill good">92%</span></td><td class="num" data-sort="1"><span class="pill warn" title="1 gear issue &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">1 ⚠</span></td><td class="num" data-sort="6"><span class="pill bad" title="6 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">6 ✗</span></td><td class="num" data-sort="167">167k</td><td class="num" data-sort="49"><span class="pill bad" title="Active 49% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">49% ✗</span></td><td class="num" data-sort="13">13</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr><tr><td data-sort="Sossesoza"><span class="role-ic" title="Physical" style="color:var(--orange)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 17.5 3 6V3h3l11.5 11.5M13 19l6-6M16 16l4 4M19 21l2-2"/></svg></span> <a href="../../raids/2026-06-10/player-sossesoza.html" style="color:#C69B3A;">Sossesoza</a> <a class="external" href="https://fresh.warcraftlogs.com/reports/Kxhq3fYr92WzwGQP#type=summary&amp;source=78" target="_blank" rel="noopener" title="WCL">&#8599;</a></td><td class="num" data-sort="81"><span class="pill good">81%</span></td><td class="num" data-sort="2"><span class="pill warn" title="2 gear issues &amp;mdash; unenchanted slots and/or budget (uncommon) gems. Open the player page for the itemised list.">2 ⚠</span></td><td class="num" data-sort="12"><span class="pill bad" title="12 deaths tonight &amp;mdash; 3 = caution, 4+ = flagged.">12 ✗</span></td><td class="num" data-sort="120">120k</td><td class="num" data-sort="52"><span class="pill warn" title="Active 52% &amp;mdash; present for well under the full night. Verify late join, disconnect or early leave; not automatically misconduct.">52% ⚠</span></td><td class="num" data-sort="0">0</td><td class="num" data-sort="-1"><span class="dim">&mdash;</span></td></tr></tbody>
+  </table></div>
+  <p class="subline">Click a column header to sort. Avoidable damage red = top-5 non-tank. Potions = Super Mana/Haste/Destruction/Super Healing Potion uses this night. Audit = tbc-audit.com grade (DPS specs only); click a player's name for the full score breakdown.</p>
+  
+</section>
+<details class="legend">
+  <summary>Officer Notes</summary>
+  <div class="legend-body"><h3 style="font-size:13px">Tanks</h3><p><strong><a href="../../raids/2026-06-10/player-bruun-paladin.html" style="color:#e2e8f0;">Bruun (Paladin)</a>:</strong> 3 boss deaths + 5 total. Active% 43.8% is low even for an off-tank. Zero Shield Wall, zero Last Stand, zero Divine Intervention used all night. Three gear issues (wrong chest/breastplate kits, wrong legs enchant). Should have Divine Intervention on standby for wipe recovery on Vashj/KT progression attempts.</p><p><strong><a href="../../raids/2026-06-10/player-bloedmangel-druid.html" style="color:#e2e8f0;">Bloedmangel (Druid)</a>:</strong> 100% active, handled main tank duties cleanly. Three gear issues (both shoulder slots Aldor Honor, chest unenchanted). Own Innervate cast 0 times on boss (cast 0 total) — Kaylin innervated 7 boss/1 trash and Kunyaza innervated 4 boss/1 trash so mana wasn&#x27;t a raid problem, but Bloedmangel&#x27;s innervate going unused is a free mana potion left on the table.</p><h3 style="font-size:13px">Healers</h3><p><strong><a href="../../raids/2026-06-10/player-nucu-priest.html" style="color:#e2e8f0;">Nucu (Priest)</a>:</strong> Strong night — 99% active, 1 death, 1,639 HPS. Inner Fire at 50.2% uptime — this self-buff costs nothing and should be near-100%. Shadowfiend used 10 times (good). No Power Infusion (Holy spec — no PI talent, correct).</p><p><strong><a href="../../raids/2026-06-10/player-klasbaktotem-shaman.html" style="color:#e2e8f0;">Klasbaktotem (Shaman)</a>:</strong> 61.8% active — warning. 3 deaths but all on trash, not a boss problem. Mana Tide used 3 times (solid). Zero Heroism (Enhancement shamans covered all Heroisms — fine). No bracers/OH enchant flagged.</p><p><strong><a href="../../raids/2026-06-10/player-kaylin-druid.html" style="color:#e2e8f0;">Kaylin (Druid)</a>:</strong> 100% active, good Innervate distribution (7 boss). 69.7% overheal is above normal even for a druid — may be overlapping with other healers on Lifebloom stacks. 2 deaths (1 on trash, manageable).</p><p><strong><a href="../../raids/2026-06-10/player-zympers-priest.html" style="color:#e2e8f0;">Zympers (Priest)</a>:</strong> 100% active, 1,724 HPS — highest healer throughput. 4 gear issues need addressing (legs/boots/bracers enchants, gem). Inner Fire only 48.8% — same issue as Nucu. 4 deaths (2 boss, 2 trash). Power Infusion: 0 (Holy spec — correct). Shadowfiend used 10 times.</p><p><strong><a href="../../raids/2026-06-10/player-falk-nn-paladin.html" style="color:#e2e8f0;">Falkønn (Paladin)</a>:</strong> 0 deaths, clean performance. Judgement of Wisdom uptime is the problem — 15% on Al&#x27;ar, 31% on Karathress, 33% on Vashj. JoW should be near-100% on any melee-heavy fight. When there&#x27;s no tank in melee range (Al&#x27;ar P2, Vashj P1), Falkønn needs to step in and maintain it manually rather than waiting for a target.</p><h3 style="font-size:13px">DPS</h3><p><strong><a href="../../raids/2026-06-10/player-enhancement-shamans-systemic-positioning-problem.html" style="color:#e2e8f0;">Enhancement shamans — systemic positioning problem</a>:</strong> Goatedtotems (10 deaths, 151k avoidable), Elyorah (9 deaths, 156k avoidable), Happyzappy (8 deaths, 123k avoidable), Skindog (6 deaths, 165k avoidable). Combined the four Enhancement shamans took 595k avoidable damage and died 33 times. Whirlwind is the dominant source (73k, 81k, 64k, 115k respectively). They need to break melee contact on Whirlwind/Cleave mechanics.</p></div>
+</details>
+<footer>Generated by tools/raid-html.</footer>
+</div>
+<script>
+document.querySelectorAll('table.sortable').forEach(function (table) {
+  var dir = {};
+  var heads = table.querySelectorAll('th');
+  heads.forEach(function (th, col) {
+    th.addEventListener('click', function () {
+      var rows = Array.from(table.tBodies[0].rows);
+      dir[col] = -(dir[col] || -1);
+      rows.sort(function (a, b) {
+        var av = a.cells[col].getAttribute('data-sort');
+        var bv = b.cells[col].getAttribute('data-sort');
+        var an = parseFloat(av), bn = parseFloat(bv);
+        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir[col];
+        return String(av).localeCompare(String(bv)) * dir[col];
+      });
+      rows.forEach(function (r) { table.tBodies[0].appendChild(r); });
+      heads.forEach(function (h) {
+        var arrow = h.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      var activeArrow = th.querySelector('.sort-arrow');
+      if (activeArrow) activeArrow.textContent = dir[col] > 0 ? ' ▲' : ' ▼';
+    });
+  });
+});
+</script>
+</body>
+</html>

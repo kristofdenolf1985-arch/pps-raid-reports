@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Pan Syndrome — Pull-by-Pull Timeline — 2026-05-27</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090c; --surface: #0d0e12; --surface2: #16181f;
+  --border: #242836; --border2: #1e2230;
+  --text: #e8eaf0; --muted: #8b90a0; --faint: #5f6474;
+  --green: #39d98a; --yellow: #ffb020; --orange: #ff8f4d; --red: #ff5c5c;
+  --gold: #e5cc80; --accent: #b968f0; --blue: #4a94ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+}
+::selection { background: var(--yellow); color: #000; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+a { color: #7aa2ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 {
+  font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 42px;
+  line-height: 1; letter-spacing: 0.01em; margin: 0 0 6px; color: #fff;
+}
+h2 {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 14px; color: #c8ccd8;
+}
+.num, td.num, th.num, .stat .value, .pill, .value {
+  font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+}
+.card, section.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 24px; margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.subline { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 4px 11px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.topnav { margin-bottom: 16px; font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .value { font-size: 26px; font-weight: 600; }
+.stat .label { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.stat .sub { font-size: 12px; color: var(--faint); margin-top: 2px; }
+.stat.accent { border-color: rgba(255,92,92,.4); }
+.stat.accent .value { color: var(--red); }
+.tablewrap { overflow-x: auto; position: relative; }
+.tablewrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--surface));
+  pointer-events: none;
+}
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { position: sticky; left: 0; background: var(--surface); }
+td.num, th.num { text-align: right; }
+.sort-arrow { margin-left: 4px; opacity: 0.6; }
+.external { font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: normal; margin-left: 8px; }
+.dim { color: var(--muted); opacity: 0.55; }
+.good { color: var(--green); }
+.warn { color: var(--yellow); }
+.caution { color: var(--orange); }
+.bad { color: var(--red); }
+.gold { color: var(--gold); }
+.pill {
+  display: inline-block; min-width: 44px; text-align: center;
+  padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;
+}
+.pill.good { background: rgba(57,217,138,.15); color: var(--green); }
+.pill.warn { background: rgba(255,176,32,.15); color: var(--yellow); }
+.pill.caution { background: rgba(255,143,77,.15); color: var(--orange); }
+.pill.bad { background: rgba(255,92,92,.15); color: var(--red); }
+.pill.na { background: transparent; color: var(--muted); opacity: .55; }
+.pill.gold { background: rgba(229,204,128,.15); color: var(--gold); }
+.pill.info { background: rgba(74,148,255,.15); color: var(--blue); }
+.audit-detail { font-size: 12px; color: var(--muted); margin-top: 6px; white-space: normal; font-family: 'IBM Plex Sans', sans-serif; }
+[title].pill, span.bad[title] { cursor: help; }
+.role {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--border2); color: var(--muted);
+}
+.callout {
+  border-left: 3px solid var(--red); background: rgba(255,92,92,.08);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.flag {
+  border-left: 3px solid var(--yellow); background: rgba(255,176,32,.07);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cards2 .card { margin-bottom: 0; min-width: 0; }
+.wraptext { white-space: normal; min-width: 180px; }
+.role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
+.role-ic svg { width: 15px; height: 15px; }
+.off-head {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #c8ccd8;
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.off-head span { font-family: 'IBM Plex Sans', sans-serif; text-transform: none; letter-spacing: 0; font-size: 11px; color: var(--faint); }
+.off-head a { margin-left: auto; }
+.off-row { padding: 9px 0; border-bottom: 1px solid var(--border2); }
+.off-row:last-child { border-bottom: none; }
+.off-name a:first-child { font-weight: 600; }
+.off-metric { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px; }
+.off-detail { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sortable th { cursor: pointer; user-select: none; }
+.sortable th:hover { color: var(--text); }
+details.bench { margin-top: 12px; }
+details.bench summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.bench ul { margin: 8px 0 0; }
+details.legend {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+}
+details.legend summary { cursor: pointer; color: var(--muted); font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+details.legend .legend-body { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.legend .legend-body p { margin: 6px 0; }
+details.legend .legend-body strong { color: var(--text); }
+footer { color: var(--faint); font-size: 12px; margin-top: 24px; }
+body.compact .card, body.compact section.panel { padding: 10px 14px; margin-bottom: 10px; }
+body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35; }
+@media (max-width: 1000px) {
+  .cards2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topnav"><a href="index.html">&larr; Back to summary</a></div>
+<section class="panel">
+  <h1>Pull-by-Pull Timeline</h1>
+  <p class="subline" style="margin:0">Wednesday 2026-05-27 &middot; every trash pull, wipe, kill and travel gap, in order.</p>
+</section>
+<section class="panel">
+  <div style="display:flex;flex-wrap:wrap;gap:18px;font-size:12px;color:var(--muted)">
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px;background:var(--faint)"></span>Trash</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px;background:var(--red)"></span>Wipe</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px;background:var(--green)"></span>Kill</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px;background:repeating-linear-gradient(45deg,var(--blue) 0 3px,rgba(0,0,0,.35) 3px 6px)"></span>Travel to next boss</span>
+    <span><span style="display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:6px;vertical-align:-2px;background:repeating-linear-gradient(45deg,var(--border2) 0 3px,var(--surface) 3px 6px)"></span>Unaccounted gap</span>
+  </div>
+  <p class="subline" style="margin:8px 0 0">Hover any segment for its name and duration.</p>
+</section>
+<section class="panel">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:6px">
+    <h2 style="margin-bottom:2px">Serpentshrine Cavern</h2>
+    <span class="subline">6 bosses</span>
+  </div>
+    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Hydross</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">9:42</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:6.177%;background:var(--faint)" title="Coilfang Beast-Tamer (0:36)"></div><div style="width:1.777%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:10)"></div><div style="width:8.308%;background:var(--faint)" title="Underbog Colossus (0:48)"></div><div style="width:4.789%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:28)"></div><div style="width:5.155%;background:var(--faint)" title="Coilfang Beast-Tamer (0:30)"></div><div style="width:4.294%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:25)"></div><div style="width:4.141%;background:var(--faint)" title="Hydross the Unstable (0:24)"></div><div style="width:2.727%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:16)"></div><div style="width:4.663%;background:var(--faint)" title="Hydross the Unstable (0:27)"></div><div style="width:6.606%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:38)"></div><div style="width:4.609%;background:var(--faint)" title="Hydross the Unstable (0:27)"></div><div style="width:1.175%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:07)"></div><div style="width:45.580%;background:var(--green)" title="Hydross the Unstable (4:25)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Lurker</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--red);background:rgba(255,92,92,.12);border:1px solid rgba(255,92,92,.3);border-radius:5px;padding:1px 6px" title="1 wipe">1&#215;</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">20:25</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:3.106%;background:var(--faint)" title="Vashj&#x27;ir Honor Guard (0:38)"></div><div style="width:1.733%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:21)"></div><div style="width:3.694%;background:var(--faint)" title="Vashj&#x27;ir Honor Guard (0:45)"></div><div style="width:1.248%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:15)"></div><div style="width:3.265%;background:var(--faint)" title="Vashj&#x27;ir Honor Guard (0:40)"></div><div style="width:1.872%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:23)"></div><div style="width:3.436%;background:var(--faint)" title="Vashj&#x27;ir Honor Guard (0:42)"></div><div style="width:1.456%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:18)"></div><div style="width:3.318%;background:var(--faint)" title="Vashj&#x27;ir Honor Guard (0:41)"></div><div style="width:2.057%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:25)"></div><div style="width:3.420%;background:var(--faint)" title="Vashj&#x27;ir Honor Guard (0:42)"></div><div style="width:9.768%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (2:00)"></div><div style="width:21.657%;background:var(--red)" title="The Lurker Below (4:25) — 0% wipe"></div><div style="width:24.279%;background:repeating-linear-gradient(45deg, var(--blue) 0 4px, rgba(0,0,0,.35) 4px 8px)" title="(The Lurker Below -&gt; The Lurker Below) (4:57)"></div><div style="width:15.691%;background:var(--green)" title="The Lurker Below (3:12)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Leotheras</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">16:12</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:4.354%;background:var(--faint)" title="Coilfang Serpentguard (0:42)"></div><div style="width:3.469%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:34)"></div><div style="width:2.499%;background:var(--faint)" title="Underbog Colossus (0:24)"></div><div style="width:1.997%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:19)"></div><div style="width:4.785%;background:var(--faint)" title="Coilfang Serpentguard (0:47)"></div><div style="width:1.794%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:17)"></div><div style="width:4.380%;background:var(--faint)" title="Coilfang Serpentguard (0:43)"></div><div style="width:4.216%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:41)"></div><div style="width:0.000%;background:var(--faint)" title="Greyheart Nether-Mage (0:00)"></div><div style="width:2.211%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:22)"></div><div style="width:2.297%;background:var(--faint)" title="Greyheart Nether-Mage (0:22)"></div><div style="width:1.220%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:12)"></div><div style="width:9.815%;background:var(--faint)" title="Greyheart Skulker (1:35)"></div><div style="width:4.575%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:44)"></div><div style="width:7.478%;background:var(--faint)" title="Greyheart Skulker (1:13)"></div><div style="width:1.372%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:13)"></div><div style="width:0.000%;background:var(--faint)" title="Unknown (0:00)"></div><div style="width:1.191%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:12)"></div><div style="width:5.199%;background:var(--faint)" title="Greyheart Skulker (0:51)"></div><div style="width:1.902%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:18)"></div><div style="width:4.631%;background:var(--faint)" title="Greyheart Shield-Bearer (0:45)"></div><div style="width:7.063%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (1:09)"></div><div style="width:23.552%;background:var(--green)" title="Leotheras the Blind (3:49)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Karathress</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">11:54</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:3.494%;background:var(--faint)" title="Greyheart Shield-Bearer (0:25)"></div><div style="width:2.412%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:17)"></div><div style="width:3.615%;background:var(--faint)" title="Greyheart Shield-Bearer (0:26)"></div><div style="width:7.569%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:54)"></div><div style="width:3.278%;background:var(--faint)" title="Underbog Colossus (0:23)"></div><div style="width:3.120%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:22)"></div><div style="width:3.930%;background:var(--faint)" title="Underbog Colossus (0:28)"></div><div style="width:2.970%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:21)"></div><div style="width:6.074%;background:var(--faint)" title="Underbog Colossus (0:43)"></div><div style="width:3.162%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:23)"></div><div style="width:6.500%;background:var(--faint)" title="Underbog Colossus (0:46)"></div><div style="width:2.399%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:17)"></div><div style="width:4.117%;background:var(--faint)" title="Underbog Colossus (0:29)"></div><div style="width:13.526%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (1:37)"></div><div style="width:33.835%;background:var(--green)" title="Fathom-Lord Karathress (4:02)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Morogrim</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">12:05</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:4.370%;background:var(--faint)" title="Coilfang Shatterer (0:32)"></div><div style="width:3.649%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:26)"></div><div style="width:6.955%;background:var(--faint)" title="Coilfang Serpentguard (0:50)"></div><div style="width:3.955%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:29)"></div><div style="width:0.068%;background:var(--faint)" title="Tidewalker Warrior (0:00)"></div><div style="width:5.018%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:36)"></div><div style="width:0.646%;background:var(--faint)" title="Morogrim Tidewalker (0:05)"></div><div style="width:7.157%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:52)"></div><div style="width:12.719%;background:var(--faint)" title="Tidewalker Warrior (1:32)"></div><div style="width:5.140%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:37)"></div><div style="width:12.574%;background:var(--faint)" title="Tidewalker Warrior (1:31)"></div><div style="width:6.453%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:47)"></div><div style="width:31.295%;background:var(--green)" title="Morogrim Tidewalker (3:47)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Vashj</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">17:26</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:1.527%;background:var(--faint)" title="Tidewalker Lurker (0:16)"></div><div style="width:52.175%;background:repeating-linear-gradient(45deg, var(--blue) 0 4px, rgba(0,0,0,.35) 4px 8px)" title="(Tidewalker Lurker -&gt; Lady Vashj) (9:06)"></div><div style="width:46.298%;background:var(--green)" title="Lady Vashj (8:04)"></div></div>
+    </div></section><section class="panel">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:6px">
+    <h2 style="margin-bottom:2px">Tempest Keep</h2>
+    <span class="subline">4 bosses</span>
+  </div>
+    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Al&#x27;ar</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">26:37</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:0.007%;background:var(--faint)" title="Umbrafen Eel (0:00)"></div><div style="width:9.430%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (2:31)"></div><div style="width:0.086%;background:var(--faint)" title="Unknown (0:01)"></div><div style="width:15.072%;background:repeating-linear-gradient(45deg, var(--blue) 0 4px, rgba(0,0,0,.35) 4px 8px)" title="(Unknown -&gt; Bloodwarder Marshal) (4:01)"></div><div style="width:5.571%;background:var(--faint)" title="Bloodwarder Marshal (1:29)"></div><div style="width:2.503%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:40)"></div><div style="width:3.152%;background:var(--faint)" title="Bloodwarder Vindicator (0:50)"></div><div style="width:1.595%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:25)"></div><div style="width:3.262%;background:var(--faint)" title="Bloodwarder Vindicator (0:52)"></div><div style="width:1.953%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:31)"></div><div style="width:3.508%;background:var(--faint)" title="Tempest Falconer (0:56)"></div><div style="width:3.105%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:50)"></div><div style="width:4.510%;background:var(--faint)" title="Tempest Falconer (1:12)"></div><div style="width:4.766%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (1:16)"></div><div style="width:2.054%;background:var(--faint)" title="Phoenix-Hawk (0:33)"></div><div style="width:2.367%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:38)"></div><div style="width:2.140%;background:var(--faint)" title="Phoenix-Hawk (0:34)"></div><div style="width:1.248%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:20)"></div><div style="width:2.123%;background:var(--faint)" title="Phoenix-Hawk (0:34)"></div><div style="width:1.380%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:22)"></div><div style="width:1.909%;background:var(--faint)" title="Phoenix-Hawk (0:30)"></div><div style="width:5.116%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (1:22)"></div><div style="width:23.142%;background:var(--green)" title="Al&#x27;ar (6:10)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Void Reaver</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--red);background:rgba(255,92,92,.12);border:1px solid rgba(255,92,92,.3);border-radius:5px;padding:1px 6px" title="1 wipe">1&#215;</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">23:29</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:1.794%;background:var(--faint)" title="Crystalcore Devastator (0:25)"></div><div style="width:1.494%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:21)"></div><div style="width:2.069%;background:var(--faint)" title="Crystalcore Sentinel (0:29)"></div><div style="width:3.287%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:46)"></div><div style="width:1.990%;background:var(--faint)" title="Crystalcore Devastator (0:28)"></div><div style="width:3.920%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:55)"></div><div style="width:4.047%;background:var(--faint)" title="Crystalcore Devastator (0:57)"></div><div style="width:1.978%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:28)"></div><div style="width:4.776%;background:var(--faint)" title="Crystalcore Devastator (1:07)"></div><div style="width:2.101%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:30)"></div><div style="width:4.275%;background:var(--faint)" title="Crystalcore Devastator (1:00)"></div><div style="width:3.509%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:49)"></div><div style="width:5.141%;background:var(--faint)" title="Crystalcore Devastator (1:12)"></div><div style="width:1.473%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:21)"></div><div style="width:3.601%;background:var(--faint)" title="Crystalcore Sentinel (0:51)"></div><div style="width:0.937%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:13)"></div><div style="width:3.378%;background:var(--faint)" title="Crystalcore Mechanic (0:48)"></div><div style="width:14.187%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (3:20)"></div><div style="width:1.690%;background:var(--red)" title="Void Reaver (0:24) — 100% wipe"></div><div style="width:22.225%;background:repeating-linear-gradient(45deg, var(--blue) 0 4px, rgba(0,0,0,.35) 4px 8px)" title="(Void Reaver -&gt; Void Reaver) (5:13)"></div><div style="width:12.127%;background:var(--green)" title="Void Reaver (2:51)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Solarian</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">13:29</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:0.000%;background:var(--faint)" title="Unknown (0:00)"></div><div style="width:13.717%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (1:51)"></div><div style="width:3.814%;background:var(--faint)" title="Astromancer Lord (0:31)"></div><div style="width:1.792%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:15)"></div><div style="width:3.178%;background:var(--faint)" title="Bloodwarder Squire (0:26)"></div><div style="width:2.743%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:22)"></div><div style="width:3.538%;background:var(--faint)" title="Crystalcore Sentinel (0:29)"></div><div style="width:2.130%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:17)"></div><div style="width:3.096%;background:var(--faint)" title="Bloodwarder Squire (0:25)"></div><div style="width:6.068%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:49)"></div><div style="width:12.423%;background:var(--faint)" title="Nether Scryer (1:41)"></div><div style="width:9.868%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (1:20)"></div><div style="width:2.734%;background:var(--faint)" title="Bloodwarder Squire (0:22)"></div><div style="width:3.064%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:25)"></div><div style="width:2.642%;background:var(--faint)" title="Bloodwarder Squire (0:21)"></div><div style="width:4.261%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:34)"></div><div style="width:2.897%;background:var(--faint)" title="Bloodwarder Squire (0:23)"></div><div style="width:6.114%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:49)"></div><div style="width:15.921%;background:var(--green)" title="High Astromancer Solarian (2:09)"></div></div>
+    </div>    <div style="margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+        <span style="font-size:13px;color:var(--text);flex:1">Kael&#x27;thas</span>
+        
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600">20:19</span>
+      </div>
+      <div style="display:flex;height:16px;border-radius:4px;overflow:hidden;gap:1px;background:var(--bg)"><div style="width:3.065%;background:var(--faint)" title="Crimson Hand Inquisitor (0:37)"></div><div style="width:2.478%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:30)"></div><div style="width:4.554%;background:var(--faint)" title="Crimson Hand Blood Knight (0:56)"></div><div style="width:1.908%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:23)"></div><div style="width:12.359%;background:var(--faint)" title="Crimson Hand Blood Knight (2:31)"></div><div style="width:10.413%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (2:07)"></div><div style="width:4.269%;background:var(--faint)" title="Bloodwarder Marshal (0:52)"></div><div style="width:1.569%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:19)"></div><div style="width:4.326%;background:var(--faint)" title="Bloodwarder Marshal (0:53)"></div><div style="width:2.207%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:27)"></div><div style="width:5.327%;background:var(--faint)" title="Bloodwarder Marshal (1:05)"></div><div style="width:6.381%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (1:18)"></div><div style="width:0.000%;background:var(--faint)" title="Kael&#x27;thas Sunstrider (0:00)"></div><div style="width:2.741%;background:repeating-linear-gradient(45deg, var(--border2) 0 4px, var(--surface) 4px 8px)" title="no logged activity (0:33)"></div><div style="width:38.404%;background:var(--green)" title="Kael&#x27;thas Sunstrider (7:48)"></div></div>
+    </div></section>
+<footer>Generated by tools/raid-html.</footer>
+</div>
+<script>
+document.querySelectorAll('table.sortable').forEach(function (table) {
+  var dir = {};
+  var heads = table.querySelectorAll('th');
+  heads.forEach(function (th, col) {
+    th.addEventListener('click', function () {
+      var rows = Array.from(table.tBodies[0].rows);
+      dir[col] = -(dir[col] || -1);
+      rows.sort(function (a, b) {
+        var av = a.cells[col].getAttribute('data-sort');
+        var bv = b.cells[col].getAttribute('data-sort');
+        var an = parseFloat(av), bn = parseFloat(bv);
+        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir[col];
+        return String(av).localeCompare(String(bv)) * dir[col];
+      });
+      rows.forEach(function (r) { table.tBodies[0].appendChild(r); });
+      heads.forEach(function (h) {
+        var arrow = h.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      var activeArrow = th.querySelector('.sort-arrow');
+      if (activeArrow) activeArrow.textContent = dir[col] > 0 ? ' ▲' : ' ▼';
+    });
+  });
+});
+</script>
+</body>
+</html>
