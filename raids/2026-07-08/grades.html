@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Pan Syndrome — tbc-audit Grades — 2026-07-08</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090c; --surface: #0d0e12; --surface2: #16181f;
+  --border: #242836; --border2: #1e2230;
+  --text: #e8eaf0; --muted: #8b90a0; --faint: #5f6474;
+  --green: #39d98a; --yellow: #ffb020; --orange: #ff8f4d; --red: #ff5c5c;
+  --gold: #e5cc80; --accent: #b968f0; --blue: #4a94ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+}
+::selection { background: var(--yellow); color: #000; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+a { color: #7aa2ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 {
+  font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 42px;
+  line-height: 1; letter-spacing: 0.01em; margin: 0 0 6px; color: #fff;
+}
+h2 {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 14px; color: #c8ccd8;
+}
+.num, td.num, th.num, .stat .value, .pill, .value {
+  font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+}
+.card, section.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 24px; margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.subline { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 4px 11px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.topnav { margin-bottom: 16px; font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .value { font-size: 26px; font-weight: 600; }
+.stat .label { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.stat .sub { font-size: 12px; color: var(--faint); margin-top: 2px; }
+.stat.accent { border-color: rgba(255,92,92,.4); }
+.stat.accent .value { color: var(--red); }
+.tablewrap { overflow-x: auto; position: relative; }
+.tablewrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--surface));
+  pointer-events: none;
+}
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { position: sticky; left: 0; background: var(--surface); }
+td.num, th.num { text-align: right; }
+.sort-arrow { margin-left: 4px; opacity: 0.6; }
+.external { font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: normal; margin-left: 8px; }
+.dim { color: var(--muted); opacity: 0.55; }
+.good { color: var(--green); }
+.warn { color: var(--yellow); }
+.caution { color: var(--orange); }
+.bad { color: var(--red); }
+.gold { color: var(--gold); }
+.pill {
+  display: inline-block; min-width: 44px; text-align: center;
+  padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;
+}
+.pill.good { background: rgba(57,217,138,.15); color: var(--green); }
+.pill.warn { background: rgba(255,176,32,.15); color: var(--yellow); }
+.pill.caution { background: rgba(255,143,77,.15); color: var(--orange); }
+.pill.bad { background: rgba(255,92,92,.15); color: var(--red); }
+.pill.na { background: transparent; color: var(--muted); opacity: .55; }
+.pill.gold { background: rgba(229,204,128,.15); color: var(--gold); }
+.pill.info { background: rgba(74,148,255,.15); color: var(--blue); }
+.audit-detail { font-size: 12px; color: var(--muted); margin-top: 6px; white-space: normal; font-family: 'IBM Plex Sans', sans-serif; }
+[title].pill, span.bad[title] { cursor: help; }
+.role {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--border2); color: var(--muted);
+}
+.callout {
+  border-left: 3px solid var(--red); background: rgba(255,92,92,.08);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.flag {
+  border-left: 3px solid var(--yellow); background: rgba(255,176,32,.07);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cards2 .card { margin-bottom: 0; min-width: 0; }
+.wraptext { white-space: normal; min-width: 180px; }
+.role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
+.role-ic svg { width: 15px; height: 15px; }
+.off-head {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #c8ccd8;
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.off-head span { font-family: 'IBM Plex Sans', sans-serif; text-transform: none; letter-spacing: 0; font-size: 11px; color: var(--faint); }
+.off-head a { margin-left: auto; }
+.off-row { padding: 9px 0; border-bottom: 1px solid var(--border2); }
+.off-row:last-child { border-bottom: none; }
+.off-name a:first-child { font-weight: 600; }
+.off-metric { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px; }
+.off-detail { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sortable th { cursor: pointer; user-select: none; }
+.sortable th:hover { color: var(--text); }
+details.bench { margin-top: 12px; }
+details.bench summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.bench ul { margin: 8px 0 0; }
+details.legend {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+}
+details.legend summary { cursor: pointer; color: var(--muted); font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+details.legend .legend-body { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.legend .legend-body p { margin: 6px 0; }
+details.legend .legend-body strong { color: var(--text); }
+footer { color: var(--faint); font-size: 12px; margin-top: 24px; }
+body.compact .card, body.compact section.panel { padding: 10px 14px; margin-bottom: 10px; }
+body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35; }
+@media (max-width: 1000px) {
+  .cards2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topnav"><a href="index.html">&larr; Back to summary</a></div>
+<section class="panel">
+<h1>Raid Grades — cZGbYwvytVgAHF3C — 2026-07-08</h1>
+<p>Source: tbc-audit.com (API v121)</p>
+<h2>Grade Matrix</h2>
+<table><thead><tr><th>Player</th><th>Class</th><th>Lurker</th><th>Hydross</th><th>Leo</th><th>Kara</th><th>Moro</th><th>Vashj</th><th>Al'ar</th><th>VR</th><th>Sol</th><th>KT</th><th>HKM</th><th>Gruul</th><th>Avg Score</th></tr></thead><tbody><tr><td>Brightmir</td><td>Priest</td><td>A</td><td>A</td><td>A</td><td>B</td><td>S</td><td>B</td><td>B</td><td>S</td><td>A</td><td>B</td><td>S</td><td>S</td><td>88.7</td></tr><tr><td>Skindog</td><td>Shaman</td><td>B</td><td>A</td><td>A</td><td>A</td><td>A</td><td>C</td><td>B</td><td>A</td><td>B</td><td>B</td><td>B</td><td>B</td><td>81.3</td></tr><tr><td>Kokowarrior</td><td>Warrior</td><td>A</td><td>A</td><td>B</td><td>A</td><td>A</td><td>C</td><td>B</td><td>B</td><td>B</td><td>B</td><td>A</td><td>B</td><td>81</td></tr><tr><td>Jourganoff</td><td>Mage</td><td>A</td><td>B</td><td>B</td><td>A</td><td>S</td><td>B</td><td>D</td><td>B</td><td>B</td><td>B</td><td>B</td><td>C</td><td>79.2</td></tr><tr><td>Nuudle</td><td>Warrior</td><td>C</td><td>B</td><td>B</td><td>A</td><td>B</td><td>C</td><td>B</td><td>A</td><td>B</td><td>D</td><td>A</td><td>B</td><td>76.8</td></tr><tr><td>Enhanz</td><td>Shaman</td><td>A</td><td>A</td><td>B</td><td>A</td><td>B</td><td>C</td><td>B</td><td>A</td><td>B</td><td>C</td><td>C</td><td>B</td><td>76.2</td></tr><tr><td>Bruun</td><td>Paladin</td><td>B</td><td>B</td><td>B</td><td>B</td><td>B</td><td>C</td><td>C</td><td>B</td><td>B</td><td>C</td><td>B</td><td>B</td><td>74.7</td></tr><tr><td>Kunyaza</td><td>Druid</td><td>B</td><td>B</td><td>B</td><td>D</td><td>A</td><td>C</td><td>C</td><td>B</td><td>B</td><td>B</td><td>C</td><td>S</td><td>73.3</td></tr><tr><td>Happyzappy</td><td>Shaman</td><td>B</td><td>B</td><td>C</td><td>B</td><td>A</td><td>C</td><td>C</td><td>A</td><td>B</td><td>B</td><td>D</td><td>B</td><td>72.7</td></tr><tr><td>Redlac</td><td>Rogue</td><td>C</td><td>B</td><td>A</td><td>C</td><td>A</td><td>D</td><td>C</td><td>A</td><td>B</td><td>D</td><td>C</td><td>B</td><td>71.3</td></tr><tr><td>Poesdoos</td><td>Warlock</td><td>C</td><td>B</td><td>F</td><td>B</td><td>B</td><td>D</td><td>C</td><td>D</td><td>B</td><td>B</td><td>A</td><td>B</td><td>69.2</td></tr><tr><td>Bloedmangel</td><td>Druid</td><td>B</td><td>D</td><td>B</td><td>B</td><td>B</td><td>F</td><td>B</td><td>B</td><td>D</td><td>B</td><td>B</td><td>A</td><td>68.9</td></tr><tr><td>Vleesklak</td><td>Warlock</td><td>D</td><td>B</td><td>C</td><td>B</td><td>B</td><td>D</td><td>B</td><td>B</td><td>C</td><td>C</td><td>A</td><td>B</td><td>68.9</td></tr><tr><td>Ginnemage</td><td>Mage</td><td>C</td><td>C</td><td>D</td><td>C</td><td>B</td><td>C</td><td>B</td><td>D</td><td>B</td><td>B</td><td>C</td><td>B</td><td>68</td></tr><tr><td>Realblod</td><td>Warrior</td><td>B</td><td>B</td><td>B</td><td>D</td><td>B</td><td>C</td><td>D</td><td>B</td><td>C</td><td>D</td><td>B</td><td>C</td><td>65</td></tr><tr><td>Nls</td><td>Rogue</td><td>C</td><td>B</td><td>B</td><td>B</td><td>S</td><td>D</td><td>F</td><td>S</td><td>C</td><td>D</td><td>F</td><td>A</td><td>64.9</td></tr><tr><td>Neraith</td><td>Hunter</td><td>C</td><td>B</td><td>D</td><td>B</td><td>B</td><td>B</td><td>C</td><td>C</td><td>B</td><td>C</td><td>F</td><td>C</td><td>64.3</td></tr><tr><td>Rydashot</td><td>Hunter</td><td>C</td><td>C</td><td>C</td><td>C</td><td>C</td><td>D</td><td>C</td><td>D</td><td>C</td><td>C</td><td>D</td><td>C</td><td>57</td></tr><tr><td>Flirp</td><td>Hunter</td><td>D</td><td>C</td><td>C</td><td>C</td><td>C</td><td>D</td><td>D</td><td>C</td><td>C</td><td>F</td><td>F</td><td>C</td><td>55.4</td></tr><tr><td>Chopmedckoff</td><td>Paladin</td><td>F</td><td>C</td><td>F</td><td>A</td><td>F</td><td>F</td><td>F</td><td>B</td><td>C</td><td>F</td><td>D</td><td>C</td><td>36.5</td></tr><tr><td>Kaylin</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>F</td><td>-</td><td>31</td></tr><tr><td>Asfolano</td><td>Warlock</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>7.8</td></tr><tr><td>Apazawr</td><td>Mage</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>6</td></tr><tr><td>Gohann</td><td>Mage</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>F</td><td>6</td></tr><tr><td>Abayuba</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Bagaje</td><td>Warrior</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Beskud</td><td>Warrior</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Daarlan</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Fattalxwow</td><td>Paladin</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Feralized</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Frenchberty</td><td>Paladin</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Hoolly</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Lunèa</td><td>Shaman</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Lurne</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Mattmaine</td><td>Warrior</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Meratrix</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Ninjakevin</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Peanutx</td><td>Shaman</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Shadydoktor</td><td>Shaman</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Sworthsup</td><td>Druid</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Vitalikgodx</td><td>Warrior</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Ykc</td><td>Warrior</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Zweppetens</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr><tr><td>Zympers</td><td>Priest</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr></tbody></table>
+<p>Grades: S=95+, A=80-94, B=65-79, C=50-64, D=35-49, F&lt;35. — = unsupported spec.</p>
+<h2>Flagged Players (avg score &lt; 65)</h2>
+<ul><li><strong>Nls</strong> (Rogue) — avg 64.9 — rotation score dragging</li><li><strong>Neraith</strong> (Hunter) — avg 64.3 — rotation score dragging</li><li><strong>Rydashot</strong> (Hunter) — avg 57 — rotation score dragging</li><li><strong>Flirp</strong> (Hunter) — avg 55.4 — rotation score dragging</li><li><strong>Chopmedckoff</strong> (Paladin) — avg 36.5 — rotation score dragging</li><li><strong>Kaylin</strong> (Druid) — avg 31 — rotation score dragging</li><li><strong>Asfolano</strong> (Warlock) — avg 7.8 — consumables score dragging</li><li><strong>Apazawr</strong> (Mage) — avg 6 — consumables score dragging</li><li><strong>Gohann</strong> (Mage) — avg 6 — consumables score dragging</li></ul>
+<h2>Consumable Failures (0 potions, all fights)</h2>
+<p>Players who never used a combat potion across any fight:</p>
+<ul><li>Kaylin, Asfolano, Apazawr, Gohann</li></ul>
+<h2>Notes</h2>
+<ul><li>Unsupported: Abayuba (UNSUPPORTED_SPEC:Druid:Unknown), Bagaje (UNSUPPORTED_SPEC:Warrior:Unknown), Beskud (UNSUPPORTED_SPEC:Warrior:Unknown), Daarlan (UNSUPPORTED_SPEC:Druid:Unknown), Fattalxwow (UNSUPPORTED_SPEC:Paladin:Unknown), Feralized (UNSUPPORTED_SPEC:Druid:Unknown), Frenchberty (UNSUPPORTED_SPEC:Paladin:Holy), Hoolly (UNSUPPORTED_SPEC:Druid:Unknown), Lunèa (UNSUPPORTED_SPEC:Shaman:Unknown), Lurne (UNSUPPORTED_SPEC:Druid:Unknown), Mattmaine (UNSUPPORTED_SPEC:Warrior:Unknown), Meratrix (UNSUPPORTED_SPEC:Druid:Unknown), Ninjakevin (UNSUPPORTED_SPEC:Priest:Unknown), Peanutx (UNSUPPORTED_SPEC:Shaman:Restoration), Shadydoktor (UNSUPPORTED_SPEC:Shaman:Restoration), Sworthsup (UNSUPPORTED_SPEC:Druid:Unknown), Vitalikgodx (UNSUPPORTED_SPEC:Warrior:Unknown), Ykc (UNSUPPORTED_SPEC:Warrior:Unknown), Zweppetens (UNSUPPORTED_SPEC:Priest:Unknown), Zympers (UNSUPPORTED_SPEC:Priest:Holy) — tbc-audit could not grade these players</li><li>11 individual fight audits skipped (API returned an error)</li></ul>
+</section>
+<footer>Generated by tools/raid-html.</footer>
+</div>
+<script>
+document.querySelectorAll('table.sortable').forEach(function (table) {
+  var dir = {};
+  var heads = table.querySelectorAll('th');
+  heads.forEach(function (th, col) {
+    th.addEventListener('click', function () {
+      var rows = Array.from(table.tBodies[0].rows);
+      dir[col] = -(dir[col] || -1);
+      rows.sort(function (a, b) {
+        var av = a.cells[col].getAttribute('data-sort');
+        var bv = b.cells[col].getAttribute('data-sort');
+        var an = parseFloat(av), bn = parseFloat(bv);
+        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir[col];
+        return String(av).localeCompare(String(bv)) * dir[col];
+      });
+      rows.forEach(function (r) { table.tBodies[0].appendChild(r); });
+      heads.forEach(function (h) {
+        var arrow = h.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      var activeArrow = th.querySelector('.sort-arrow');
+      if (activeArrow) activeArrow.textContent = dir[col] > 0 ? ' ▲' : ' ▼';
+    });
+  });
+});
+</script>
+</body>
+</html>

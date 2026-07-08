@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter Pan Syndrome — Officer Evaluation — 2026-07-08</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08090c; --surface: #0d0e12; --surface2: #16181f;
+  --border: #242836; --border2: #1e2230;
+  --text: #e8eaf0; --muted: #8b90a0; --faint: #5f6474;
+  --green: #39d98a; --yellow: #ffb020; --orange: #ff8f4d; --red: #ff5c5c;
+  --gold: #e5cc80; --accent: #b968f0; --blue: #4a94ff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; line-height: 1.5;
+}
+::selection { background: var(--yellow); color: #000; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 24px 20px 60px; }
+a { color: #7aa2ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+h1 {
+  font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 42px;
+  line-height: 1; letter-spacing: 0.01em; margin: 0 0 6px; color: #fff;
+}
+h2 {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 15px;
+  letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 14px; color: #c8ccd8;
+}
+.num, td.num, th.num, .stat .value, .pill, .value {
+  font-family: 'IBM Plex Mono', monospace; font-variant-numeric: tabular-nums;
+}
+.card, section.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 22px 24px; margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.25);
+}
+.subline { color: var(--muted); font-size: 13px; }
+.badge {
+  display: inline-block; padding: 4px 11px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface2);
+  font-size: 11px; font-weight: 600; letter-spacing: 0.04em; margin-right: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.topnav { margin-bottom: 16px; font-size: 13px; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 18px; }
+.stat { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; }
+.stat .value { font-size: 26px; font-weight: 600; }
+.stat .label { font-family: 'Oswald', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.stat .sub { font-size: 12px; color: var(--faint); margin-top: 2px; }
+.stat.accent { border-color: rgba(255,92,92,.4); }
+.stat.accent .value { color: var(--red); }
+.tablewrap { overflow-x: auto; position: relative; }
+.tablewrap::after {
+  content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 20px;
+  background: linear-gradient(to right, transparent, var(--surface));
+  pointer-events: none;
+}
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { padding: 6px 10px; border-bottom: 1px solid var(--border); text-align: left; white-space: nowrap; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+th:first-child, td:first-child { position: sticky; left: 0; background: var(--surface); }
+td.num, th.num { text-align: right; }
+.sort-arrow { margin-left: 4px; opacity: 0.6; }
+.external { font-size: 11px; font-weight: 400; text-transform: none; letter-spacing: normal; margin-left: 8px; }
+.dim { color: var(--muted); opacity: 0.55; }
+.good { color: var(--green); }
+.warn { color: var(--yellow); }
+.caution { color: var(--orange); }
+.bad { color: var(--red); }
+.gold { color: var(--gold); }
+.pill {
+  display: inline-block; min-width: 44px; text-align: center;
+  padding: 2px 8px; border-radius: 6px; font-weight: 600; font-size: 12px;
+}
+.pill.good { background: rgba(57,217,138,.15); color: var(--green); }
+.pill.warn { background: rgba(255,176,32,.15); color: var(--yellow); }
+.pill.caution { background: rgba(255,143,77,.15); color: var(--orange); }
+.pill.bad { background: rgba(255,92,92,.15); color: var(--red); }
+.pill.na { background: transparent; color: var(--muted); opacity: .55; }
+.pill.gold { background: rgba(229,204,128,.15); color: var(--gold); }
+.pill.info { background: rgba(74,148,255,.15); color: var(--blue); }
+.audit-detail { font-size: 12px; color: var(--muted); margin-top: 6px; white-space: normal; font-family: 'IBM Plex Sans', sans-serif; }
+[title].pill, span.bad[title] { cursor: help; }
+.role {
+  display: inline-block; padding: 4px 10px; border-radius: 999px;
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 11px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  border: 1px solid var(--border2); color: var(--muted);
+}
+.callout {
+  border-left: 3px solid var(--red); background: rgba(255,92,92,.08);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.flag {
+  border-left: 3px solid var(--yellow); background: rgba(255,176,32,.07);
+  padding: 8px 13px; border-radius: 0 8px 8px 0; margin-top: 8px; font-size: 13px;
+}
+.cards2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.cards2 .card { margin-bottom: 0; min-width: 0; }
+.wraptext { white-space: normal; min-width: 180px; }
+.role-ic { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; }
+.role-ic svg { width: 15px; height: 15px; }
+.off-head {
+  font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 13px;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #c8ccd8;
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px;
+}
+.off-head span { font-family: 'IBM Plex Sans', sans-serif; text-transform: none; letter-spacing: 0; font-size: 11px; color: var(--faint); }
+.off-head a { margin-left: auto; }
+.off-row { padding: 9px 0; border-bottom: 1px solid var(--border2); }
+.off-row:last-child { border-bottom: none; }
+.off-name a:first-child { font-weight: 600; }
+.off-metric { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 15px; }
+.off-detail { font-size: 12px; color: var(--muted); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sortable th { cursor: pointer; user-select: none; }
+.sortable th:hover { color: var(--text); }
+details.bench { margin-top: 12px; }
+details.bench summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+details.bench ul { margin: 8px 0 0; }
+details.legend {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; padding: 14px 18px; margin-bottom: 18px;
+}
+details.legend summary { cursor: pointer; color: var(--muted); font-size: 13px; font-family: 'Oswald', sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+details.legend .legend-body { margin-top: 10px; font-size: 13px; color: var(--muted); }
+details.legend .legend-body p { margin: 6px 0; }
+details.legend .legend-body strong { color: var(--text); }
+footer { color: var(--faint); font-size: 12px; margin-top: 24px; }
+body.compact .card, body.compact section.panel { padding: 10px 14px; margin-bottom: 10px; }
+body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35; }
+@media (max-width: 1000px) {
+  .cards2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 700px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  h1 { font-size: 20px; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="topnav"><a href="index.html">&larr; Back to summary</a></div>
+<section class="panel">
+<h1>Post-Raid Evaluation: 2026-07-08 (SSC + TK + Gruul/Mag)</h1>
+<p><strong>Report:</strong> <a href="https://fresh.warcraftlogs.com/reports/cZGbYwvytVgAHF3C">cZGbYwvytVgAHF3C</a></p>
+<p>&gt; <strong>Unusual night:</strong> this was one continuous session (18:19–21:05 server-log time) that cleared <strong>all three current raid tiers back to back</strong> — SSC (Lurker → Vashj), then TK (Al'ar → Kael'thas), then Gruul/Mag (HKM, Gruul) — 14 bosses total, same 25-player group throughout (Brightmir present on every pull; raid-analyzer filtered the report's 343 total logged names down to 25 active players). There's no prior folder-naming precedent for a night spanning all three tiers, so this report lives at `2026-07-08-ssc-tk-gruul-mag/` rather than splitting into `ssc-tk` + `gruul-mag`. Because of the fight count, deaths and avoidable-damage totals are cumulative across ~3x the usual number of pulls — read those columns with that in mind rather than against typical single-tier-night thresholds.</p>
+<h2>Summary Table</h2>
+<table><thead><tr><th>Player</th><th>Role</th><th>Consumes</th><th>Gear Issues</th><th>Deaths</th><th>Avoidable</th><th>Active%</th></tr></thead><tbody><tr><td>Bloedmangel</td><td>Tank</td><td>86%</td><td>1 ⚠</td><td>3 ⚠</td><td>133,340 ✘ (tank)</td><td>100%</td></tr><tr><td>Chopmedckoff</td><td>Tank</td><td>95%</td><td>2 ⚠</td><td>8 ✘</td><td>146,478 ✘ (tank)</td><td>35% ✘</td></tr><tr><td>Frenchberty</td><td>Healer</td><td>81%</td><td>3 ✘</td><td>2</td><td>20,641 ⚠</td><td>100%</td></tr><tr><td>Kaylin</td><td>Healer</td><td>86%</td><td>16 ✘</td><td>5 ✘</td><td>51,362 ✘</td><td>100%</td></tr><tr><td>Peanutx</td><td>Healer</td><td>60% ⚠</td><td>7 ✘</td><td>4 ✘</td><td>54,534 ✘</td><td>100%</td></tr><tr><td>Shadydoktor</td><td>Healer</td><td>86%</td><td>9 ✘</td><td>6 ✘</td><td>40,262 ✘</td><td>70% ⚠</td></tr><tr><td>Zympers</td><td>Healer</td><td>88%</td><td>2 ⚠</td><td>5 ✘</td><td>26,256 ⚠</td><td>100%</td></tr><tr><td>Brightmir</td><td>Caster</td><td>81%</td><td>1 ⚠</td><td>5 ✘</td><td>32,742 ✘</td><td>100%</td></tr><tr><td>Enhanz</td><td>Caster</td><td>88%</td><td>0</td><td>5 ✘</td><td>59,349 ✘</td><td>100%</td></tr><tr><td>Ginnemage</td><td>Caster</td><td>86%</td><td>1 ⚠</td><td>6 ✘</td><td>47,107 ✘</td><td>100%</td></tr><tr><td>Happyzappy</td><td>Caster*</td><td>86%</td><td>0</td><td>9 ✘</td><td>150,075 ✘</td><td>57% ⚠</td></tr><tr><td>Jourganoff</td><td>Caster</td><td>83%</td><td>0</td><td>12 ✘</td><td>42,916 ✘</td><td>100%</td></tr><tr><td>Kunyaza</td><td>Caster</td><td>86%</td><td>0</td><td>5 ✘</td><td>126,301 ✘</td><td>100%</td></tr><tr><td>Poesdoos</td><td>Caster</td><td>90%</td><td>3 ✘</td><td>5 ✘</td><td>80,823 ✘</td><td>100%</td></tr><tr><td>Skindog</td><td>Caster*</td><td>89%</td><td>0</td><td>5 ✘</td><td>130,813 ✘</td><td>60% ⚠</td></tr><tr><td>Vleesklak</td><td>Caster</td><td>79% ⚠</td><td>3 ✘</td><td>6 ✘</td><td>52,412 ✘</td><td>100%</td></tr><tr><td>Bruun</td><td>Physical</td><td>68% ⚠</td><td>2 ⚠</td><td>7 ✘</td><td>136,812 ✘</td><td>77%</td></tr><tr><td>Flirp</td><td>Physical</td><td>95%</td><td>1 ⚠</td><td>2</td><td>34,193 ✘</td><td>100%</td></tr><tr><td>Kokowarrior</td><td>Physical</td><td>88%</td><td>0</td><td>9 ✘</td><td>137,051 ✘</td><td>65% ⚠</td></tr><tr><td>Neraith</td><td>Physical</td><td>79% ⚠</td><td>0</td><td>1</td><td>34,836 ✘</td><td>100%</td></tr><tr><td>Nls</td><td>Physical</td><td>83%</td><td>0</td><td>7 ✘</td><td>113,697 ✘</td><td>98%</td></tr><tr><td>Nuudle</td><td>Physical</td><td>98%</td><td>0</td><td>9 ✘</td><td>169,014 ✘</td><td>48% ✘</td></tr><tr><td>Realblod</td><td>Physical</td><td>74% ⚠</td><td>0</td><td>8 ✘</td><td>173,468 ✘</td><td>49% ✘</td></tr><tr><td>Redlac</td><td>Physical</td><td>81%</td><td>0</td><td>4 ✘</td><td>82,583 ✘</td><td>98%</td></tr><tr><td>Rydashot</td><td>Physical</td><td>89%</td><td>0</td><td>2</td><td>57,500 ✘</td><td>100%</td></tr></tbody></table>
+<p><strong>Bench (&lt; 5% active):</strong> none.</p>
+<p>\* Happyzappy and Skindog are both Enhancement Shamans (melee rotation: Stormstrike/Earth Shock/Flame Shock) but raid-analyzer bucketed them under "Caster" rather than "Physical" — a role-classification quirk in the tool, not a data error in their numbers.</p>
+<h2>Boss Debuff Uptimes</h2>
+<table><thead><tr><th>Debuff</th><th>Lurker(165s)</th><th>Hydross(121s)</th><th>Leo(195s)</th><th>Karathress(125s)</th><th>Morogrim(186s)</th><th>Vashj(420s)</th><th>Al'ar(341s)</th><th>Void Reaver(174s)</th><th>Solarian(116s)</th><th>KT(422s)</th><th>HKM(28s)</th><th>Gruul(135s)</th></tr></thead><tbody><tr><td>Shadow Weaving</td><td>88%</td><td>97%</td><td>96%</td><td>99%</td><td>99%</td><td>100%</td><td>96%</td><td>99%</td><td>98%</td><td>79%</td><td>91%</td><td>99%</td></tr><tr><td>Misery</td><td>88%</td><td>97%</td><td>97%</td><td>99%</td><td>99%</td><td>100%</td><td>96%</td><td>99%</td><td>95%</td><td>75%</td><td>91%</td><td>98%</td></tr><tr><td>Curse of Elements</td><td>53% ⚠</td><td>97%</td><td>90%</td><td>94%</td><td>99%</td><td>100%</td><td>93%</td><td>99%</td><td>97%</td><td>90%</td><td>92%</td><td>98%</td></tr><tr><td>Improved Scorch</td><td>87%</td><td>97%</td><td>71%</td><td>97%</td><td>98%</td><td>61% ⚠</td><td>-</td><td>80%</td><td>88%</td><td>68% ⚠</td><td>80%</td><td>69% ⚠</td></tr><tr><td>Expose Armor / Sunder Armor</td><td>81%</td><td>92%</td><td>87%</td><td>98%</td><td>97%</td><td>46% ⚠</td><td>83%</td><td>97%</td><td>95%</td><td>72%</td><td>88%</td><td>92%</td></tr><tr><td>Faerie Fire / Faerie Fire (Feral)</td><td>73%</td><td>59% ⚠</td><td>89%</td><td>80%</td><td>98%</td><td>100%</td><td>79%</td><td>84%</td><td>94%</td><td>69% ⚠</td><td>83%</td><td>87%</td></tr><tr><td>Curse of Recklessness</td><td>74%</td><td>98%</td><td>65% ⚠</td><td>94%</td><td>96%</td><td>56% ⚠</td><td>93%</td><td>69% ⚠</td><td>95%</td><td>91%</td><td>94%</td><td>88%</td></tr><tr><td>Demoralizing Shout</td><td>75%</td><td>88%</td><td>75%</td><td>64% ⚠</td><td>87%</td><td>41% ⚠</td><td>78%</td><td>80%</td><td>86%</td><td>100%</td><td>79%</td><td>86%</td></tr><tr><td>Hunter's Mark</td><td>76%</td><td>98%</td><td>74%</td><td>98%</td><td>99%</td><td>43% ⚠</td><td>89%</td><td>100%</td><td>36% ⚠</td><td>90%</td><td>100%</td><td>99%</td></tr><tr><td>Judgement of Wisdom</td><td>72%</td><td>30% ⚠</td><td>89%</td><td>-</td><td>99%</td><td>22% ⚠</td><td>52% ⚠</td><td>99%</td><td>96%</td><td>52% ⚠</td><td>-</td><td>98%</td></tr><tr><td>Judgement of Light</td><td>66% ⚠</td><td>-</td><td>89%</td><td>-</td><td>93%</td><td>13% ⚠</td><td>18% ⚠</td><td>99%</td><td>6% ⚠</td><td>25% ⚠</td><td>-</td><td>98%</td></tr><tr><td>Judgement of the Crusader</td><td>82%</td><td>97%</td><td>90%</td><td>67% ⚠</td><td>99%</td><td>37% ⚠</td><td>90%</td><td>99%</td><td>96%</td><td>48% ⚠</td><td>91%</td><td>99%</td></tr></tbody></table>
+<p>(Trash/Winter's Chill rows and wipe columns omitted; see `debuffs.md` for the full table including the two Morogrim wipe segments.)</p>
+<p><strong>Flags:</strong></p>
+<ul><li>Curse of Elements: 53% on Lurker (Warlock)</li><li>Improved Scorch: 61% on Vashj / 68% on KT / 69% on Gruul (Fire Mage)</li><li>Expose Armor / Sunder Armor: 46% on Vashj (Rogue / Warrior)</li><li>Faerie Fire / Faerie Fire (Feral): 59% on Hydross / 69% on KT (Druid)</li><li>Curse of Recklessness: 65% on Leo / 56% on Vashj / 69% on Void Reaver (Warlock)</li><li>Demoralizing Shout: 64% on Karathress / 41% on Vashj (Warrior)</li><li>Hunter's Mark: 43% on Vashj / 36% on Solarian (Hunter)</li><li>Judgement of Wisdom: 30% Hydross / 22% Vashj / 52% Al'ar / 52% KT (Paladin)</li><li>Judgement of Light: 66% Lurker / 13% Vashj / 18% Al'ar / 6% Solarian / 25% KT (Paladin) — chronic, worst uptime debuff of the night</li><li>Judgement of the Crusader: 67% Karathress / 37% Vashj / 48% KT (Paladin)</li></ul>
+<p>Judgement of Light and Judgement of Wisdom are the weakest links again — both drop hard on the longer fights (Vashj 420s, KT 422s), consistent with prior weeks' notes on paladin judgement uptime.</p>
+<h2>Kill Time Comparison</h2>
+<table><thead><tr><th>Boss</th><th>This Week</th><th>Last 3 Avg</th><th>Delta</th></tr></thead><tbody><tr><td>The Lurker Below</td><td>2:45</td><td>3:04</td><td>-10%</td></tr><tr><td>Hydross the Unstable</td><td>2:01</td><td>2:38</td><td>-23%</td></tr><tr><td>Leotheras the Blind</td><td>3:15</td><td>3:42</td><td>-12%</td></tr><tr><td>Fathom-Lord Karathress</td><td>2:05</td><td>2:51</td><td>-27%</td></tr><tr><td>Morogrim Tidewalker</td><td>3:06</td><td>3:32</td><td>-12%</td></tr><tr><td>Lady Vashj</td><td>7:00</td><td>7:41</td><td>-9%</td></tr><tr><td>Al'ar</td><td>5:41</td><td>5:59</td><td>-5%</td></tr><tr><td>Void Reaver</td><td>2:54</td><td>2:41</td><td>+8%</td></tr><tr><td>High Astromancer Solarian</td><td>1:56</td><td>2:04</td><td>-7%</td></tr><tr><td>Kael'thas Sunstrider</td><td>7:02</td><td>8:15</td><td>-15%</td></tr><tr><td>High King Maulgar</td><td>0:28</td><td>0:31</td><td>-11%</td></tr><tr><td>Gruul the Dragonkiller</td><td>2:15</td><td>2:17</td><td>-1%</td></tr></tbody></table>
+<p>Fastest night in weeks across almost every boss — Karathress -27%, Hydross -23%, and Kael'thas -15% (a new low, breaking a multi-week plateau around 8:00+) stand out. Only Void Reaver is slower (+8%, below the 15% flag threshold — not concerning on its own, but worth a glance if it repeats).</p>
+<h2>Top Offenders</h2>
+<p><strong>Avoidable Damage (top 5 non-tanks):</strong></p>
+<table><thead><tr><th>Player</th><th>Total</th><th>Breakdown</th></tr></thead><tbody><tr><td>Realblod</td><td>173,468</td><td>Whirlwind 58,354; Rain of Fire 28,331; Cleave 19,486; Mortal Cleave 16,340; Cave In 15,580</td></tr><tr><td>Nuudle</td><td>169,014</td><td>Whirlwind 70,141; Rain of Fire 24,410; Shatter 13,292; Cave In 13,242; Cleave 12,985</td></tr><tr><td>Happyzappy</td><td>150,075</td><td>Whirlwind 54,548; Rain of Fire 24,202; Cave In 14,819; Scalding Water 11,952; Flame Patch 8,318</td></tr><tr><td>Kokowarrior</td><td>137,051</td><td>Whirlwind 43,083; Rain of Fire 26,318; Shatter 15,351; Cave In 14,082; Toxic Spores 13,925</td></tr><tr><td>Bruun</td><td>136,812</td><td>Whirlwind 50,824; Rain of Fire 29,676; Shatter 14,628; Scalding Water 10,499; Cave In 10,475</td></tr></tbody></table>
+<p>Whirlwind (positioning around melee cleave mobs) and Rain of Fire are the top two sources for nearly every offender — this reads as a raid-wide positioning issue on trash more than an individual problem.</p>
+<p><strong>Consumable Failures (&lt;60%):</strong> none. Peanutx sits exactly at the 60% warn/fail boundary (see Summary Table) but doesn't cross into fail.</p>
+<p><strong>Gear Issues (3+ problems):</strong></p>
+<ul><li>Kaylin — 16 issues (worst in raid; multiple pieces missing gems/enchants across chest, boots, gloves, cloak, weapon)</li><li>Shadydoktor — 9 issues (gems missing on belt/legs/boots/gloves, cloak enchant wrong tier)</li><li>Peanutx — 7 issues (shoulder/legs/boots/mantle all missing enchants or gems)</li><li>Frenchberty — 3 issues (shoulder, boots, cloak)</li><li>Poesdoos — 3 issues (robe, boots, wristbands)</li><li>Vleesklak — 3 issues (boots x2, weapon enchant)</li></ul>
+<p>High-value gaps worth flagging directly: Vleesklak's weapon (Nathrezim Mindblade) has no enchant, and Kaylin's Gladiator's War Staff is also unenchanted — both weapon slots.</p>
+<p><strong>Deaths (this was a 14-boss marathon night, so totals run high across the board — top 8 by count):</strong></p>
+<table><thead><tr><th>Player</th><th>Total</th><th>Boss / Trash</th></tr></thead><tbody><tr><td>Jourganoff</td><td>12</td><td>5 / 7</td></tr><tr><td>Happyzappy</td><td>9</td><td>5 / 4</td></tr><tr><td>Nuudle</td><td>9</td><td>4 / 5</td></tr><tr><td>Kokowarrior</td><td>9</td><td>4 / 5</td></tr><tr><td>Chopmedckoff (tank)</td><td>8</td><td>1 / 7</td></tr><tr><td>Realblod</td><td>8</td><td>4 / 4</td></tr><tr><td>Bruun</td><td>7</td><td>1 / 6</td></tr><tr><td>Nls</td><td>7</td><td>2 / 5</td></tr></tbody></table>
+<p>Chopmedckoff's split (7 of 8 deaths on trash) lines up with the 35% active time flagged below — worth asking what happened on trash pulls specifically.</p>
+<h2>Per-Role Notes</h2>
+<p><strong>Tanks:</strong></p>
+<ul><li>Bloedmangel: 3 deaths (2 boss), 100% active, 133k avoidable (expected — Whirlwind/Cleave/Shatter are tank-context). Clean night otherwise.</li><li>Chopmedckoff: 35.2% active is the lowest in the raid — combined with 8 deaths (7 on trash) and 146k avoidable, this looks like repeated trash-pull deaths rather than a boss-specific issue. Worth a direct check-in.</li></ul>
+<p><strong>Healers:</strong></p>
+<ul><li>Zympers led healing (1,961 HPS, 5.06M done) with 49% overheal — reasonable for a comp this heavy.</li><li>Shadydoktor's 69.6% active is the outlier among healers; combined with 6 deaths (3 trash) suggests time lost to dying rather than idling.</li><li>Peanutx at 60% consumables (flask/food) is the only healer below the 80% OK line — worth a nudge before next raid, especially on a night this long.</li><li>Mana Tide Totem and Nature's Swiftness usage both look healthy across the shaman healers (7-13 boss casts each) given fight count.</li></ul>
+<p><strong>DPS:</strong></p>
+<ul><li>Active% outliers: Nuudle (48%), Realblod (49%), Kokowarrior (65%), Skindog (60%), Happyzappy (57%) — all below the 74% warn line. Given the marathon length, some of this is likely accumulated death/rez downtime rather than AFK, but Nuudle/Realblod are worth a look since they're also both in the avoidable-damage top 5.</li><li>Jourganoff: 99 Scorch violations (5+ stacks) — this is a recurring theme (flagged in multiple prior weeks per `officer/README.md` history) and hasn't improved.</li><li>Kokowarrior: 15 Sunder Armor violations (5+ stacks); Realblod: 4.</li><li>Cooldown usage was generally strong for a night this long: Ginnemage (23 Icy Veins boss-side, 16 Arcane Power), Jourganoff (16 Icy Veins), Kokowarrior/Realblod (13-15 Death Wish).</li></ul>
+<h2>Log Validation</h2>
+<ul><li><strong>Serpentshrine Cavern:</strong> 6/6 bosses — PASS</li><li><strong>Tempest Keep: The Eye:</strong> 4/4 bosses — PASS</li><li><strong>Gruul's Lair:</strong> 2/1 bosses — PASS (display quirk from the analyzer's expected-count for this zone; both HKM and Gruul are confirmed killed in the fight list)</li><li>An "Unknown: 0/0 — FAIL" line also appears in `cla.md`; this is boilerplate for an unmatched zone bucket with nothing in it, not a real validation failure.</li></ul>
+<p>All 12 targeted bosses across all three tiers were killed. No missing kills.</p>
+<h2>Discipline Flags</h2>
+<p>From `discipline.md` (DPS + drummers only):</p>
+<ul><li><strong>Drums uptime failing (50%, below the expected floor):</strong> Enhanz, Kaylin, Skindog, Redlac</li><li><strong>Cooldowns held to boss-only:</strong> Bruun (trinket/cooldown discipline flags this as a gap — trinkets should also see use on relevant trash where safe)</li><li>Everyone else in the DPS/drummer pool is at ✓ or the softer ⚠ tier (moderate trinket-use counts without a hard failure).</li></ul>
+<h2>Grade Flags</h2>
+<p>From `grades.md` (DPS specs only, avg score &lt; 65; roster players bolded):</p>
+<ul><li><strong>Nls</strong> (Rogue) — avg 64.9 — rotation dragging</li><li><strong>Neraith</strong> (Hunter) — avg 64.3 — rotation dragging</li><li><strong>Rydashot</strong> (Hunter) — avg 57 — rotation dragging</li><li><strong>Flirp</strong> (Hunter) — avg 55.4 — rotation dragging</li><li><strong>Chopmedckoff</strong> (Paladin) — avg 36.5 — rotation dragging (consistent with the low active% and death count flagged above)</li><li><strong>Kaylin</strong> (Druid) — avg 31 — rotation dragging, and separately flagged with 0 combat potions used across every single fight all night</li></ul>
+<p>Kaylin's grade-panel result (worst rotation score in the raid, 0 potions all night) directly confirms this eval's own gear-issues flag (16 issues, worst in raid) — same player, three independent signals pointing the same direction.</p>
+<p>Asfolano, Apazawr, and Gohann also flagged (consumables-driven, avg 6-8) but aren't part of our confirmed 25-player roster for this report — likely trash-only participants from elsewhere in the combined log, not raiders to follow up on.</p>
+<p>tbc-audit could not grade healers/tanks/Restoration specs (expected) or Holy Paladins/Priests specifically (Frenchberty, Zympers) — normal tool limitation, not a data gap.</p>
+<h2>Attendance</h2>
+<p>Skipped for this report. The `/attendance-update` skill currently only scans folders matching `*-gruul-mag` and derives the date by stripping that suffix (`ls officer/reports/ | grep gruul-mag | sed 's/-gruul-mag//'`) — against this folder's name (`2026-07-08-ssc-tk-gruul-mag`) that would strip to `2026-07-08-ssc-tk`, not the real date, and corrupt the lookup. Attendance for tonight should be reconciled manually, or the skill extended to handle combined-tier folder names, before running it here.</p>
+</section>
+<footer>Generated by tools/raid-html.</footer>
+</div>
+<script>
+document.querySelectorAll('table.sortable').forEach(function (table) {
+  var dir = {};
+  var heads = table.querySelectorAll('th');
+  heads.forEach(function (th, col) {
+    th.addEventListener('click', function () {
+      var rows = Array.from(table.tBodies[0].rows);
+      dir[col] = -(dir[col] || -1);
+      rows.sort(function (a, b) {
+        var av = a.cells[col].getAttribute('data-sort');
+        var bv = b.cells[col].getAttribute('data-sort');
+        var an = parseFloat(av), bn = parseFloat(bv);
+        if (!isNaN(an) && !isNaN(bn)) return (an - bn) * dir[col];
+        return String(av).localeCompare(String(bv)) * dir[col];
+      });
+      rows.forEach(function (r) { table.tBodies[0].appendChild(r); });
+      heads.forEach(function (h) {
+        var arrow = h.querySelector('.sort-arrow');
+        if (arrow) arrow.textContent = '';
+      });
+      var activeArrow = th.querySelector('.sort-arrow');
+      if (activeArrow) activeArrow.textContent = dir[col] > 0 ? ' ▲' : ' ▼';
+    });
+  });
+});
+</script>
+</body>
+</html>
