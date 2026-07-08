@@ -211,6 +211,20 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
   <p style="margin:6px 0 0">Significant room for improvement.</p><p style="margin:6px 0 0">Expose Armor uptime is low — start building combo points early so you&#x27;re ready to reapply before it drops. Use Adrenaline Rush or Thistle Tea to quickly build a 5 CP IEA if needed, Slice and Dice uptime could be improved — plan your combo point spending so SnD never falls off between Expose Armor refreshes, and you&#x27;re missing consumables that would give you free stats.</p><p style="margin:6px 0 0">Pick one of these to focus on next raid — you don&#x27;t have to fix everything at once.</p>
 </section>
 
+<section class="panel">
+  <h2>Repeated patterns</h2>
+  <p class="subline" style="margin:0 0 12px">Behaviours flagged across multiple fights &mdash; fix these first.</p>
+  <div class="cards2"><div class="card" style="margin-bottom:0;display:flex;gap:13px;border-left:3px solid var(--red)">
+  <div style="flex:1">
+    <strong style="font-size:14px">Scroll of Strength missing</strong>
+    <div class="subline" style="margin-top:4px">not present in any fight</div>
+  </div>
+  <div style="flex:none;text-align:right">
+    <div style="font-family:'IBM Plex Mono',monospace;font-weight:600;font-size:20px;color:var(--red)">12<span class="subline" style="font-size:12px">/12</span></div>
+    <div class="subline" style="font-size:10px;letter-spacing:.08em;text-transform:uppercase">fights</div>
+  </div>
+</div></div>
+</section>
 
 <div style="display:flex;flex-wrap:wrap;gap:16px;margin-bottom:18px;align-items:stretch">
   <section class="panel" style="flex:1.5 1 480px;min-width:400px;margin-bottom:0">
@@ -365,17 +379,10 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
       <span>Cooldown timing</span><span style="color:var(--green)">on point</span>
     </div>
     <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px">
-      <span>Potion timing</span><span style="color:var(--red)">boss-only</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px">
-      <span>Healthstone timing</span><span style="color:var(--red)">boss-only</span>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:6px">
       <span>Drums uptime</span><span style="color:var(--text)">74%</span>
     </div>
     </section>
-    <section class="panel" style="margin-bottom:0"><h3 style="font-size:13px;margin:0 0 8px">Potions &amp; Runes</h3><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Haste Potion</span><div class="subline" style="font-size:11px;margin-top:1px">14 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">14</span></div><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Heavy Netherweave Bandage</span><div class="subline" style="font-size:11px;margin-top:1px">2 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">2</span></div></section>
-    <section class="panel" style="margin-bottom:0"><h3 style="font-size:13px;margin:0 0 8px">Healthstone Usage</h3><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Master Healthstone</span><div class="subline" style="font-size:11px;margin-top:1px">2 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">2</span></div></section>
+    <section class="panel" style="margin-bottom:0"><h3 style="font-size:13px;margin:0 0 8px">Consumables</h3><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Haste Potion</span><div class="subline" style="font-size:11px;margin-top:1px">14 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">14</span></div><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Master Healthstone</span><div class="subline" style="font-size:11px;margin-top:1px">2 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">2</span></div><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Heavy Netherweave Bandage</span><div class="subline" style="font-size:11px;margin-top:1px">2 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">2</span></div></section>
     <section class="panel" style="margin-bottom:0">
       <h2>Buff Uptimes</h2>
       <div style="margin-bottom:6px">
@@ -554,11 +561,9 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
 </section>
 
 <section class="panel"><h2>Discipline</h2>
-<div class="stats" style="grid-template-columns:repeat(5,1fr)">
+<div class="stats" style="grid-template-columns:repeat(3,1fr)">
   <div class="stat"><div class="label">Trinket Uses</div><div class="value">78</div></div>
   <div class="stat"><div class="label">Cooldown Timing</div><div class="value" style="font-size:16px">on point</div></div>
-  <div class="stat"><div class="label">Potion Timing</div><div class="value" style="font-size:16px">boss-only</div></div>
-  <div class="stat"><div class="label">Healthstone Timing</div><div class="value" style="font-size:16px">boss-only</div></div>
   <div class="stat"><div class="label">Drums Uptime</div><div class="value">74.0%</div></div>
 </div></section>
 
