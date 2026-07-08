@@ -384,7 +384,62 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
     </section>
     <section class="panel" style="margin-bottom:0"><h3 style="font-size:13px;margin:0 0 8px">Consumables</h3><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Haste Potion</span><div class="subline" style="font-size:11px;margin-top:1px">12 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">12</span></div><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Master Healthstone</span><div class="subline" style="font-size:11px;margin-top:1px">1 boss / 0 trash</div></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">1</span></div></section>
     <section class="panel" style="margin-bottom:0">
-      <h2>Buff Uptimes</h2>
+      <h2>Consumable Coverage</h2>
+      <div class="consumable-bar" data-pct="57" style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Flask</span><span class="subline">57%</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Flask coverage"
+           aria-valuenow="57" aria-valuemin="0" aria-valuemax="100">
+        <div class="consumable-fill" style="width:57.1%;background:var(--red);height:100%"></div>
+      </div>
+    </div><div class="consumable-bar" data-pct="36" style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Battle Elixir</span><span class="subline">36%</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Battle Elixir coverage"
+           aria-valuenow="36" aria-valuemin="0" aria-valuemax="100">
+        <div class="consumable-fill" style="width:35.7%;background:var(--red);height:100%"></div>
+      </div>
+    </div><div class="consumable-bar" data-pct="0" style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Guardian Elixir</span><span class="subline">0%</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Guardian Elixir coverage"
+           aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        <div class="consumable-fill" style="width:0.0%;background:var(--red);height:100%"></div>
+      </div>
+    </div><div class="consumable-bar" data-pct="93" style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Food</span><span class="subline">93%</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Food coverage"
+           aria-valuenow="93" aria-valuemin="0" aria-valuemax="100">
+        <div class="consumable-fill" style="width:92.9%;background:var(--green);height:100%"></div>
+      </div>
+    </div><div class="consumable-bar" data-pct="93" style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Weapon Enchant</span><span class="subline">93%</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Weapon Enchant coverage"
+           aria-valuenow="93" aria-valuemin="0" aria-valuemax="100">
+        <div class="consumable-fill" style="width:92.9%;background:var(--green);height:100%"></div>
+      </div>
+    </div>
+    </section>
+    <section class="panel" style="margin-bottom:0">
+      <h2>Gear Issues</h2>
+      
+      <p class="good" style="font-size:13px">No gear issues.</p>
+    </section>
+  </div>
+</div>
+
+<section class="panel">
+  <h2>Preparation</h2>
+  <div style="display:flex;gap:34px;flex-wrap:wrap">
+    <div style="flex:1;min-width:240px">
+      <h3 style="font-size:13px;margin:0 0 8px">Buff Uptimes</h3>
       <div style="margin-bottom:6px">
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
         <span>Heroism</span><span class="subline">16.9%</span></div>
@@ -410,9 +465,9 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
         <div style="width:13.9%;background:var(--accent);height:100%"></div>
       </div>
     </div>
-    </section>
-    <section class="panel" style="margin-bottom:0">
-      <h2>Avoidable Damage</h2>
+    </div>
+    <div style="flex:1;min-width:240px">
+      <h3 style="font-size:13px;margin:0 0 8px">Avoidable Damage</h3>
       <div style="margin-bottom:6px">
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
         <span>Whirlwind</span><span class="subline">68,935</span></div>
@@ -494,61 +549,6 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
         <div style="width:1.9%;background:var(--red);height:100%"></div>
       </div>
     </div>
-    </section>
-  </div>
-</div>
-
-<section class="panel">
-  <h2>Preparation</h2>
-  <div style="display:flex;gap:34px;flex-wrap:wrap">
-    <div style="flex:1;min-width:240px">
-      <h3 style="font-size:13px;margin:0 0 8px">Consumable Coverage</h3>
-      <div class="consumable-bar" data-pct="57" style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Flask</span><span class="subline">57%</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Flask coverage"
-           aria-valuenow="57" aria-valuemin="0" aria-valuemax="100">
-        <div class="consumable-fill" style="width:57.1%;background:var(--red);height:100%"></div>
-      </div>
-    </div><div class="consumable-bar" data-pct="36" style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Battle Elixir</span><span class="subline">36%</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Battle Elixir coverage"
-           aria-valuenow="36" aria-valuemin="0" aria-valuemax="100">
-        <div class="consumable-fill" style="width:35.7%;background:var(--red);height:100%"></div>
-      </div>
-    </div><div class="consumable-bar" data-pct="0" style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Guardian Elixir</span><span class="subline">0%</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Guardian Elixir coverage"
-           aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        <div class="consumable-fill" style="width:0.0%;background:var(--red);height:100%"></div>
-      </div>
-    </div><div class="consumable-bar" data-pct="93" style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Food</span><span class="subline">93%</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Food coverage"
-           aria-valuenow="93" aria-valuemin="0" aria-valuemax="100">
-        <div class="consumable-fill" style="width:92.9%;background:var(--green);height:100%"></div>
-      </div>
-    </div><div class="consumable-bar" data-pct="93" style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Weapon Enchant</span><span class="subline">93%</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Weapon Enchant coverage"
-           aria-valuenow="93" aria-valuemin="0" aria-valuemax="100">
-        <div class="consumable-fill" style="width:92.9%;background:var(--green);height:100%"></div>
-      </div>
-    </div>
-    </div>
-    <div style="flex:1;min-width:240px">
-      <h3 style="font-size:13px;margin:0 0 8px">Gear Issues</h3>
-      
-      <p class="good" style="font-size:13px">No gear issues.</p>
     </div>
   </div>
 </section>

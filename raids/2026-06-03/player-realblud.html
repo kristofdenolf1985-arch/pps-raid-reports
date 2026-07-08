@@ -219,69 +219,7 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
     </section>
     <section class="panel" style="margin-bottom:0"><h3 style="font-size:13px;margin:0 0 8px">Consumables</h3><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Destruction Potion</span></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">8</span></div><div style="display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:4px 0;border-bottom:1px solid var(--border2)"><div><span>Super Mana Potion</span></div><span style="font-family:'IBM Plex Mono',monospace;font-weight:600">5</span></div></section>
     <section class="panel" style="margin-bottom:0">
-      <h2>Buff Uptimes</h2>
-      <div style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Heroism</span><span class="subline">12.7%</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Heroism"
-           aria-valuenow="12.7" aria-valuemin="0" aria-valuemax="100">
-        <div style="width:12.7%;background:var(--accent);height:100%"></div>
-      </div>
-    </div><div style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Blessing of the Silver Crescent</span><span class="subline">12.5%</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Blessing of the Silver Crescent"
-           aria-valuenow="12.5" aria-valuemin="0" aria-valuemax="100">
-        <div style="width:12.5%;background:var(--accent);height:100%"></div>
-      </div>
-    </div>
-    </section>
-    <section class="panel" style="margin-bottom:0">
-      <h2>Avoidable Damage</h2>
-      <div style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Whirlwind</span><span class="subline">35,145</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Whirlwind avoidable damage"
-           aria-valuenow="35145" aria-valuemin="0" aria-valuemax="35145">
-        <div style="width:100.0%;background:var(--red);height:100%"></div>
-      </div>
-    </div><div style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Rain of Fire</span><span class="subline">23,014</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Rain of Fire avoidable damage"
-           aria-valuenow="23014" aria-valuemin="0" aria-valuemax="35145">
-        <div style="width:65.5%;background:var(--red);height:100%"></div>
-      </div>
-    </div><div style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Toxic Spores</span><span class="subline">8,485</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Toxic Spores avoidable damage"
-           aria-valuenow="8485" aria-valuemin="0" aria-valuemax="35145">
-        <div style="width:24.1%;background:var(--red);height:100%"></div>
-      </div>
-    </div><div style="margin-bottom:6px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
-        <span>Scalding Water</span><span class="subline">5,493</span></div>
-      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
-           role="progressbar" aria-label="Scalding Water avoidable damage"
-           aria-valuenow="5493" aria-valuemin="0" aria-valuemax="35145">
-        <div style="width:15.6%;background:var(--red);height:100%"></div>
-      </div>
-    </div>
-    </section>
-  </div>
-</div>
-
-<section class="panel">
-  <h2>Preparation</h2>
-  <div style="display:flex;gap:34px;flex-wrap:wrap">
-    <div style="flex:1;min-width:240px">
-      <h3 style="font-size:13px;margin:0 0 8px">Consumable Coverage</h3>
+      <h2>Consumable Coverage</h2>
       <div class="consumable-bar" data-pct="80" style="margin-bottom:6px">
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
         <span>Flask</span><span class="subline">80%</span></div>
@@ -323,9 +261,9 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
         <div class="consumable-fill" style="width:90.0%;background:var(--green);height:100%"></div>
       </div>
     </div>
-    </div>
-    <div style="flex:1;min-width:240px">
-      <h3 style="font-size:13px;margin:0 0 8px">Gear Issues</h3>
+    </section>
+    <section class="panel" style="margin-bottom:0">
+      <h2>Gear Issues</h2>
       <p class="subline" style="margin:0 0 10px">3 not enchanted &middot; 2 suboptimal</p>
       <div class="callout" style="border-left-color:var(--red)">
       Voidheart Crown [no enchant]
@@ -337,6 +275,68 @@ body.highlight-problems .pill.good, body.highlight-problems .good { opacity: .35
       Baba&#x27;s Cloak of Arcanistry [no enchant]
     </div><div class="callout" style="border-left-color:var(--red)">
       Starlight Dagger [no enchant]
+    </div>
+    </section>
+  </div>
+</div>
+
+<section class="panel">
+  <h2>Preparation</h2>
+  <div style="display:flex;gap:34px;flex-wrap:wrap">
+    <div style="flex:1;min-width:240px">
+      <h3 style="font-size:13px;margin:0 0 8px">Buff Uptimes</h3>
+      <div style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Heroism</span><span class="subline">12.7%</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Heroism"
+           aria-valuenow="12.7" aria-valuemin="0" aria-valuemax="100">
+        <div style="width:12.7%;background:var(--accent);height:100%"></div>
+      </div>
+    </div><div style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Blessing of the Silver Crescent</span><span class="subline">12.5%</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Blessing of the Silver Crescent"
+           aria-valuenow="12.5" aria-valuemin="0" aria-valuemax="100">
+        <div style="width:12.5%;background:var(--accent);height:100%"></div>
+      </div>
+    </div>
+    </div>
+    <div style="flex:1;min-width:240px">
+      <h3 style="font-size:13px;margin:0 0 8px">Avoidable Damage</h3>
+      <div style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Whirlwind</span><span class="subline">35,145</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Whirlwind avoidable damage"
+           aria-valuenow="35145" aria-valuemin="0" aria-valuemax="35145">
+        <div style="width:100.0%;background:var(--red);height:100%"></div>
+      </div>
+    </div><div style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Rain of Fire</span><span class="subline">23,014</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Rain of Fire avoidable damage"
+           aria-valuenow="23014" aria-valuemin="0" aria-valuemax="35145">
+        <div style="width:65.5%;background:var(--red);height:100%"></div>
+      </div>
+    </div><div style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Toxic Spores</span><span class="subline">8,485</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Toxic Spores avoidable damage"
+           aria-valuenow="8485" aria-valuemin="0" aria-valuemax="35145">
+        <div style="width:24.1%;background:var(--red);height:100%"></div>
+      </div>
+    </div><div style="margin-bottom:6px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:2px">
+        <span>Scalding Water</span><span class="subline">5,493</span></div>
+      <div style="background:var(--bg);border-radius:4px;height:6px;overflow:hidden"
+           role="progressbar" aria-label="Scalding Water avoidable damage"
+           aria-valuenow="5493" aria-valuemin="0" aria-valuemax="35145">
+        <div style="width:15.6%;background:var(--red);height:100%"></div>
+      </div>
     </div>
     </div>
   </div>
